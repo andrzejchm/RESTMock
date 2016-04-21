@@ -16,6 +16,7 @@ allprojects {
     repositories {
         jcenter()
     }
+    version = "0.1"
 }
 
 task clean(type: Delete) {
