@@ -36,7 +36,6 @@ tmp
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
@@ -46,7 +45,3 @@ hs_err_pid*
 .gradle
 local.properties
 library/build
-gradle.properties
-gradle/wrapper/gradle-wrapper.properties
-gradlew
-gradlew.bat
