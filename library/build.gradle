@@ -1,0 +1,7 @@
+apply plugin: 'java'
+apply plugin: 'findbugs'
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.squareup.okhttp:mockwebserver:2.7.5'
+}

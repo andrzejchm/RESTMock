@@ -1,3 +1,35 @@
+# Eclipse
+.classpath
+.project
+.settings
+eclipsebin
+
+# Ant
+bin
+gen
+build
+out
+lib
+
+# Maven
+target
+pom.xml.*
+release.properties
+coverage.ec
+
+# IntelliJ
+.idea
+*.iml
+*.iws
+*.ipr
+classes
+gen-external-apklibs
+
+# Robolectric
+tmp
+
+.DS_Store
+
 *.class
 
 # Mobile Tools for Java (J2ME)
@@ -10,3 +42,11 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+.idea
+.gradle
+local.properties
+library/build
+gradle.properties
+gradle/wrapper/gradle-wrapper.properties
+gradlew
+gradlew.bat
