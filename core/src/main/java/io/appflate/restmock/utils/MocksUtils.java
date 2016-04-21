@@ -27,7 +27,7 @@ public class MocksUtils {
     public static MockResponse createResponseFromFile(MocksFileParser mocksFileParser,
                                                       String jsonFilePath,
                                                       int responseCode)
-            throws IOException {
+            throws Exception {
         String fileContents = mocksFileParser.readJsonFile(jsonFilePath);
         return new MockResponse().setResponseCode(responseCode).setBody(fileContents);
     }
