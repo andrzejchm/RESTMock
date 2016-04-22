@@ -14,28 +14,22 @@
  * limitations under the License.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+package io.appflate.restmock.android;
 
-buildscript {
-    repositories {
-        jcenter()
+import android.os.Bundle;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnitRunner;
+
+import io.appflate.restmock.RESTMockServerStarter;
+
+/**
+ * Created by andrzejchm on 22/04/16.
+ */
+public class RESTMockTestRunner extends AndroidJUnitRunner {
+
+    @Override
+    public void onCreate(Bundle arguments) {
+        super.onCreate(arguments);
+        RESTMockServerStarter.startSync(new AndroidAssetsFileParser(InstrumentationRegistry.getContext()));
     }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0-beta1'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
-}
-
-allprojects {
-    repositories {
-        jcenter()
-    }
-    version = "0.0.1"
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
 }

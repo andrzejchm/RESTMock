@@ -41,4 +41,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile project(':core')
+    compile 'com.android.support.test:rules:0.4.1'
+    compile 'com.android.support.test:runner:0.4.1'
 }

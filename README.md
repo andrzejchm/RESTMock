@@ -11,9 +11,9 @@ RESTMockServer.whenGET(pathContains("users/defunkt"))
 ```
  
 ## Setup
-TBD 
+Here are the basic rules to set up RESTMock for various platforms
 
-##Android
+##Android Instrumentation Tests
 ####Step 1: Repository
 Add it in your root build.gradle at the end of repositories:
 
@@ -30,17 +30,73 @@ Add the dependency
 
 ```groovy  
 dependencies {
-	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.3'
-	androidTestCompile('com.github.andrzejchm.RESTMock:core:0.3') {
+	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.0.1'
+	androidTestCompile('com.github.andrzejchm.RESTMock:core:0.0.1') {
         exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
     }
 }
 ```
 
-####Step 3:
-TBD
+####Step 3: Start the server
+It's good to start server before the tested application starts, there are few methods:
 
-##Maven
+##### a) RESTMockTestRunner
+To make it simple you can just use the predefined `RESTMockTestRunner` in your UI tests. It extends `AndroidJUnitRunner`:
+
+```groovy
+defaultConfig {
+		...
+    	testInstrumentationRunner 'io.x8.clipsta.ClipstaTestRunner'
+    }
+```
+##### b) RESTMockServerStarter
+If you have your custom test runner and you can't extend `RESTMockTestRunner`, you can always just call the `RESTMockServerStarter`. Actually `RESTMockTestRunner` is doing exactly the same thing:
+
+```java
+public class MyAppTestRunner extends AndroidJUnitRunner {
+	...
+	@Override
+	public void onCreate(Bundle arguments) {
+		super.onCreate(arguments);
+		RESTMockServerStarter.startSync(new AndroidAssetsFileParser(InstrumentationRegistry.getContext()));
+		...
+	}
+	...
+}
+    
+```
+`Context` here is needed to read the mock json files from the assets. By using `InstrumentationRegistry.getContext()` you point to a Test apk's context, which means the files should be placed in `androidTest` subfolder, while using `InstrumentationRegistry.getTargetContext()` would require to put the files in `main` subfolder. More on that later.
+
+####Step 4: Specify Mocks
+
+#####a) Files
+By default, the `RESTMockTestRunner` uses `AndroidAssetsFileParser` as a mocks file parser, which reads the files from the assets folder. To make them visible for the RESTMock you have to put them in the correct folder in your project, for example:
+
+	.../src/androidTest/assets/users/defunkt.json
+This can be accessed like this:
+
+```java
+RESTMockServer.whenGET(pathContains("users/defunkt"))
+            .thenReturnFile(200, "users/defunkt.json");
+```
+
+#####b) Strings
+If the response You wish to return is simple, you can just specify a string:
+
+```java
+RESTMockServer.whenGET(pathContains("users/defunkt"))
+            .thenReturnString(200, "{}");
+```
+#####c) MockResponse
+If you wish to have a greater control over the response, you can pass the `MockResponse`
+```java
+RESTMockServer.whenGET(null).thenReturn(new MockResponse().setBody("").setResponseCode(401).addHeader("Header","Value"));
+```
+##Android Unit Tests
+TBD (Pullrequests welcomed)
+##Java
+TBD (Pullrequests welcomed)
+
 ####Step 1: Repository
 ```xml
 <repositories>
@@ -57,6 +113,8 @@ Add the dependency
 <dependency>
     <groupId>com.github.andrzejchm.RESTMock</groupId>
     <artifactId>core</artifactId>
-    <version>0.3</version>
+    <version>0.0.1</version>
 </dependency>
 ```
+####Step 3: TBD
+TBD (Pullrequests welcomed)

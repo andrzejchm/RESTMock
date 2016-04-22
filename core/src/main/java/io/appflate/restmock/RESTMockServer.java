@@ -18,9 +18,18 @@ package io.appflate.restmock;
 
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 
+import org.hamcrest.Matcher;
+
 import java.io.IOException;
 
 import io.appflate.restmock.utils.RequestMatcher;
+
+import static io.appflate.restmock.utils.RequestMatchers.isDELETE;
+import static io.appflate.restmock.utils.RequestMatchers.isGET;
+import static io.appflate.restmock.utils.RequestMatchers.isPATCH;
+import static io.appflate.restmock.utils.RequestMatchers.isPOST;
+import static io.appflate.restmock.utils.RequestMatchers.isPUT;
+import static org.hamcrest.core.AllOf.allOf;
 
 
 public class RESTMockServer {
@@ -86,6 +95,48 @@ public class RESTMockServer {
         dispatcher.addMatchableCall(call);
     }
 
+
+    /**
+     * Helper method to create MatchableCall that will be matched only for GET requests along with the specified {@code requestMatcher}
+     * @param requestMatcher matcher to match a GET request
+     * @return {@code MatchableCall} that will match GET requests along with {@code requestMatcher}
+     */
+    public static MatchableCall whenGET(RequestMatcher requestMatcher) {
+        return RESTMockServer.whenRequested((RequestMatcher) allOf(new Matcher[]{isGET(), requestMatcher}));
+    }
+
+    /**
+     * Helper method to create MatchableCall that will be matched only for POST requests along with the specified {@code requestMatcher}
+     * @param requestMatcher matcher to match a POST request
+     * @return {@code MatchableCall} that will match POST requests along with {@code requestMatcher}
+     */
+    public static MatchableCall whenPOST(RequestMatcher requestMatcher) {
+        return RESTMockServer.whenRequested((RequestMatcher) allOf(new Matcher[]{isPOST(), requestMatcher}));
+    }
+    /**
+     * Helper method to create MatchableCall that will be matched only for PUT requests along with the specified {@code requestMatcher}
+     * @param requestMatcher matcher to match a PUT request
+     * @return {@code MatchableCall} that will match PUT requests along with {@code requestMatcher}
+     */
+    public static MatchableCall whenPUT(RequestMatcher requestMatcher) {
+        return RESTMockServer.whenRequested((RequestMatcher) allOf(new Matcher[]{isPUT(), requestMatcher}));
+    }
+    /**
+     * Helper method to create MatchableCall that will be matched only for PATCH requests along with the specified {@code requestMatcher}
+     * @param requestMatcher matcher to match a PATCH request
+     * @return {@code MatchableCall} that will match PATCH requests along with {@code requestMatcher}
+     */
+    public static MatchableCall whenPATCH(RequestMatcher requestMatcher) {
+        return RESTMockServer.whenRequested((RequestMatcher) allOf(new Matcher[]{isPATCH(), requestMatcher}));
+    }
+    /**
+     * Helper method to create MatchableCall that will be matched only for DELETE requests along with the specified {@code requestMatcher}
+     * @param requestMatcher matcher to match a DELETE request
+     * @return {@code MatchableCall} that will match DELETE requests along with {@code requestMatcher}
+     */
+    public static MatchableCall whenDELETE(RequestMatcher requestMatcher) {
+        return RESTMockServer.whenRequested((RequestMatcher) allOf(new Matcher[]{isDELETE(), requestMatcher}));
+    }
     /**
      * Creates a new {@link MatchableCall} for a given {@code requestMatcher}.
      * In order to schedule this call within this {@code RESTMockServer},

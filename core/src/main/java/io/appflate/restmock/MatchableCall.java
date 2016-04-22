@@ -21,12 +21,11 @@ import com.squareup.okhttp.mockwebserver.RecordedRequest;
 
 import org.hamcrest.Matcher;
 
-import io.appflate.restmock.utils.RequestMatcher;
 import io.appflate.restmock.utils.RestMockUtils;
 
 /**
  * Represents a Http call with the {@link MockResponse} to be returned for a HTTP request matched by {@link io.appflate.restmock.utils.RequestMatcher RequestMatcher}.
- * In order to create new {@code MatchableCall} call  one of the {@link MatchableCalls} methods, or {@link RESTMockServer#whenRequested(RequestMatcher)}.
+ * In order to create new {@code MatchableCall} call  one of the {@link RESTMockServer} methods.
  */
 public class MatchableCall {
     public final Matcher<RecordedRequest> requestMatcher;
@@ -43,28 +42,28 @@ public class MatchableCall {
     }
 
     /**
-     * Same as {@link MatchableCall#thenReturnJson(int, String)}, but with the default {@code responseCode} of 200
+     * Same as {@link MatchableCall#thenReturnString(int, String)}, but with the default {@code responseCode} of 200
      *
      * <p>This {@code MatchableCall} will be automatically scheduled within the {@link RESTMockServer} if you want to prevent that, see {@link MatchableCall#dontSet()}</p>
      */
-    public MatchableCall thenReturnJson(String json) {
-        return thenReturnJson(200, json);
+    public MatchableCall thenReturnString(String json) {
+        return thenReturnString(200, json);
     }
 
     /**
-     * <p>Makes this {@code MatchableCall} return the given {@code json} response with the specified {@code responseCode} as a http status code</p>
+     * <p>Makes this {@code MatchableCall} return the given {@code responseString} response with the specified {@code responseCode} as a http status code</p>
      *
      * <p>This {@code MatchableCall} will be automatically scheduled within the {@code RESTMockServer} if you want to prevent that, see {@link MatchableCall#dontSet()}</p>
      *
      * @param responseCode a http response code to use for the response.
-     * @param json         json string to return for this matchableCall's request.
+     * @param responseString         responseString string to return for this matchableCall's request.
      * @return his {@code MatchableCall}
      */
-    public MatchableCall thenReturnJson(int responseCode,
-                                        String json) {
+    public MatchableCall thenReturnString(int responseCode,
+                                          String responseString) {
         MockResponse response = new MockResponse();
-        if (json != null) {
-            response.setBody(json);
+        if (responseString != null) {
+            response.setBody(responseString);
         }
         response.setResponseCode(responseCode);
         return thenReturn(response);
