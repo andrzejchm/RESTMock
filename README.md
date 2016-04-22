@@ -97,6 +97,15 @@ RESTMockServer.whenGET(pathContains("users/defunkt")).thenReturn(new MockRespons
 ####Step 5: Request Matchers
 You can either use some of the predefined matchers from `RequestMatchers` util class, or create your own. remember to extend from `RequestMatcher`
 
+####Step 6: Specify API Endpoint
+The most important step, in order for your app to communicate with the testServer, you have to specify it as an endpoint for all your API calls. For that, you can use the ` RESTMockServer.getUrl()`. If you use Retrofit, it is as easy as:
+
+	RestAdapter adapter = new RestAdapter.Builder()
+		...
+                .setEndpoint(RESTMockServer.getUrl())
+                ...
+                .build();
+	
 ##Android Unit Tests
 TBD (Pullrequests welcomed)
 ##Java
