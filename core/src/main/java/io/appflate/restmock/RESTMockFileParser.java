@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Appflate
+ * Copyright (C) 2016 Appflate.io
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,6 +16,17 @@
 
 package io.appflate.restmock;
 
-public interface MocksFileParser {
+/**
+ * Used for parsing json files from local storage to {@code String}
+ */
+public interface RESTMockFileParser {
+    /**
+     * reads the json file from {@code jsonFilePath} and returns its contents as a {@code String}
+     * <p> It's {@code }RESTMockFileParser}'s implementation responsibility to determine how to resolve the given {@code jsonFilePath}.</p>
+     *
+     * @param jsonFilePath a path to json file.
+     * @return json file's contents as a String.
+     * @throws Exception when an error occures while reading the file (f.e. {@link java.io.IOException})
+     */
     String readJsonFile(String jsonFilePath) throws Exception;
 }

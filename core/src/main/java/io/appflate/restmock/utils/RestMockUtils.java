@@ -1,6 +1,6 @@
 
 /*
- * Copyright (C) 2016 Appflate
+ * Copyright (C) 2016 Appflate.io
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,16 +19,20 @@ package io.appflate.restmock.utils;
 
 import com.squareup.okhttp.mockwebserver.MockResponse;
 
-import java.io.IOException;
+import io.appflate.restmock.RESTMockFileParser;
 
-import io.appflate.restmock.MocksFileParser;
+public final class RestMockUtils {
 
-public class MocksUtils {
-    public static MockResponse createResponseFromFile(MocksFileParser mocksFileParser,
+    private RestMockUtils() {
+        throw new UnsupportedOperationException("(╯‵Д′)╯ PLEASE STAHP!");
+
+    }
+
+    public static MockResponse createResponseFromFile(RESTMockFileParser RESTMockFileParser,
                                                       String jsonFilePath,
                                                       int responseCode)
             throws Exception {
-        String fileContents = mocksFileParser.readJsonFile(jsonFilePath);
+        String fileContents = RESTMockFileParser.readJsonFile(jsonFilePath);
         return new MockResponse().setResponseCode(responseCode).setBody(fileContents);
     }
 }

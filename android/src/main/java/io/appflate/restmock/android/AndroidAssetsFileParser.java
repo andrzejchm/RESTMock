@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Appflate
+ * Copyright (C) 2016 Appflate.io
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21,12 +21,12 @@ import android.content.Context;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-import io.appflate.restmock.MocksFileParser;
+import io.appflate.restmock.RESTMockFileParser;
 
 /**
  * Created by andrzejchm on 21/04/16.
  */
-public class AndroidAssetsFileParser implements MocksFileParser {
+public class AndroidAssetsFileParser implements RESTMockFileParser {
     private Context testContext;
 
     public AndroidAssetsFileParser(Context testContexts) {

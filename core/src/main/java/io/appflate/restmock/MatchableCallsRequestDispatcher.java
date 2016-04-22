@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Appflate
+ * Copyright (C) 2016 Appflate.io
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import java.io.StringWriter;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MatchableCallsRequestDispatcher extends Dispatcher {
+class MatchableCallsRequestDispatcher extends Dispatcher {
     private List<MatchableCall> matchableCalls;
 
     public MatchableCallsRequestDispatcher() {
@@ -66,17 +66,17 @@ public class MatchableCallsRequestDispatcher extends Dispatcher {
         return matched;
     }
 
-    public void addMatchableCall(MatchableCall matchableCall) {
+    void addMatchableCall(MatchableCall matchableCall) {
         if (!matchableCalls.contains(matchableCall)) {
             matchableCalls.add(matchableCall);
         }
     }
 
-    public void removeAllMatchableCalls() {
+    void removeAllMatchableCalls() {
         matchableCalls.clear();
     }
 
-    public MockResponse createErrorResponse(Exception e) {
+    MockResponse createErrorResponse(Exception e) {
         MockResponse response = new MockResponse();
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
@@ -87,7 +87,7 @@ public class MatchableCallsRequestDispatcher extends Dispatcher {
         return response;
     }
 
-    public boolean removeMatchableCall(final MatchableCall call) {
+    boolean removeMatchableCall(final MatchableCall call) {
         return matchableCalls.remove(call);
     }
 }

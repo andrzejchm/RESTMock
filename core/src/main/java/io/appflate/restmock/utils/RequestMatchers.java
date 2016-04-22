@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Appflate
+ * Copyright (C) 2016 Appflate.io
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,8 +17,6 @@
 package io.appflate.restmock.utils;
 
 import com.squareup.okhttp.mockwebserver.RecordedRequest;
-
-import org.hamcrest.Matcher;
 
 public class RequestMatchers {
     private RequestMatchers() {
@@ -66,23 +64,23 @@ public class RequestMatchers {
         };
     }
 
-    public static Matcher<? super RecordedRequest> isGET() {
+    public static RequestMatcher isGET() {
         return httpMethodIs("GET");
     }
 
-    public static Matcher<? super RecordedRequest> isPOST() {
+    public static RequestMatcher isPOST() {
         return httpMethodIs("POST");
     }
 
-    public static Matcher<? super RecordedRequest> isPATCH() {
+    public static RequestMatcher isPATCH() {
         return httpMethodIs("PATCH");
     }
 
-    public static Matcher<? super RecordedRequest> isDELETE() {
+    public static RequestMatcher isDELETE() {
         return httpMethodIs("DELETE");
     }
 
-    public static Matcher<? super RecordedRequest> isPUT() {
+    public static RequestMatcher isPUT() {
         return httpMethodIs("PUT");
     }
 }

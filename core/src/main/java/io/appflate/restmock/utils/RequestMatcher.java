@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Appflate
+ * Copyright (C) 2016 Appflate.io
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22,6 +22,12 @@ import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 
 
+/**
+ * <p>A RequestMatcher is an extension of {@link org.hamcrest.TypeSafeMatcher} making it easier to specify
+ * the matcher without the need of implementing {@link #describeTo(Description)} method.</p>
+ * <p>
+ * <p>See {@link org.hamcrest.Matcher} for more info about hamcrest's matchers</p>
+ */
 public abstract class RequestMatcher extends TypeSafeMatcher<RecordedRequest> {
     private final String description;
 
@@ -32,22 +38,5 @@ public abstract class RequestMatcher extends TypeSafeMatcher<RecordedRequest> {
     @Override
     public void describeTo(Description description) {
         description.appendText(this.description);
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        final RequestMatcher that = (RequestMatcher) o;
-
-        if (!description.equals(that.description)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return description.hashCode();
     }
 }
