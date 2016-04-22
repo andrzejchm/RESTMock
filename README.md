@@ -128,7 +128,7 @@ TBD (Pullrequests welcomed)
 * create some Units
 * add something simmilar to Mockito's `verify()`
 * add android example
-* 
+
 #License
 
 	Copyright (C) 2016 Appflate.io
