@@ -1,5 +1,5 @@
 # RESTMock
-
+[![](https://jitpack.io/v/andrzejchm/RESTMock.svg)](https://jitpack.io/#andrzejchm/RESTMock)
 REST API mocking made easy.
 
 ##About
@@ -123,6 +123,12 @@ Add the dependency
 ####Step 3: TBD
 TBD (Pullrequests welcomed)
 
+#TODO
+* setup CI
+* create some Units
+* add something simmilar to Mockito's `verify()`
+* add android example
+* 
 #License
 
 	Copyright (C) 2016 Appflate.io
