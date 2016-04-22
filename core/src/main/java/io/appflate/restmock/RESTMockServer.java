@@ -17,6 +17,7 @@
 package io.appflate.restmock;
 
 import com.squareup.okhttp.mockwebserver.MockWebServer;
+import com.squareup.okhttp.mockwebserver.RecordedRequest;
 
 import org.hamcrest.Matcher;
 
@@ -62,6 +63,7 @@ public class RESTMockServer {
 
     /**
      * removes the given {@code MatchableCall} from this {@code RESTMockServer}
+     *
      * @param call {@code MatchableCall} to be removed
      * @return true if the {@code MatchableCall} was successfuly removed, false if it was not found
      */
@@ -71,7 +73,8 @@ public class RESTMockServer {
 
     /**
      * replaces {@code call} with {@code replacement} in this {@code RESTMockServer}
-     * @param call {@code MatchableCall} to be removed from {@code RESTMockServer}
+     *
+     * @param call        {@code MatchableCall} to be removed from {@code RESTMockServer}
      * @param replacement {@code MatchableCall} to be added to {@code RESTMockServer}
      */
     public static void replaceMatchableCall(MatchableCall call,
@@ -89,6 +92,7 @@ public class RESTMockServer {
 
     /**
      * adds {@code call} to this {@code RESTMockServer}
+     *
      * @param call to be added to this {@code RESTMockServer}
      */
     public static void addMatchableCall(final MatchableCall call) {
@@ -98,45 +102,54 @@ public class RESTMockServer {
 
     /**
      * Helper method to create MatchableCall that will be matched only for GET requests along with the specified {@code requestMatcher}
+     *
      * @param requestMatcher matcher to match a GET request
      * @return {@code MatchableCall} that will match GET requests along with {@code requestMatcher}
      */
     public static MatchableCall whenGET(RequestMatcher requestMatcher) {
-        return RESTMockServer.whenRequested((RequestMatcher) allOf(new Matcher[]{isGET(), requestMatcher}));
+        return RESTMockServer.whenRequested(allOf(isGET(), requestMatcher));
     }
 
     /**
      * Helper method to create MatchableCall that will be matched only for POST requests along with the specified {@code requestMatcher}
+     *
      * @param requestMatcher matcher to match a POST request
      * @return {@code MatchableCall} that will match POST requests along with {@code requestMatcher}
      */
     public static MatchableCall whenPOST(RequestMatcher requestMatcher) {
-        return RESTMockServer.whenRequested((RequestMatcher) allOf(new Matcher[]{isPOST(), requestMatcher}));
+        return RESTMockServer.whenRequested(allOf(isPOST(), requestMatcher));
     }
+
     /**
      * Helper method to create MatchableCall that will be matched only for PUT requests along with the specified {@code requestMatcher}
+     *
      * @param requestMatcher matcher to match a PUT request
      * @return {@code MatchableCall} that will match PUT requests along with {@code requestMatcher}
      */
     public static MatchableCall whenPUT(RequestMatcher requestMatcher) {
-        return RESTMockServer.whenRequested((RequestMatcher) allOf(new Matcher[]{isPUT(), requestMatcher}));
+        return RESTMockServer.whenRequested(allOf(isPUT(), requestMatcher));
     }
+
     /**
      * Helper method to create MatchableCall that will be matched only for PATCH requests along with the specified {@code requestMatcher}
+     *
      * @param requestMatcher matcher to match a PATCH request
      * @return {@code MatchableCall} that will match PATCH requests along with {@code requestMatcher}
      */
     public static MatchableCall whenPATCH(RequestMatcher requestMatcher) {
-        return RESTMockServer.whenRequested((RequestMatcher) allOf(new Matcher[]{isPATCH(), requestMatcher}));
+        return RESTMockServer.whenRequested(allOf(isPATCH(), requestMatcher));
     }
+
     /**
      * Helper method to create MatchableCall that will be matched only for DELETE requests along with the specified {@code requestMatcher}
+     *
      * @param requestMatcher matcher to match a DELETE request
      * @return {@code MatchableCall} that will match DELETE requests along with {@code requestMatcher}
      */
     public static MatchableCall whenDELETE(RequestMatcher requestMatcher) {
-        return RESTMockServer.whenRequested((RequestMatcher) allOf(new Matcher[]{isDELETE(), requestMatcher}));
+        return RESTMockServer.whenRequested(allOf(isDELETE(), requestMatcher));
     }
+
     /**
      * Creates a new {@link MatchableCall} for a given {@code requestMatcher}.
      * In order to schedule this call within this {@code RESTMockServer},
@@ -145,7 +158,7 @@ public class RESTMockServer {
      * @param requestMatcher a request matcher to match a HTTP request
      * @return a MatchableCall that will get matched by the {@code requestMatcher}
      */
-    public static MatchableCall whenRequested(RequestMatcher requestMatcher) {
+    public static MatchableCall whenRequested(Matcher<RecordedRequest> requestMatcher) {
         return new MatchableCall(RESTMockServer.RESTMockFileParser, requestMatcher, dispatcher);
     }
 }
