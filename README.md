@@ -46,7 +46,7 @@ To make it simple you can just use the predefined `RESTMockTestRunner` in your U
 ```groovy
 defaultConfig {
 		...
-    	testInstrumentationRunner 'io.appflate.restmock.android.ClipstaTestRunner'
+    	testInstrumentationRunner 'io.appflate.restmock.android.RESTMockTestRunner'
     }
 ```
 ##### b) RESTMockServerStarter
