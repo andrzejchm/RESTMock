@@ -45,7 +45,6 @@ public class RESTMockServerStarter {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                RESTMockServer.whenGET(null).thenReturn(new MockResponse().setBody("").setResponseCode(401).addHeader("Header","Value"));
             }
         });
         try {
