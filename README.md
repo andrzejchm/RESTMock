@@ -90,8 +90,12 @@ RESTMockServer.whenGET(pathContains("users/defunkt"))
 #####c) MockResponse
 If you wish to have a greater control over the response, you can pass the `MockResponse`
 ```java
-RESTMockServer.whenGET(null).thenReturn(new MockResponse().setBody("").setResponseCode(401).addHeader("Header","Value"));
+RESTMockServer.whenGET(pathContains("users/defunkt")).thenReturn(new MockResponse().setBody("").setResponseCode(401).addHeader("Header","Value"));
 ```
+
+####Step 5: Request Matchers
+You can either use some of the predefined matchers from `RequestMatchers` util class, or create your own. remember to extend from `RequestMatcher`
+
 ##Android Unit Tests
 TBD (Pullrequests welcomed)
 ##Java
@@ -118,3 +122,19 @@ Add the dependency
 ```
 ####Step 3: TBD
 TBD (Pullrequests welcomed)
+
+#License
+
+	Copyright (C) 2016 Appflate.io
+ 
+ 	Licensed under the Apache License, Version 2.0 (the "License"); 
+ 	you may not use this file except in compliance with the License. 
+ 	You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software 
+	distributed under the License is distributed on an "AS IS" BASIS, 
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+	See the License for the specific language governing permissions and 
+	limitations under the License.
