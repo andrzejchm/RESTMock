@@ -14,22 +14,23 @@
  * limitations under the License.
  */
 
-package io.appflate.restmock.android;
+package io.appflate.restmock.androidsample.di;
 
-import android.os.Bundle;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnitRunner;
+import javax.inject.Singleton;
 
-import io.appflate.restmock.RESTMockServerStarter;
+import dagger.Component;
+import io.appflate.restmock.androidsample.view.activities.MainActivity;
+import io.appflate.restmock.androidsample.view.activities.ReposActivity;
+import io.appflate.restmock.androidsample.domain.GithubApi;
 
 /**
- * Created by andrzejchm on 22/04/16.
+ * Created by andrzejchm on 23/04/16.
  */
-public class RESTMockTestRunner extends AndroidJUnitRunner {
+@Singleton
+@Component(modules = { AppModule.class})
+public interface AppComponent {
+    GithubApi getRestService();
 
-    @Override
-    public void onCreate(Bundle arguments) {
-        super.onCreate(arguments);
-        RESTMockServerStarter.startSync(new AndroidAssetsFileParser(InstrumentationRegistry.getContext()),new AndroidLogger());
-    }
+    void inject(MainActivity mainActivity);
+    void inject(ReposActivity reposActivity);
 }

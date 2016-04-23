@@ -14,22 +14,16 @@
  * limitations under the License.
  */
 
-package io.appflate.restmock.android;
-
-import android.os.Bundle;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnitRunner;
-
-import io.appflate.restmock.RESTMockServerStarter;
+package io.appflate.restmock.logging;
 
 /**
- * Created by andrzejchm on 22/04/16.
+ * Created by andrzejchm on 23/04/16.
  */
-public class RESTMockTestRunner extends AndroidJUnitRunner {
+public interface RESTMockLogger {
+    void log(String message);
 
-    @Override
-    public void onCreate(Bundle arguments) {
-        super.onCreate(arguments);
-        RESTMockServerStarter.startSync(new AndroidAssetsFileParser(InstrumentationRegistry.getContext()),new AndroidLogger());
-    }
+    void error(String errorMessage);
+
+    void error(String errorMessage,
+               Throwable exception);
 }

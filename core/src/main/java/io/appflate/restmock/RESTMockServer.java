@@ -23,6 +23,8 @@ import org.hamcrest.Matcher;
 
 import java.io.IOException;
 
+import io.appflate.restmock.logging.NOOpLogger;
+import io.appflate.restmock.logging.RESTMockLogger;
 import io.appflate.restmock.utils.RequestMatcher;
 
 import static io.appflate.restmock.utils.RequestMatchers.isDELETE;
@@ -35,19 +37,43 @@ import static org.hamcrest.core.AllOf.allOf;
 
 public class RESTMockServer {
 
-    protected static MockWebServer mockWebServer;
+    private static MockWebServer mockWebServer;
     private static MatchableCallsRequestDispatcher dispatcher;
     private static String serverBaseUrl;
     private static RESTMockFileParser RESTMockFileParser;
+    static RESTMockLogger logger;
 
-    public static void init(RESTMockFileParser RESTMockFileParser) throws IOException {
+    public static void init(RESTMockFileParser RESTMockFileParser,
+                            RESTMockLogger logger) throws IOException {
         RESTMockServer.mockWebServer = new MockWebServer();
-        RESTMockServer.mockWebServer.start();
-        RESTMockServer.serverBaseUrl = mockWebServer.getUrl("").toString();
+        if (logger == null) {
+            RESTMockServer.logger = new NOOpLogger();
+        } else {
+            RESTMockServer.logger = logger;
+        }
+        RESTMockServer.logger.log("## Starting RESTMock server...");
         RESTMockServer.dispatcher = new MatchableCallsRequestDispatcher();
         RESTMockServer.mockWebServer.setDispatcher(dispatcher);
+        RESTMockServer.mockWebServer.start();
+        RESTMockServer.serverBaseUrl = mockWebServer.url("/").toString();
 
         RESTMockServer.RESTMockFileParser = RESTMockFileParser;
+        RESTMockServer.logger.log("## RESTMock successfully started!\turl: " + RESTMockServer.serverBaseUrl);
+    }
+
+    /**
+     * Enables logging for the RESTMock
+     * @param logger a logger that will be responsible for logging. for Android use AndroidLogger from "com.github.andrzejchm.RESTMock:android" dependency
+     */
+    public static void enableLogging(RESTMockLogger logger) {
+        RESTMockServer.logger = logger;
+    }
+
+    /**
+     * Disables logging for the RESTMock
+     */
+    public static void disableLogging() {
+        RESTMockServer.logger = new NOOpLogger();
     }
 
     private RESTMockServer() {

@@ -29,7 +29,7 @@ import io.appflate.restmock.RESTMockFileParser;
 public class AndroidAssetsFileParser implements RESTMockFileParser {
     private Context testContext;
 
-    public AndroidAssetsFileParser(Context testContexts) {
+    public AndroidAssetsFileParser(Context testContext) {
         this.testContext = testContext;
     }
 

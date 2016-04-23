@@ -32,8 +32,8 @@ Add the dependency
 
 ```groovy  
 dependencies {
-	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.0.2'
-	androidTestCompile('com.github.andrzejchm.RESTMock:core:0.0.2') {
+	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.0.3'
+	androidTestCompile('com.github.andrzejchm.RESTMock:core:0.0.3') {
         exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
     }
 }
@@ -60,7 +60,7 @@ public class MyAppTestRunner extends AndroidJUnitRunner {
 	@Override
 	public void onCreate(Bundle arguments) {
 		super.onCreate(arguments);
-		RESTMockServerStarter.startSync(new AndroidAssetsFileParser(InstrumentationRegistry.getContext()));
+		RESTMockServerStarter.startSync(new AndroidAssetsFileParser(InstrumentationRegistry.getContext()),new AndroidLogger());
 		...
 	}
 	...
@@ -128,7 +128,7 @@ Add the dependency
 <dependency>
     <groupId>com.github.andrzejchm.RESTMock</groupId>
     <artifactId>core</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 </dependency>
 ```
 ####Step 3: TBD
