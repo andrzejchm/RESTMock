@@ -119,6 +119,7 @@ public class MatchableCall {
                         jsonFile,
                         responseCode);
             } catch (Exception e) {
+                RESTMockServer.logger.error("<- Response FILE READ ERROR",e);
                 response = dispatcher.createErrorResponse(e);
             }
         }

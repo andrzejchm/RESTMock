@@ -34,22 +34,28 @@ class MatchableCallsRequestDispatcher extends Dispatcher {
 
     @Override
     public MockResponse dispatch(RecordedRequest recordedRequest) throws InterruptedException {
+        RESTMockServer.logger.log("-> New Request:\t" + recordedRequest);
         List<MatchableCall> matchedRequests = getMatchedRequests(recordedRequest);
         if (matchedRequests.size() == 1) {
+            RESTMockServer.logger.log("<- Response:\t" + matchedRequests.get(0).response);
             return matchedRequests.get(0).response;
         } else if (matchedRequests.size() > 1) {
+            String message = prepareTooManyMatchesMessage(recordedRequest, matchedRequests);
+            RESTMockServer.logger.error("<- Response ERROR:\t" + message);
             return createErrorResponse(
-                    new IllegalStateException(prepareTooManyMatchesMessage(matchedRequests)));
+                    new IllegalStateException(message));
         } else {
+            RESTMockServer.logger.error("<- Response ERROR:\t NOT MOCKED: " + recordedRequest);
             MockResponse mockResponse =
                     new MockResponse().setResponseCode(500).setBody("NOT_MOCKED");
             return mockResponse;
         }
     }
 
-    private String prepareTooManyMatchesMessage(final List<MatchableCall> matchedRequests) {
+    private String prepareTooManyMatchesMessage(RecordedRequest recordedRequest,
+                                                final List<MatchableCall> matchedRequests) {
         StringBuilder sb =
-                new StringBuilder("there are more than one responses matching this request!\n");
+                new StringBuilder("there are more than one response matching this request:" + recordedRequest + ": ");
         for (MatchableCall match : matchedRequests) {
             sb.append(match.requestMatcher.toString()).append("\n");
         }
@@ -66,16 +72,6 @@ class MatchableCallsRequestDispatcher extends Dispatcher {
         return matched;
     }
 
-    void addMatchableCall(MatchableCall matchableCall) {
-        if (!matchableCalls.contains(matchableCall)) {
-            matchableCalls.add(matchableCall);
-        }
-    }
-
-    void removeAllMatchableCalls() {
-        matchableCalls.clear();
-    }
-
     MockResponse createErrorResponse(Exception e) {
         MockResponse response = new MockResponse();
         StringWriter sw = new StringWriter();
@@ -87,7 +83,20 @@ class MatchableCallsRequestDispatcher extends Dispatcher {
         return response;
     }
 
+    void addMatchableCall(MatchableCall matchableCall) {
+        RESTMockServer.logger.log("## Adding new response for:\t" + matchableCall.requestMatcher);
+        if (!matchableCalls.contains(matchableCall)) {
+            matchableCalls.add(matchableCall);
+        }
+    }
+
+    void removeAllMatchableCalls() {
+        RESTMockServer.logger.log("## Removing all responses");
+        matchableCalls.clear();
+    }
+
     boolean removeMatchableCall(final MatchableCall call) {
+        RESTMockServer.logger.log("## Removing response for:\t" + call.requestMatcher);
         return matchableCalls.remove(call);
     }
 }

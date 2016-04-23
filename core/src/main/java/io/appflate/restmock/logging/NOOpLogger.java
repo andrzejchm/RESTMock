@@ -14,23 +14,25 @@
  * limitations under the License.
  */
 
-package io.appflate.restmock.androidsample.di;
-
-import javax.inject.Singleton;
-
-import dagger.Component;
-import io.appflate.restmock.androidsample.view.activities.MainActivity;
-import io.appflate.restmock.androidsample.view.activities.ReposActivity;
-import io.appflate.restmock.androidsample.domain.GithubApi;
+package io.appflate.restmock.logging;
 
 /**
  * Created by andrzejchm on 23/04/16.
  */
-@Singleton
-@Component(modules = { AppModule.class})
-public interface AppComponent {
-    GithubApi getRestService();
+public class NOOpLogger implements RESTMockLogger {
+    @Override
+    public void log(String message) {
+        //intentionally empty
+    }
 
-    void inject(MainActivity mainActivity);
-    void inject(ReposActivity reposActivity);
+    @Override
+    public void error(String errorMessage) {
+        //intentionally empty
+    }
+
+    @Override
+    public void error(String errorMessage,
+                      Throwable exception) {
+        //intentionally empty
+    }
 }
