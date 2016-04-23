@@ -61,10 +61,17 @@ public class RESTMockServer {
         RESTMockServer.logger.log("## RESTMock successfully started!\turl: " + RESTMockServer.serverBaseUrl);
     }
 
+    /**
+     * Enables logging for the RESTMock
+     * @param logger a logger that will be responsible for logging. for Android use AndroidLogger from "com.github.andrzejchm.RESTMock:android" dependency
+     */
     public static void enableLogging(RESTMockLogger logger) {
         RESTMockServer.logger = logger;
     }
 
+    /**
+     * Disables logging for the RESTMock
+     */
     public static void disableLogging() {
         RESTMockServer.logger = new NOOpLogger();
     }
