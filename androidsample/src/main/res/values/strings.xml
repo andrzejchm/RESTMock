@@ -15,5 +15,8 @@
   -->
 
 <resources>
-    <string name="app_name">Android Sample</string>
+    <string name="app_name">RESTMock Sample</string>
+    <string name="type_github_username">Type github username</string>
+    <string name="something_went_wrong">something went wrong :(</string>
+    <string name="show_repos">Show Repos</string>
 </resources>
