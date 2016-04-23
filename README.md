@@ -12,6 +12,8 @@ RESTMockServer.whenGET(pathContains("users/defunkt"))
             .thenReturnFile(200, "users/defunkt.json");
 ```
  
+## Sample
+You can check out the sample Android app with tests [here](androidsample/)
 ## Setup
 Here are the basic rules to set up RESTMock for various platforms
 
