@@ -16,20 +16,29 @@
 
 package io.appflate.restmock.android;
 
-import android.os.Bundle;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnitRunner;
+import android.util.Log;
 
-import io.appflate.restmock.RESTMockServerStarter;
+import io.appflate.restmock.logging.RESTMockLogger;
 
 /**
- * Created by andrzejchm on 22/04/16.
+ * Created by andrzejchm on 23/04/16.
  */
-public class RESTMockTestRunner extends AndroidJUnitRunner {
+public class AndroidLogger implements RESTMockLogger {
+    private static final String TAG_RESTMOCK = "RESTMock";
 
     @Override
-    public void onCreate(Bundle arguments) {
-        super.onCreate(arguments);
-        RESTMockServerStarter.startSync(new AndroidAssetsFileParser(getContext()),new AndroidLogger());
+    public void log(String message) {
+        Log.d(TAG_RESTMOCK, message);
+    }
+
+    @Override
+    public void error(String errorMessage) {
+        Log.e(TAG_RESTMOCK, errorMessage);
+    }
+
+    @Override
+    public void error(String errorMessage,
+                      Throwable exception) {
+        Log.e(TAG_RESTMOCK, errorMessage, exception);
     }
 }

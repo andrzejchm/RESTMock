@@ -16,14 +16,19 @@
 
 package io.appflate.restmock.androidsample;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
+import io.appflate.restmock.RESTMockServer;
+import io.appflate.restmock.androidsample.di.AppModule;
+import io.appflate.restmock.androidsample.di.DaggerAppComponent;
 
 /**
- * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
+ * Created by andrzejchm on 23/04/16.
  */
-public class ApplicationTest extends ApplicationTestCase<Application> {
-    public ApplicationTest() {
-        super(Application.class);
+public class TestApplication extends SampleApplication {
+    @Override
+    protected void setupGraph() {
+        //here I'm supplying the AppModule with RESTMock's url instead of github's API url
+        appComponent = DaggerAppComponent.builder()
+                .appModule(new AppModule(RESTMockServer.getUrl()))
+                .build();
     }
 }

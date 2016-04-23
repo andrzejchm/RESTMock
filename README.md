@@ -12,10 +12,15 @@ RESTMockServer.whenGET(pathContains("users/defunkt"))
             .thenReturnFile(200, "users/defunkt.json");
 ```
  
+## Sample
+You can check out the sample Android app with tests [here](androidsample/)
+
+## Changelog 
+[HERE](CHANGELOG.md)
 ## Setup
 Here are the basic rules to set up RESTMock for various platforms
 
-##Android Instrumentation Tests
+###Android Instrumentation Tests
 ####Step 1: Repository
 Add it in your root build.gradle at the end of repositories:
 
@@ -32,8 +37,8 @@ Add the dependency
 
 ```groovy  
 dependencies {
-	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.0.2'
-	androidTestCompile('com.github.andrzejchm.RESTMock:core:0.0.2') {
+	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.0.3'
+	androidTestCompile('com.github.andrzejchm.RESTMock:core:0.0.3') {
         exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
     }
 }
@@ -60,14 +65,14 @@ public class MyAppTestRunner extends AndroidJUnitRunner {
 	@Override
 	public void onCreate(Bundle arguments) {
 		super.onCreate(arguments);
-		RESTMockServerStarter.startSync(new AndroidAssetsFileParser(InstrumentationRegistry.getContext()));
+		RESTMockServerStarter.startSync(new AndroidAssetsFileParser(getContext()),new AndroidLogger());
 		...
 	}
 	...
 }
     
 ```
-`Context` here is needed to read the mock json files from the assets. By using `InstrumentationRegistry.getContext()` you point to a Test apk's context, which means the files should be placed in `androidTest` subfolder, while using `InstrumentationRegistry.getTargetContext()` would require to put the files in `main` subfolder. More on that later.
+
 
 ####Step 4: Specify Mocks
 
@@ -107,9 +112,9 @@ The most important step, in order for your app to communicate with the testServe
                 ...
                 .build();
 	
-##Android Unit Tests
+###Android Unit Tests
 TBD (Pullrequests welcomed)
-##Java
+###Java
 TBD (Pullrequests welcomed)
 
 ####Step 1: Repository
@@ -128,19 +133,28 @@ Add the dependency
 <dependency>
     <groupId>com.github.andrzejchm.RESTMock</groupId>
     <artifactId>core</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 </dependency>
 ```
 ####Step 3: TBD
 TBD (Pullrequests welcomed)
+##Logging
+RESTMock supports logging events. You just have to provide the RESTMock with the implementation of `RESTMockLogger`. For Android there is an `AndroidLogger` implemented already. All you have to do is use the `RESTMockTestRunner` or call 
 
-#TODO
+	RESTMockServerStarter.startSync(new AndroidAssetsFileParser(getContext()),new AndroidLogger());
+	
+or 
+`RESTMockServer.enableLogging(RESTMockLogger)` and `RESTMockServer.disableLogging()` to disable logging
+
+
+
+##TODO
 * setup CI
 * create some Units
 * add something simmilar to Mockito's `verify()`
 * add android example
 
-#License
+##License
 
 	Copyright (C) 2016 Appflate.io
  

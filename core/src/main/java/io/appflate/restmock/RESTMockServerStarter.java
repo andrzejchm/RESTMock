@@ -16,12 +16,12 @@
 
 package io.appflate.restmock;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
-
 import java.io.IOException;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import io.appflate.restmock.logging.RESTMockLogger;
 
 
 public class RESTMockServerStarter {
@@ -35,14 +35,21 @@ public class RESTMockServerStarter {
     private RESTMockServerStarter() {
     }
 
+
     public static void startSync(final RESTMockFileParser mocksFileParser) {
+        startSync(mocksFileParser, null);
+    }
+
+    public static void startSync(final RESTMockFileParser mocksFileParser,
+                                 final RESTMockLogger logger) {
         // it has to be like that since Android prevents starting testServer on main Thread.
         threadPoolExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    RESTMockServer.init(mocksFileParser);
+                    RESTMockServer.init(mocksFileParser, logger);
                 } catch (IOException e) {
+                    RESTMockServer.logger.error("Server start error", e);
                     throw new RuntimeException(e);
                 }
             }
@@ -54,6 +61,7 @@ public class RESTMockServerStarter {
                         "mock server didnt manage to start within the given timeout (60 seconds)");
             }
         } catch (InterruptedException e) {
+            RESTMockServer.logger.error("Server start error", e);
             throw new RuntimeException(e);
         }
     }
