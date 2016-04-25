@@ -47,7 +47,7 @@ public class MainActivityTest {
     public void setUp() throws Exception {
         pageObject = new MainActivityPageObject();
         //be sure to reset it before each test!
-        RESTMockServer.removeAllMatchableCalls();
+        RESTMockServer.reset();
     }
 
     @Test

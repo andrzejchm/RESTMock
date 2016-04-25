@@ -37,8 +37,10 @@ import static org.hamcrest.core.AllOf.allOf;
 
 public class RESTMockServer {
 
-    private static MockWebServer mockWebServer;
-    private static MatchableCallsRequestDispatcher dispatcher;
+    public static final String RESPONSE_NOT_MOCKED = "NOT MOCKED";
+    public static final String MORE_THAN_ONE_RESPONSE_ERROR = "There are more than one response matching this request: ";
+    static MockWebServer mockWebServer;
+    static MatchableCallsRequestDispatcher dispatcher;
     private static String serverBaseUrl;
     private static RESTMockFileParser RESTMockFileParser;
     static RESTMockLogger logger;
@@ -81,9 +83,16 @@ public class RESTMockServer {
     }
 
     /**
-     * removes all matchable calls stored in this {@code RESTMockServer}
+     * Use {@link #reset() instead}
      */
+    @Deprecated
     public static void removeAllMatchableCalls() {
+        reset();
+    }
+    /**
+     * removes all mocks stored in this {@code RESTMockServer}
+     */
+    public static void reset() {
         dispatcher.removeAllMatchableCalls();
     }
 
@@ -186,5 +195,13 @@ public class RESTMockServer {
      */
     public static MatchableCall whenRequested(Matcher<RecordedRequest> requestMatcher) {
         return new MatchableCall(RESTMockServer.RESTMockFileParser, requestMatcher, dispatcher);
+    }
+
+    /**
+     * Shuts down the instance of RESTMockServer
+     * @throws IOException if something goes wrong while stopping
+     */
+    public static void shutdown() throws IOException {
+        mockWebServer.shutdown();
     }
 }
