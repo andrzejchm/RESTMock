@@ -16,6 +16,8 @@
 
 package io.appflate.restmock.utils;
 
+import java.util.Locale;
+
 import okhttp3.mockwebserver.RecordedRequest;
 
 public class RequestMatchers {
@@ -27,7 +29,7 @@ public class RequestMatchers {
         return new RequestMatcher("url contains: " + urlPart) {
             @Override
             protected boolean matchesSafely(RecordedRequest item) {
-                return item.getPath().toLowerCase().contains(urlPart.toLowerCase());
+                return item.getPath().toLowerCase(Locale.US).contains(urlPart.toLowerCase(Locale.US));
             }
         };
     }
@@ -41,7 +43,7 @@ public class RequestMatchers {
                                 urlPart.length() - 1) : urlPart;
                 String itemPathWithoutEndingSlash = item.getPath().endsWith("/") ? item.getPath()
                         .substring(0, item.getPath().length() - 1) : item.getPath();
-                return itemPathWithoutEndingSlash.toLowerCase().endsWith(urlPartWithoutEndingSlash.toLowerCase());
+                return itemPathWithoutEndingSlash.toLowerCase(Locale.US).endsWith(urlPartWithoutEndingSlash.toLowerCase(Locale.US));
             }
         };
     }
@@ -50,7 +52,7 @@ public class RequestMatchers {
         return new RequestMatcher("url starts with: " + urlPart) {
             @Override
             protected boolean matchesSafely(RecordedRequest item) {
-                return item.getPath().toLowerCase().startsWith(urlPart.toLowerCase());
+                return item.getPath().toLowerCase(Locale.US).startsWith(urlPart.toLowerCase(Locale.US));
             }
         };
     }

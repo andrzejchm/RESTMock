@@ -11,11 +11,11 @@ RESTMock is a library working on top of Square's [okhttp/MockWebServer](https://
 RESTMockServer.whenGET(pathContains("users/defunkt"))
             .thenReturnFile(200, "users/defunkt.json");
 ```
- 
+
 ## Sample
 You can check out the sample Android app with tests [here](androidsample/)
 
-## Changelog 
+## Changelog
 [HERE](CHANGELOG.md)
 ## Setup
 Here are the basic rules to set up RESTMock for various platforms
@@ -70,7 +70,7 @@ public class MyAppTestRunner extends AndroidJUnitRunner {
 	}
 	...
 }
-    
+
 ```
 
 
@@ -111,7 +111,7 @@ The most important step, in order for your app to communicate with the testServe
                 .setEndpoint(RESTMockServer.getUrl())
                 ...
                 .build();
-	
+
 ###Android Unit Tests
 TBD (Pullrequests welcomed)
 ###Java
@@ -139,34 +139,34 @@ Add the dependency
 ####Step 3: TBD
 TBD (Pullrequests welcomed)
 ##Logging
-RESTMock supports logging events. You just have to provide the RESTMock with the implementation of `RESTMockLogger`. For Android there is an `AndroidLogger` implemented already. All you have to do is use the `RESTMockTestRunner` or call 
+RESTMock supports logging events. You just have to provide the RESTMock with the implementation of `RESTMockLogger`. For Android there is an `AndroidLogger` implemented already. All you have to do is use the `RESTMockTestRunner` or call
 
 	RESTMockServerStarter.startSync(new AndroidAssetsFileParser(getContext()),new AndroidLogger());
-	
-or 
+
+or
 `RESTMockServer.enableLogging(RESTMockLogger)` and `RESTMockServer.disableLogging()` to disable logging
 
 
 
 ##TODO
 * Create API responses recorder that will store the responses in assets
-* setup CI
-* create some Units
+* ~~setup CI~~
+* ~~create some unit-tests~~
 * add something simmilar to Mockito's `verify()`
-* -add android example-
+* ~~add android example~~
 
 ##License
 
 	Copyright (C) 2016 Appflate.io
- 
- 	Licensed under the Apache License, Version 2.0 (the "License"); 
- 	you may not use this file except in compliance with the License. 
+
+ 	Licensed under the Apache License, Version 2.0 (the "License");
+ 	you may not use this file except in compliance with the License.
  	You may obtain a copy of the License at
 
 	http://www.apache.org/licenses/LICENSE-2.0
 
-	Unless required by applicable law or agreed to in writing, software 
-	distributed under the License is distributed on an "AS IS" BASIS, 
-	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-	See the License for the specific language governing permissions and 
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
 	limitations under the License.

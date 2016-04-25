@@ -17,7 +17,9 @@
 package io.appflate.restmock.androidsample;
 
 import android.app.Application;
+import android.test.suitebuilder.annotation.Suppress;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.appflate.restmock.androidsample.di.AppComponent;
 import io.appflate.restmock.androidsample.di.AppModule;
 import io.appflate.restmock.androidsample.di.DaggerAppComponent;
@@ -27,7 +29,7 @@ import io.appflate.restmock.androidsample.di.DaggerAppComponent;
  */
 public class SampleApplication extends Application {
     private static final String BASE_URL = "https://api.github.com/";
-    protected static AppComponent appComponent;
+    static AppComponent appComponent;
 
     @Override
     public void onCreate() {
@@ -35,6 +37,7 @@ public class SampleApplication extends Application {
         setupGraph();
     }
 
+    @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
     protected void setupGraph() {
         appComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(BASE_URL))
