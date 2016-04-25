@@ -17,7 +17,7 @@
 
 package io.appflate.restmock.utils;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockResponse;
 
 import io.appflate.restmock.RESTMockFileParser;
 

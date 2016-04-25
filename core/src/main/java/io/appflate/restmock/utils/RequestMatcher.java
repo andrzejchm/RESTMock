@@ -16,7 +16,7 @@
 
 package io.appflate.restmock.utils;
 
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+import okhttp3.mockwebserver.RecordedRequest;
 
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
