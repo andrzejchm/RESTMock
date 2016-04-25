@@ -45,9 +45,11 @@ public class MatchableCall {
      * Same as {@link MatchableCall#thenReturnString(int, String)}, but with the default {@code responseCode} of 200
      *
      * <p>This {@code MatchableCall} will be automatically scheduled within the {@link RESTMockServer} if you want to prevent that, see {@link MatchableCall#dontSet()}</p>
+     * @param string body contents to be returned with the response
+     * @return this {@code MatchableCall}
      */
-    public MatchableCall thenReturnString(String json) {
-        return thenReturnString(200, json);
+    public MatchableCall thenReturnString(String string) {
+        return thenReturnString(200, string);
     }
 
     /**
@@ -57,7 +59,7 @@ public class MatchableCall {
      *
      * @param responseCode a http response code to use for the response.
      * @param responseString         responseString string to return for this matchableCall's request.
-     * @return his {@code MatchableCall}
+     * @return this {@code MatchableCall}
      */
     public MatchableCall thenReturnString(int responseCode,
                                           String responseString) {

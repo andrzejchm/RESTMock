@@ -25,7 +25,6 @@ import org.hamcrest.TypeSafeMatcher;
 /**
  * <p>A RequestMatcher is an extension of {@link org.hamcrest.TypeSafeMatcher} making it easier to specify
  * the matcher without the need of implementing {@link #describeTo(Description)} method.</p>
- * <p>
  * <p>See {@link org.hamcrest.Matcher} for more info about hamcrest's matchers</p>
  */
 public abstract class RequestMatcher extends TypeSafeMatcher<RecordedRequest> {
