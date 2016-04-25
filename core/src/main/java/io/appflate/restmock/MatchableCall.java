@@ -16,12 +16,11 @@
 
 package io.appflate.restmock;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
-
 import org.hamcrest.Matcher;
 
 import io.appflate.restmock.utils.RestMockUtils;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.RecordedRequest;
 
 /**
  * Represents a Http call with the {@link MockResponse} to be returned for a HTTP request matched by {@link io.appflate.restmock.utils.RequestMatcher RequestMatcher}.

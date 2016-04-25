@@ -16,7 +16,7 @@
 
 package io.appflate.restmock.utils;
 
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+import okhttp3.mockwebserver.RecordedRequest;
 
 public class RequestMatchers {
     private RequestMatchers() {
