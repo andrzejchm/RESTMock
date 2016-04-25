@@ -37,8 +37,10 @@ import static org.hamcrest.core.AllOf.allOf;
 
 public class RESTMockServer {
 
-    private static MockWebServer mockWebServer;
-    private static MatchableCallsRequestDispatcher dispatcher;
+    public static final String RESPONSE_NOT_MOCKED = "NOT MOCKED";
+    public static final String MORE_THAN_ONE_RESPONSE_ERROR = "There are more than one response matching this request: ";
+    static MockWebServer mockWebServer;
+    static MatchableCallsRequestDispatcher dispatcher;
     private static String serverBaseUrl;
     private static RESTMockFileParser RESTMockFileParser;
     static RESTMockLogger logger;
@@ -81,9 +83,16 @@ public class RESTMockServer {
     }
 
     /**
-     * removes all matchable calls stored in this {@code RESTMockServer}
+     * Use {@link #reset() instead}
      */
+    @Deprecated
     public static void removeAllMatchableCalls() {
+        reset();
+    }
+    /**
+     * removes all mocks stored in this {@code RESTMockServer}
+     */
+    public static void reset() {
         dispatcher.removeAllMatchableCalls();
     }
 
@@ -132,7 +141,7 @@ public class RESTMockServer {
      * @param requestMatcher matcher to match a GET request
      * @return {@code MatchableCall} that will match GET requests along with {@code requestMatcher}
      */
-    public static MatchableCall whenGET(RequestMatcher requestMatcher) {
+    public static MatchableCall whenGET(Matcher<RecordedRequest> requestMatcher) {
         return RESTMockServer.whenRequested(allOf(isGET(), requestMatcher));
     }
 
@@ -142,7 +151,7 @@ public class RESTMockServer {
      * @param requestMatcher matcher to match a POST request
      * @return {@code MatchableCall} that will match POST requests along with {@code requestMatcher}
      */
-    public static MatchableCall whenPOST(RequestMatcher requestMatcher) {
+    public static MatchableCall whenPOST(Matcher<RecordedRequest>  requestMatcher) {
         return RESTMockServer.whenRequested(allOf(isPOST(), requestMatcher));
     }
 
@@ -152,7 +161,7 @@ public class RESTMockServer {
      * @param requestMatcher matcher to match a PUT request
      * @return {@code MatchableCall} that will match PUT requests along with {@code requestMatcher}
      */
-    public static MatchableCall whenPUT(RequestMatcher requestMatcher) {
+    public static MatchableCall whenPUT(Matcher<RecordedRequest>  requestMatcher) {
         return RESTMockServer.whenRequested(allOf(isPUT(), requestMatcher));
     }
 
@@ -162,7 +171,7 @@ public class RESTMockServer {
      * @param requestMatcher matcher to match a PATCH request
      * @return {@code MatchableCall} that will match PATCH requests along with {@code requestMatcher}
      */
-    public static MatchableCall whenPATCH(RequestMatcher requestMatcher) {
+    public static MatchableCall whenPATCH(Matcher<RecordedRequest>  requestMatcher) {
         return RESTMockServer.whenRequested(allOf(isPATCH(), requestMatcher));
     }
 
@@ -172,7 +181,7 @@ public class RESTMockServer {
      * @param requestMatcher matcher to match a DELETE request
      * @return {@code MatchableCall} that will match DELETE requests along with {@code requestMatcher}
      */
-    public static MatchableCall whenDELETE(RequestMatcher requestMatcher) {
+    public static MatchableCall whenDELETE(Matcher<RecordedRequest>  requestMatcher) {
         return RESTMockServer.whenRequested(allOf(isDELETE(), requestMatcher));
     }
 
@@ -186,5 +195,13 @@ public class RESTMockServer {
      */
     public static MatchableCall whenRequested(Matcher<RecordedRequest> requestMatcher) {
         return new MatchableCall(RESTMockServer.RESTMockFileParser, requestMatcher, dispatcher);
+    }
+
+    /**
+     * Shuts down the instance of RESTMockServer
+     * @throws IOException if something goes wrong while stopping
+     */
+    public static void shutdown() throws IOException {
+        mockWebServer.shutdown();
     }
 }
