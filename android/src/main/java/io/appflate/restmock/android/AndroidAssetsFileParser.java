@@ -27,6 +27,7 @@ import io.appflate.restmock.RESTMockFileParser;
  * Created by andrzejchm on 21/04/16.
  */
 public class AndroidAssetsFileParser implements RESTMockFileParser {
+    public static final String UTF_8 = "UTF-8";
     private Context testContext;
 
     public AndroidAssetsFileParser(Context testContext) {
@@ -35,16 +36,24 @@ public class AndroidAssetsFileParser implements RESTMockFileParser {
 
     @Override
     public String readJsonFile(String jsonFilePath) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(
-                testContext.getAssets().open(
-                        jsonFilePath)));
-        String line;
-        StringBuilder text = new StringBuilder();
+        BufferedReader br = null;
 
-        while ((line = br.readLine()) != null) {
-            text.append(line);
+        try {
+            br = new BufferedReader(new InputStreamReader(
+                    testContext.getAssets().open(
+                            jsonFilePath), UTF_8));
+            String line;
+            StringBuilder text = new StringBuilder();
+
+            while ((line = br.readLine()) != null) {
+                text.append(line);
+            }
+            br.close();
+            return text.toString();
+        } finally {
+            if (br != null) {
+                br.close();
+            }
         }
-        br.close();
-        return text.toString();
     }
 }

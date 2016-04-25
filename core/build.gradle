@@ -16,6 +16,7 @@
 
 apply plugin: 'java'
 apply plugin: 'maven'
+apply from: '../quality_tools/findbugs.gradle'
 
 
 sourceCompatibility = 1.7

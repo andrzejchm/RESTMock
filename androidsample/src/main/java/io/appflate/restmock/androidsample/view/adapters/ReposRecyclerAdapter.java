@@ -26,6 +26,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.appflate.restmock.androidsample.R;
 import io.appflate.restmock.androidsample.model.Repository;
 
@@ -48,6 +49,7 @@ public class ReposRecyclerAdapter extends RecyclerView.Adapter<ReposRecyclerAdap
     }
 
     @Override
+    @SuppressFBWarnings("UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR")
     public void onBindViewHolder(RepoViewHolder holder,
                                  int position) {
         Repository repository = repositories.get(position);
