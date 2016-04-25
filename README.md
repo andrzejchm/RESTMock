@@ -149,10 +149,11 @@ or
 
 
 ##TODO
+* Create API responses recorder that will store the responses in assets
 * setup CI
 * create some Units
 * add something simmilar to Mockito's `verify()`
-* add android example
+* -add android example-
 
 ##License
 
