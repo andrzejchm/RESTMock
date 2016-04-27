@@ -26,11 +26,6 @@ import io.appflate.restmock.logging.RESTMockLogger;
 
 public class RESTMockServerStarter {
     public static final int KEEP_ALIVE_TIME = 60;
-    private static ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1,
-            1,
-            KEEP_ALIVE_TIME,
-            TimeUnit.SECONDS,
-            new LinkedBlockingQueue<Runnable>(1));
 
     private RESTMockServerStarter() {
     }
@@ -43,6 +38,12 @@ public class RESTMockServerStarter {
     public static void startSync(final RESTMockFileParser mocksFileParser,
                                  final RESTMockLogger logger) {
         // it has to be like that since Android prevents starting testServer on main Thread.
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1,
+                1,
+                KEEP_ALIVE_TIME,
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<Runnable>(1));
+
         threadPoolExecutor.execute(new Runnable() {
             @Override
             public void run() {
