@@ -25,7 +25,6 @@ import java.io.IOException;
 
 import io.appflate.restmock.logging.NOOpLogger;
 import io.appflate.restmock.logging.RESTMockLogger;
-import io.appflate.restmock.utils.RequestMatcher;
 
 import static io.appflate.restmock.utils.RequestMatchers.isDELETE;
 import static io.appflate.restmock.utils.RequestMatchers.isGET;
@@ -58,6 +57,7 @@ public class RESTMockServer {
         RESTMockServer.mockWebServer.setDispatcher(dispatcher);
         RESTMockServer.mockWebServer.start();
         RESTMockServer.serverBaseUrl = mockWebServer.url("/").toString();
+        RequestsVerifier.init(dispatcher);
 
         RESTMockServer.RESTMockFileParser = RESTMockFileParser;
         RESTMockServer.logger.log("## RESTMock successfully started!\turl: " + RESTMockServer.serverBaseUrl);
@@ -90,10 +90,11 @@ public class RESTMockServer {
         reset();
     }
     /**
-     * removes all mocks stored in this {@code RESTMockServer}
+     * removes all mocks stored in this {@code RESTMockServer} as well as all history requests
      */
     public static void reset() {
         dispatcher.removeAllMatchableCalls();
+        dispatcher.clearHistoricalRequests();
     }
 
     /**
@@ -202,6 +203,7 @@ public class RESTMockServer {
      * @throws IOException if something goes wrong while stopping
      */
     public static void shutdown() throws IOException {
+        reset();
         mockWebServer.shutdown();
     }
 }

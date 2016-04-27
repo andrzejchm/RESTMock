@@ -27,6 +27,7 @@ import java.util.List;
 
 class MatchableCallsRequestDispatcher extends Dispatcher {
     private List<MatchableCall> matchableCalls;
+    private List<RecordedRequest> requestsHistory = new LinkedList<>();
 
     public MatchableCallsRequestDispatcher() {
         matchableCalls = new LinkedList<>();
@@ -34,6 +35,7 @@ class MatchableCallsRequestDispatcher extends Dispatcher {
 
     @Override
     public MockResponse dispatch(RecordedRequest recordedRequest) throws InterruptedException {
+        requestsHistory.add(recordedRequest);
         RESTMockServer.logger.log("-> New Request:\t" + recordedRequest);
         List<MatchableCall> matchedRequests = getMatchedRequests(recordedRequest);
         if (matchedRequests.size() == 1) {
@@ -97,5 +99,14 @@ class MatchableCallsRequestDispatcher extends Dispatcher {
     boolean removeMatchableCall(final MatchableCall call) {
         RESTMockServer.logger.log("## Removing response for:\t" + call.requestMatcher);
         return matchableCalls.remove(call);
+    }
+
+    List<RecordedRequest> getRequestHistory() {
+        return requestsHistory;
+    }
+
+
+    void clearHistoricalRequests() {
+        requestsHistory.clear();
     }
 }

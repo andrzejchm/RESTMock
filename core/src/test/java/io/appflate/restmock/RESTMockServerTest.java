@@ -24,11 +24,12 @@ import org.junit.Test;
 import java.io.IOException;
 
 import io.appflate.restmock.utils.TestUtils;
-import okhttp3.OkHttpClient;
 
 import static io.appflate.restmock.utils.RequestMatchers.pathEndsWith;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
