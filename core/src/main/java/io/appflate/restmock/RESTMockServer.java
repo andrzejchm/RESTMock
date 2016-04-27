@@ -44,7 +44,7 @@ public class RESTMockServer {
     private static RESTMockFileParser RESTMockFileParser;
     static RESTMockLogger logger;
 
-    public static void init(RESTMockFileParser RESTMockFileParser,
+    public synchronized static void init(RESTMockFileParser RESTMockFileParser,
                             RESTMockLogger logger) throws IOException {
         if(RESTMockServer.mockWebServer != null) {
             RESTMockServer.shutdown();
