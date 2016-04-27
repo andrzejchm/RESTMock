@@ -11,12 +11,16 @@ RESTMock is a library working on top of Square's [okhttp/MockWebServer](https://
 RESTMockServer.whenGET(pathContains("users/defunkt"))
             .thenReturnFile(200, "users/defunkt.json");
 ```
+##Table of Contents
+- [About](#about)
+- [Setup](#setup)
+- [Request verification](#request-verification)
+- [Logging](#logging)
+- [Android Sample Project](#android-sample-project)
+- [Changelog](#changelog)
+- [TODO](#todo)
+- [License](#license)
 
-## Sample
-You can check out the sample Android app with tests [here](androidsample/)
-
-## Changelog
-[HERE](CHANGELOG.md)
 ## Setup
 Here are the basic rules to set up RESTMock for various platforms
 
@@ -142,7 +146,11 @@ RESTMockServer.enableLogging(RESTMockLogger)
 RESTMockServer.disableLogging()
 ```
 
+## Android Sample Project
+You can check out the sample Android app with tests [here](androidsample/)
 
+## Changelog
+[HERE](CHANGELOG.md)
 
 ##TODO
 * Create API responses recorder that will store the responses in assets
