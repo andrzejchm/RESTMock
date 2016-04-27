@@ -46,6 +46,9 @@ public class RESTMockServer {
 
     public static void init(RESTMockFileParser RESTMockFileParser,
                             RESTMockLogger logger) throws IOException {
+        if(RESTMockServer.mockWebServer != null) {
+            RESTMockServer.shutdown();
+        }
         RESTMockServer.mockWebServer = new MockWebServer();
         if (logger == null) {
             RESTMockServer.logger = new NOOpLogger();
