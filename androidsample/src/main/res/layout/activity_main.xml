@@ -15,76 +15,70 @@
   ~ limitations under the License.
   -->
 
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="16dp"
     android:orientation="vertical"
+    android:gravity="center"
     tools:context=".view.activities.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="16dp"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_weight="4">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/usernameEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/type_github_username"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <Button
-                android:id="@+id/submitButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:text="@android:string/ok"/>
-        </LinearLayout>
-
-
-        <ViewAnimator
-            android:id="@+id/resultAnimator"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:inAnimation="@android:anim/fade_in"
-            android:outAnimation="@android:anim/fade_out">
-
-            <TextView
-                android:id="@+id/fullNameText"
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/usernameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"/>
+                android:hint="@string/type_github_username"/>
 
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:indeterminate="true"/>
-        </ViewAnimator>
+        </android.support.design.widget.TextInputLayout>
 
         <Button
-            android:id="@+id/showReposButton"
-            android:layout_width="wrap_content"
+            android:id="@+id/submitButton"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/show_repos"
-            android:visibility="gone"/>
+            android:layout_weight="1"
+            android:text="@android:string/ok"/>
     </LinearLayout>
-</RelativeLayout>
+
+
+    <ViewAnimator
+        android:id="@+id/resultAnimator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:inAnimation="@android:anim/fade_in"
+        android:outAnimation="@android:anim/fade_out">
+
+        <TextView
+            android:id="@+id/fullNameText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"/>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"/>
+    </ViewAnimator>
+
+    <Button
+        android:id="@+id/showReposButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/show_repos"
+        android:visibility="gone"/>
+</LinearLayout>

@@ -23,9 +23,13 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import io.appflate.restmock.RESTMockServer;
+import io.appflate.restmock.RequestsVerifier;
 import io.appflate.restmock.androidsample.pageobjects.MainActivityPageObject;
 import io.appflate.restmock.androidsample.view.activities.MainActivity;
 import io.appflate.restmock.utils.RequestMatchers;
+
+import static io.appflate.restmock.RequestsVerifier.verifyRequest;
+import static io.appflate.restmock.utils.RequestMatchers.pathEndsWith;
 
 /**
  * Created by andrzejchm on 23/04/16.
@@ -47,41 +51,44 @@ public class MainActivityTest {
     public void setUp() throws Exception {
         pageObject = new MainActivityPageObject();
         //be sure to reset it before each test!
-        RESTMockServer.removeAllMatchableCalls();
+        RESTMockServer.reset();
     }
 
     @Test
     public void testGoodAnswer() throws Exception {
-        RESTMockServer.whenGET(RequestMatchers.pathEndsWith(USERNAME_ANDRZEJCHM)).thenReturnFile(
+        RESTMockServer.whenGET(pathEndsWith(USERNAME_ANDRZEJCHM)).thenReturnFile(
                 PATH_ANDRZEJCHM_PROFILE);
         //launches activity with default intent
         rule.launchActivity(null);
         pageObject.typeUsername(USERNAME_ANDRZEJCHM);
         pageObject.pressOk();
         pageObject.verifyWelcomeMessageForUser(NAME_ANDRZEJ_CHMIELEWSKI);
+        RequestsVerifier.verifyRequest(pathEndsWith(USERNAME_ANDRZEJCHM)).invoked();
     }
 
     @Test
     public void testNotFound() throws Exception {
-        RESTMockServer.whenGET(RequestMatchers.pathEndsWith(USERNAME_ANDRZEJCHM)).thenReturnFile(404,
+        RESTMockServer.whenGET(pathEndsWith(USERNAME_ANDRZEJCHM)).thenReturnFile(404,
                 PATH_USER_NOT_FOUND);
         //launches activity with default intent
         rule.launchActivity(null);
         pageObject.typeUsername(USERNAME_ANDRZEJCHM);
         pageObject.pressOk();
         pageObject.verifyErrorWelcomeMessage();
+        RequestsVerifier.verifyRequest(pathEndsWith(USERNAME_ANDRZEJCHM)).invoked();
     }
 
     @Test
     public void testShowEmptyRepos() throws Exception {
-        RESTMockServer.whenGET(RequestMatchers.pathEndsWith(USERNAME_ANDRZEJCHM)).thenReturnFile(
+        RESTMockServer.whenGET(pathEndsWith(USERNAME_ANDRZEJCHM)).thenReturnFile(
                 PATH_ANDRZEJCHM_PROFILE);
-        RESTMockServer.whenGET(RequestMatchers.pathEndsWith(REPOS)).thenReturnString("[]");
+        RESTMockServer.whenGET(pathEndsWith(REPOS)).thenReturnString("[]");
         //launches activity with default intent
         rule.launchActivity(null);
         pageObject.typeUsername(USERNAME_ANDRZEJCHM);
         pageObject.pressOk();
         pageObject.verifyWelcomeMessageForUser(NAME_ANDRZEJ_CHMIELEWSKI);
         pageObject.clickShowRepos();
+        RequestsVerifier.verifyRequest(pathEndsWith(USERNAME_ANDRZEJCHM)).invoked();
     }
 }

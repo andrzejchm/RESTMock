@@ -1,0 +1,46 @@
+/*
+ * Copyright (C) 2016 Appflate.io
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+apply plugin: 'findbugs'
+
+task findbugs(type: FindBugs) {
+    ignoreFailures = false // Fail early.
+    effort = 'max'
+    reportLevel = 'low' // Report even low priority problems.
+
+    if(project.projectDir.path.endsWith("core")) {
+        classes = files("${project.projectDir}/build/classes/")
+    } else {
+        classes = files("${project.projectDir}/build/intermediates/classes/")
+    }
+    source = fileTree('src/main/java')
+
+    classpath = files()
+
+    excludeFilter = rootProject.file('quality_tools/findbugs-filter.xml')
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
+afterEvaluate {
+    tasks.findByName('findbugs').dependsOn('assemble')
+
+    def checkTask = tasks.findByName('check')
+
+    checkTask.dependsOn('findbugs')
+}

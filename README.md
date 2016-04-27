@@ -1,6 +1,6 @@
 # RESTMock
 [![](https://jitpack.io/v/andrzejchm/RESTMock.svg)](https://jitpack.io/#andrzejchm/RESTMock)
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-RESTMock-green.svg?style=true)](https://android-arsenal.com/details/1/3468)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-RESTMock-green.svg?style=true)](https://android-arsenal.com/details/1/3468) [![Circle CI](https://circleci.com/gh/andrzejchm/RESTMock.svg?style=svg)](https://circleci.com/gh/andrzejchm/RESTMock)
 
 REST API mocking made easy.
 
@@ -11,16 +11,19 @@ RESTMock is a library working on top of Square's [okhttp/MockWebServer](https://
 RESTMockServer.whenGET(pathContains("users/defunkt"))
             .thenReturnFile(200, "users/defunkt.json");
 ```
- 
-## Sample
-You can check out the sample Android app with tests [here](androidsample/)
+##Table of Contents
+- [About](#about)
+- [Setup](#setup)
+- [Request verification](#request-verification)
+- [Logging](#logging)
+- [Android Sample Project](#android-sample-project)
+- [Changelog](#changelog)
+- [TODO](#todo)
+- [License](#license)
 
-## Changelog 
-[HERE](CHANGELOG.md)
 ## Setup
 Here are the basic rules to set up RESTMock for various platforms
 
-###Android Instrumentation Tests
 ####Step 1: Repository
 Add it in your root build.gradle at the end of repositories:
 
@@ -37,8 +40,8 @@ Add the dependency
 
 ```groovy  
 dependencies {
-	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.0.3'
-	androidTestCompile('com.github.andrzejchm.RESTMock:core:0.0.3') {
+	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.0.4'
+	androidTestCompile('com.github.andrzejchm.RESTMock:core:0.0.4') {
         exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
     }
 }
@@ -70,7 +73,7 @@ public class MyAppTestRunner extends AndroidJUnitRunner {
 	}
 	...
 }
-    
+
 ```
 
 
@@ -106,67 +109,68 @@ You can either use some of the predefined matchers from `RequestMatchers` util c
 ####Step 6: Specify API Endpoint
 The most important step, in order for your app to communicate with the testServer, you have to specify it as an endpoint for all your API calls. For that, you can use the ` RESTMockServer.getUrl()`. If you use Retrofit, it is as easy as:
 
-	RestAdapter adapter = new RestAdapter.Builder()
-		...
+```java
+RestAdapter adapter = new RestAdapter.Builder()
                 .setEndpoint(RESTMockServer.getUrl())
                 ...
                 .build();
-	
-###Android Unit Tests
-TBD (Pullrequests welcomed)
-###Java
-TBD (Pullrequests welcomed)
-
-####Step 1: Repository
-```xml
-<repositories>
-	<repository>
-	    <id>jitpack.io</id>
-	    <url>https://jitpack.io</url>
-	</repository>
-</repositories>
 ```
-####Step 2: Dependency
-Add the dependency
+##Request verification
+It is possible to verify which requests were called and how many times thanks to `RequestVerifier`. All you have to do is call one of theese:
 
-```xml
-<dependency>
-    <groupId>com.github.andrzejchm.RESTMock</groupId>
-    <artifactId>core</artifactId>
-    <version>0.0.3</version>
-</dependency>
+```java
+//cheks if the request was invoked exactly 2 times
+RequestVerifier.verifyRequest(pathEndsWith("users")).exactly(2);
+
+//cheks if the request was invoked at least 3 times
+RequestVerifier.verifyRequest(pathEndsWith("users")).atLeast(3);
+
+//cheks if the request was invoked exactly 1 time
+RequestVerifier.verifyRequest(pathEndsWith("users")).invoked();
+
+//cheks if the request was never invoked
+RequestVerifier.verifyRequest(pathEndsWith("users")).never();
 ```
-####Step 3: TBD
-TBD (Pullrequests welcomed)
+
 ##Logging
-RESTMock supports logging events. You just have to provide the RESTMock with the implementation of `RESTMockLogger`. For Android there is an `AndroidLogger` implemented already. All you have to do is use the `RESTMockTestRunner` or call 
+RESTMock supports logging events. You just have to provide the RESTMock with the implementation of `RESTMockLogger`. For Android there is an `AndroidLogger` implemented already. All you have to do is use the `RESTMockTestRunner` or call
 
-	RESTMockServerStarter.startSync(new AndroidAssetsFileParser(getContext()),new AndroidLogger());
-	
-or 
-`RESTMockServer.enableLogging(RESTMockLogger)` and `RESTMockServer.disableLogging()` to disable logging
+```java
+RESTMockServerStarter.startSync(new AndroidAssetsFileParser(getContext()),new AndroidLogger());
+```
 
+or
 
+```java
+RESTMockServer.enableLogging(RESTMockLogger)
+RESTMockServer.disableLogging()
+```
+
+## Android Sample Project
+You can check out the sample Android app with tests [here](androidsample/)
+
+## Changelog
+[HERE](CHANGELOG.md)
 
 ##TODO
 * Create API responses recorder that will store the responses in assets
-* setup CI
-* create some Units
-* add something simmilar to Mockito's `verify()`
-* -add android example-
+* ~~setup CI~~
+* ~~create some unit-tests~~
+* ~~add something simmilar to Mockito's `verify()`~~
+* ~~add android example~~
 
 ##License
 
 	Copyright (C) 2016 Appflate.io
- 
- 	Licensed under the Apache License, Version 2.0 (the "License"); 
- 	you may not use this file except in compliance with the License. 
+
+ 	Licensed under the Apache License, Version 2.0 (the "License");
+ 	you may not use this file except in compliance with the License.
  	You may obtain a copy of the License at
 
 	http://www.apache.org/licenses/LICENSE-2.0
 
-	Unless required by applicable law or agreed to in writing, software 
-	distributed under the License is distributed on an "AS IS" BASIS, 
-	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-	See the License for the specific language governing permissions and 
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
 	limitations under the License.

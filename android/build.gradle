@@ -16,6 +16,7 @@
 
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
+apply from: '../quality_tools/findbugs.gradle'
 
 group='com.github.andrzejchm'
 
@@ -35,12 +36,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        warningsAsErrors true
+        abortOnError true
+        disable 'InvalidPackage'
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile project(':core')
+    compile(project(':core')) {
+        exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
+    }
     compile 'com.android.support.test:rules:0.4.1'
     compile 'com.android.support.test:runner:0.4.1'
 }

@@ -31,7 +31,7 @@
     <TextView
         android:id="@+id/repoStarsCountText"
         android:layout_width="0dp"
-        android:gravity="right"
+        android:gravity="end"
         android:textColor="@color/colorAccent"
         android:layout_height="wrap_content"
         android:layout_weight="1"/>

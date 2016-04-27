@@ -1,0 +1,25 @@
+general:
+  branches:
+    only:
+      - master
+      - develop
+      - /feature\/.*/
+      - /bugfix\/.*/
+      - /release\/.*/
+## Customize the test machine
+machine:
+  ## Add some environment variables
+  environment:
+    TERM: "dumb"
+    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
+
+## Customize dependencies
+dependencies:
+  pre:
+    - echo y | android update sdk --no-ui --all --filter "tools,build-tools-23.0.3,platform-tools,android-23"
+    - echo y | android update sdk --no-ui --all --filter "build-tools-23.0.3,extra-google-m2repository,xtra-android-support,extra-android-m2repository"
+## Customize test commands
+test:
+  override:
+    - case $CIRCLE_NODE_INDEX in 0) ./gradlew check -PpreDexLibraries=false ;; 1) ;; esac:
+        parallel: true

@@ -1,0 +1,48 @@
+<FindBugsFilter>
+
+    <!-- Do not check auto-generated resources classes -->
+    <Match>
+        <Class name="~.*R\$.*"/>
+    </Match>
+
+    <!-- Do not check auto-generated manifest classes -->
+    <Match>
+        <Class name="~.*Manifest\$.*"/>
+    </Match>
+
+    <!-- Do not check auto-generated classes (Dagger puts $ into class names) -->
+    <Match>
+        <Class name="~.*Dagger*.*"/>
+    </Match>
+
+    <!-- Ignore test classes -->
+    <Match>
+        <Class name="~.*Test"/>
+    </Match>
+
+    <!-- Do not check TestUtils class -->
+    <Match>
+        <Class name="~.*TestUtils"/>
+    </Match>
+    <!-- fields gets initialized in onCreate mostly in fragments -->
+    <Match>
+        <Class name="~.*Fragment"/>
+        <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+    </Match>
+    <!-- fields gets initialized in onCreate mostly in activities -->
+    <Match>
+        <Class name="~.*Activity"/>
+        <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+    </Match>
+    <!-- Ignore UPM in lambdas from Retrolambda, FindBugs does not correctly understand them -->
+    <Match>
+        <Bug code="UPM" />
+        <Class name="~.*\$\$Lambda\$.*"/>
+    </Match>
+
+    <Match>
+        <Bug pattern="SE_NO_SERIALVERSIONID" />
+    </Match>
+
+
+</FindBugsFilter>

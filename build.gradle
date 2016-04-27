@@ -33,7 +33,31 @@ allprojects {
     repositories {
         jcenter()
     }
-    version = "0.0.3"
+    version = "0.0.4"
+}
+
+ext.preDexLibraries = project.hasProperty('preDexLibraries')
+
+subprojects {
+    project.plugins.whenPluginAdded { plugin ->
+        if ('com.android.build.gradle.AppPlugin'.equals(plugin.class.name) ||
+                'com.android.build.gradle.LibraryPlugin'.equals(plugin.class.name)) {
+            // enable or disable pre-dexing
+            project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibraries
+        }
+    }
+
+    afterEvaluate {
+        // Log instrumentation tests results.
+        tasks.withType(com.android.build.gradle.internal.tasks.AndroidTestTask) { task ->
+            task.doFirst {
+                logging.level = LogLevel.INFO
+            }
+            task.doLast {
+                logging.level = LogLevel.LIFECYCLE
+            }
+        }
+    }
 }
 
 task clean(type: Delete) {
