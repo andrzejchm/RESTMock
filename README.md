@@ -3,7 +3,6 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-RESTMock-green.svg?style=true)](https://android-arsenal.com/details/1/3468) [![Circle CI](https://circleci.com/gh/andrzejchm/RESTMock.svg?style=svg)](https://circleci.com/gh/andrzejchm/RESTMock)
 
 REST API mocking made easy.
-
 ##About
 RESTMock is a library working on top of Square's [okhttp/MockWebServer](https://github.com/square/okhttp/tree/master/mockwebserver). It allows you to specify [Hamcrest](https://github.com/hamcrest/JavaHamcrest) matchers to match HTTP requests and specify what response to return. It is as easy as:
 
@@ -11,6 +10,9 @@ RESTMock is a library working on top of Square's [okhttp/MockWebServer](https://
 RESTMockServer.whenGET(pathContains("users/defunkt"))
             .thenReturnFile(200, "users/defunkt.json");
 ```
+**Article**
+
+[ITDD - Instrumentation TDD for Android](https://medium.com/@andrzejchm/ittd-instrumentation-ttd-for-android-4894cbb82d37)
 ##Table of Contents
 - [About](#about)
 - [Setup](#setup)
