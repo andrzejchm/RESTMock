@@ -43,9 +43,6 @@ Add the dependency
 ```groovy  
 dependencies {
 	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.0.4'
-	androidTestCompile('com.github.andrzejchm.RESTMock:core:0.0.4') {
-        exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
-    }
 }
 ```
 

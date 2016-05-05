@@ -14,8 +14,4 @@
   ~ limitations under the License.
   -->
 
-<manifest package="io.appflate.restmock.android">
-
-    <application/>
-
-</manifest>
+<manifest package="io.appflate.restmock.android"/>
