@@ -21,7 +21,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0-beta1'
+        classpath 'com.android.tools.build:gradle:2.1.0'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -33,7 +33,7 @@ allprojects {
     repositories {
         jcenter()
     }
-    version = "0.0.4"
+    version = "0.0.5"
 }
 
 ext.preDexLibraries = project.hasProperty('preDexLibraries')
