@@ -33,7 +33,7 @@ allprojects {
     repositories {
         jcenter()
     }
-    version = "0.0.4"
+    version = "0.0.5"
 }
 
 ext.preDexLibraries = project.hasProperty('preDexLibraries')

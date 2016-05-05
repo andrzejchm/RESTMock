@@ -24,7 +24,7 @@ RESTMockServer.whenGET(pathContains("users/defunkt"))
 - [License](#license)
 
 ## Setup
-Here are the basic rules to set up RESTMock for various platforms
+Here are the basic rules to set up RESTMock for Android
 
 ####Step 1: Repository
 Add it in your root build.gradle at the end of repositories:
@@ -42,7 +42,7 @@ Add the dependency
 
 ```groovy  
 dependencies {
-	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.0.4'
+	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.0.5'
 }
 ```
 
