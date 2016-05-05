@@ -1,11 +1,3 @@
-general:
-  branches:
-    only:
-      - master
-      - develop
-      - /feature\/.*/
-      - /bugfix\/.*/
-      - /release\/.*/
 ## Customize the test machine
 machine:
   ## Add some environment variables
@@ -21,5 +13,5 @@ dependencies:
 ## Customize test commands
 test:
   override:
-    - case $CIRCLE_NODE_INDEX in 0) ./gradlew check -PpreDexLibraries=false ;; 1) ;; esac:
+    - case $CIRCLE_NODE_INDEX in 0) ./gradlew check -PpreDexLibraries=false ;; 1) ./gradlew :androidsample:assembleDebug :androidsample:assembleAndroidTest  -PpreDexLibraries=false ;; esac:
         parallel: true

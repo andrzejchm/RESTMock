@@ -1,6 +1,9 @@
-## 0.0.4 (27 April 2016)
-**Features**
+## 0.0.5 (5th May 2016)
+**Bugfixes**
 
+* Removed unnecesary <application> tag from AndroidManifest.xml to no longer cause Manifest merge conflicts with espresso-intents dependency
+
+## 0.0.4 (27th April 2016)
 * **Request verification**
 It is possible to verify which requests were called and how many times thanks to `RequestVerifier`.
 
@@ -18,7 +21,7 @@ It is possible to verify which requests were called and how many times thanks to
 * renamed method `RESTMockServer.removeAllMatchableCalls()` to `RESTMockServer.reset()` (#5)
 * generified `when*` methods in `RESTMockServer` to make it possible to use meta-matchers like `allOf` and `anyOf` (#5).
 
-## 0.0.3 (23 April 2016)
+## 0.0.3 (23th April 2016)
 * Sample android app
 * Added logging capabilities to `RESTMockServer`. `RESTMockTestRunner` has enabled logging by default, if you use a custom TestRunner, use:
 
@@ -28,5 +31,5 @@ Or you can enable/disable it anytime with `RESTMockServer.enableLogging(RESTMock
 	
 * bugfixes
 
-## 0.0.2 (22 April 2016)
+## 0.0.2 (22th April 2016)
 Initial release
