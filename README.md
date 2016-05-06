@@ -115,7 +115,7 @@ RestAdapter adapter = new RestAdapter.Builder()
                 .build();
 ```
 ##Request verification
-It is possible to verify which requests were called and how many times thanks to `RequestVerifier`. All you have to do is call one of theese:
+It is possible to verify which requests were called and how many times thanks to `RequestVerifier`. All you have to do is call one of these:
 
 ```java
 //cheks if the request was invoked exactly 2 times
