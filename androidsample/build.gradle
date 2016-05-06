@@ -86,5 +86,19 @@ dependencies {
     //the most important, RESTMock! :)
     androidTestCompile project(':android')
 
+    testCompile 'com.android.support:appcompat-v7:23.3.0'
+    testCompile 'com.android.support:design:23.3.0'
     testCompile 'junit:junit:4.12'
+    testCompile "org.robolectric:robolectric:3.0"
+    testCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    testCompile('com.android.support.test.espresso:espresso-contrib:2.2.2') {
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude module: 'recyclerview-v7'
+    }
+    testCompile project(':android')
+    testCompile(project(':core')) {
+        exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
+    }
+
 }

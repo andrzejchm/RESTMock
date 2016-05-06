@@ -22,7 +22,8 @@ package io.appflate.restmock;
 public interface RESTMockFileParser {
     /**
      * reads the json file from {@code jsonFilePath} and returns its contents as a {@code String}
-     * <p> It's {@code }RESTMockFileParser}'s implementation responsibility to determine how to resolve the given {@code jsonFilePath}.</p>
+     * <p> It's {@code RESTMockFileParser}'s implementation responsibility to determine how to
+     * resolve the given {@code jsonFilePath}.</p>
      *
      * @param jsonFilePath a path to json file.
      * @return json file's contents as a String.

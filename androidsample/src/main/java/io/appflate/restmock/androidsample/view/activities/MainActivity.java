@@ -101,4 +101,8 @@ public class MainActivity extends AppCompatActivity {
         showReposButton.setVisibility(View.GONE);
         resultAnimator.setDisplayedChild(POSITION_CONTENT_VIEW);
     }
+
+    public GithubApi getApi() {
+        return githubApi;
+    }
 }
