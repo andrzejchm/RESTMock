@@ -110,7 +110,7 @@ The most important step, in order for your app to communicate with the testServe
 
 ```java
 RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint(RESTMockServer.getUrl())
+                .baseUrl(RESTMockServer.getUrl())
                 ...
                 .build();
 ```
