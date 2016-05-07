@@ -115,20 +115,20 @@ RestAdapter adapter = new RestAdapter.Builder()
                 .build();
 ```
 ##Request verification
-It is possible to verify which requests were called and how many times thanks to `RequestVerifier`. All you have to do is call one of these:
+It is possible to verify which requests were called and how many times thanks to `RequestsVerifier`. All you have to do is call one of these:
 
 ```java
 //cheks if the request was invoked exactly 2 times
-RequestVerifier.verifyRequest(pathEndsWith("users")).exactly(2);
+RequestsVerifier.verifyRequest(pathEndsWith("users")).exactly(2);
 
 //cheks if the request was invoked at least 3 times
-RequestVerifier.verifyRequest(pathEndsWith("users")).atLeast(3);
+RequestsVerifier.verifyRequest(pathEndsWith("users")).atLeast(3);
 
 //cheks if the request was invoked exactly 1 time
-RequestVerifier.verifyRequest(pathEndsWith("users")).invoked();
+RequestsVerifier.verifyRequest(pathEndsWith("users")).invoked();
 
 //cheks if the request was never invoked
-RequestVerifier.verifyRequest(pathEndsWith("users")).never();
+RequestsVerifier.verifyRequest(pathEndsWith("users")).never();
 ```
 
 ##Logging
