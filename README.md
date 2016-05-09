@@ -11,12 +11,13 @@ RESTMockServer.whenGET(pathContains("users/defunkt"))
             .thenReturnFile(200, "users/defunkt.json");
 ```
 **Article**
-[ITDD - Instrumentation TDD for Android](https://medium.com/@andrzejchm/ittd-instrumentation-ttd-for-android-4894cbb82d37)
+- [ITDD - Instrumentation TDD for Android](https://medium.com/@andrzejchm/ittd-instrumentation-ttd-for-android-4894cbb82d37)
 ##Table of Contents
 - [About](#about)
 - [Setup](#setup)
 - [Request verification](#request-verification)
 - [Logging](#logging)
+- [Unit Tests with Robolectric](#unit-tests-with-robolectric)
 - [Android Sample Project](#android-sample-project)
 - [Changelog](#changelog)
 - [TODO](#todo)
@@ -145,7 +146,7 @@ RESTMockServer.disableLogging()
 ```
 
 ## Unit Tests with Robolectric
-If you want to write unit tests (no emulator or device necessary), you can use [http://robolectric.org](Robolectric)
+If you want to write unit tests (no emulator or device necessary), you can use (Robolectric)[http://robolectric.org]
 to accomplish this. There is a sample project with Robolectric tests in [androidsample](androidsample/).
 
 One change you will need to make is to the file parser that you use. Since Robolectric doesn't
