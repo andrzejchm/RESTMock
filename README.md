@@ -12,6 +12,7 @@ RESTMockServer.whenGET(pathContains("users/defunkt"))
 ```
 **Article**
 - [ITDD - Instrumentation TDD for Android](https://medium.com/@andrzejchm/ittd-instrumentation-ttd-for-android-4894cbb82d37)
+
 ##Table of Contents
 - [About](#about)
 - [Setup](#setup)
