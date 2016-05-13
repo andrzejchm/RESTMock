@@ -146,7 +146,7 @@ RESTMockServer.disableLogging()
 ```
 
 ## Unit Tests with Robolectric
-If you want to write unit tests (no emulator or device necessary), you can use (Robolectric)[http://robolectric.org]
+If you want to write unit tests (no emulator or device necessary), you can use [Robolectric](http://robolectric.org)
 to accomplish this. There is a sample project with Robolectric tests in [androidsample](androidsample/).
 
 One change you will need to make is to the file parser that you use. Since Robolectric doesn't
