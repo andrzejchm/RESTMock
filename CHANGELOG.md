@@ -1,3 +1,7 @@
+## 0.1.0 (13th May 2016)
+
+* Added support for unit tests/robolectric tests. See [Unit Tests with Robolectric](README.md#unit-tests-with-robolectric) for more info (credits to @jwir3)
+
 ## 0.0.5 (5th May 2016)
 **Bugfixes**
 

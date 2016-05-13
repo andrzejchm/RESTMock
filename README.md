@@ -11,13 +11,13 @@ RESTMockServer.whenGET(pathContains("users/defunkt"))
             .thenReturnFile(200, "users/defunkt.json");
 ```
 **Article**
-
-[ITDD - Instrumentation TDD for Android](https://medium.com/@andrzejchm/ittd-instrumentation-ttd-for-android-4894cbb82d37)
+- [ITDD - Instrumentation TDD for Android](https://medium.com/@andrzejchm/ittd-instrumentation-ttd-for-android-4894cbb82d37)
 ##Table of Contents
 - [About](#about)
 - [Setup](#setup)
 - [Request verification](#request-verification)
 - [Logging](#logging)
+- [Unit Tests with Robolectric](#unit-tests-with-robolectric)
 - [Android Sample Project](#android-sample-project)
 - [Changelog](#changelog)
 - [TODO](#todo)
@@ -42,7 +42,7 @@ Add the dependency
 
 ```groovy  
 dependencies {
-	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.0.5'
+	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.1.0'
 }
 ```
 
@@ -110,25 +110,25 @@ The most important step, in order for your app to communicate with the testServe
 
 ```java
 RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint(RESTMockServer.getUrl())
+                .baseUrl(RESTMockServer.getUrl())
                 ...
                 .build();
 ```
 ##Request verification
-It is possible to verify which requests were called and how many times thanks to `RequestVerifier`. All you have to do is call one of theese:
+It is possible to verify which requests were called and how many times thanks to `RequestsVerifier`. All you have to do is call one of these:
 
 ```java
 //cheks if the request was invoked exactly 2 times
-RequestVerifier.verifyRequest(pathEndsWith("users")).exactly(2);
+RequestsVerifier.verifyRequest(pathEndsWith("users")).exactly(2);
 
 //cheks if the request was invoked at least 3 times
-RequestVerifier.verifyRequest(pathEndsWith("users")).atLeast(3);
+RequestsVerifier.verifyRequest(pathEndsWith("users")).atLeast(3);
 
 //cheks if the request was invoked exactly 1 time
-RequestVerifier.verifyRequest(pathEndsWith("users")).invoked();
+RequestsVerifier.verifyRequest(pathEndsWith("users")).invoked();
 
 //cheks if the request was never invoked
-RequestVerifier.verifyRequest(pathEndsWith("users")).never();
+RequestsVerifier.verifyRequest(pathEndsWith("users")).never();
 ```
 
 ##Logging
@@ -144,6 +144,23 @@ or
 RESTMockServer.enableLogging(RESTMockLogger)
 RESTMockServer.disableLogging()
 ```
+
+## Unit Tests with Robolectric
+If you want to write unit tests (no emulator or device necessary), you can use (Robolectric)[http://robolectric.org]
+to accomplish this. There is a sample project with Robolectric tests in [androidsample](androidsample/).
+
+One change you will need to make is to the file parser that you use. Since Robolectric doesn't
+create an actual device/emulator environment, you will need to use the local file system in lieu of
+`getAssets()`. A file parser for this has been provided for you, called, `AndroidLocalFileParser`.
+The `AndroidLocalFileParser` will look for files in the `resources/` directory, which should be a
+child of `/test/`.
+```
+RESTMockServerStarter.startSync(new AndroidLocalFileParser(application),new AndroidLogger());
+```
+
+It is necessary to pass in the `application` variable at construction time, so that the Robolectric
+runner knows where to find the base path for files. You can retrieve the application at runtime
+using `RuntimeEnvironment.application` from within a Robolectric test.
 
 ## Android Sample Project
 You can check out the sample Android app with tests [here](androidsample/)

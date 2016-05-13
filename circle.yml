@@ -15,3 +15,9 @@ test:
   override:
     - case $CIRCLE_NODE_INDEX in 0) ./gradlew check -PpreDexLibraries=false ;; 1) ./gradlew :androidsample:assembleDebug :androidsample:assembleAndroidTest  -PpreDexLibraries=false ;; esac:
         parallel: true
+  post:
+    - mkdir -p $CIRCLE_ARTIFACTS/androidsample/reports
+    - mkdir -p $CIRCLE_ARTIFACTS/androidsample/test-results
+    - cp -r androidsample/build/test-results/ $CIRCLE_ARTIFACTS/androidsample/test-results
+    - cp -r androidsample/build/reports/ $CIRCLE_ARTIFACTS/androidsample/reports
+    - cp -r androidsample/build/outputs/ $CIRCLE_ARTIFACTS/androidsample/outputs

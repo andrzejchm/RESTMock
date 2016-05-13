@@ -17,7 +17,6 @@
 package io.appflate.restmock.androidsample;
 
 import android.app.Application;
-import android.test.suitebuilder.annotation.Suppress;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.appflate.restmock.androidsample.di.AppComponent;
