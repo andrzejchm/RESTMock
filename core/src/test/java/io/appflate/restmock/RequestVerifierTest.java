@@ -30,6 +30,10 @@ import io.appflate.restmock.exceptions.RequestNotInvokedException;
 import io.appflate.restmock.utils.TestUtils;
 import okhttp3.mockwebserver.RecordedRequest;
 
+import static io.appflate.restmock.RequestsVerifier.verifyDELETERequest;
+import static io.appflate.restmock.RequestsVerifier.verifyGETRequest;
+import static io.appflate.restmock.RequestsVerifier.verifyPOSTRequest;
+import static io.appflate.restmock.RequestsVerifier.verifyPUTRequest;
 import static io.appflate.restmock.RequestsVerifier.verifyRequest;
 import static io.appflate.restmock.utils.RequestMatchers.pathEndsWith;
 import static org.mockito.Mockito.mock;
@@ -75,6 +79,28 @@ public class RequestVerifierTest {
     }
 
     @Test
+    public void testHTTPMethodVerifier() throws Exception {
+        RESTMockServer.whenRequested(pathEndsWith(path)).thenReturnString("a single call");
+        verifyRequest(INVOKED_MATCHER).never();
+        verifyRequest(INVOKED_MATCHER).exactly(0);
+        TestUtils.get(path);
+        TestUtils.post(path);
+        TestUtils.post(path);
+        TestUtils.put(path);
+        TestUtils.put(path);
+        TestUtils.put(path);
+        TestUtils.delete(path);
+        TestUtils.delete(path);
+        TestUtils.delete(path);
+        TestUtils.delete(path);
+        verifyRequest(INVOKED_MATCHER).exactly(10);
+        verifyGETRequest(INVOKED_MATCHER).exactly(1);
+        verifyPOSTRequest(INVOKED_MATCHER).exactly(2);
+        verifyPUTRequest(INVOKED_MATCHER).exactly(3);
+        verifyDELETERequest(INVOKED_MATCHER).exactly(4);
+    }
+
+    @Test
     public void testReset() throws Exception {
         RESTMockServer.whenRequested(pathEndsWith(path)).thenReturnString("a single call");
         TestUtils.get(path);
@@ -94,6 +120,7 @@ public class RequestVerifierTest {
     public void testInvoked_NotInvokedException() throws Exception {
         verifyRequest(NOT_INVOKED_MATCHER).invoked();
     }
+
     @Test(expected = RequestInvocationCountMismatchException.class)
     public void testInvoked_InvocationCountMismatchException() throws Exception {
         RESTMockServer.whenRequested(INVOKED_MATCHER).thenReturnString("a single call");
