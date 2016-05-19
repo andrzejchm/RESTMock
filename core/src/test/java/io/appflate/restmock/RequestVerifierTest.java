@@ -30,10 +30,10 @@ import io.appflate.restmock.exceptions.RequestNotInvokedException;
 import io.appflate.restmock.utils.TestUtils;
 import okhttp3.mockwebserver.RecordedRequest;
 
-import static io.appflate.restmock.RequestsVerifier.verifyDELETERequest;
-import static io.appflate.restmock.RequestsVerifier.verifyGETRequest;
-import static io.appflate.restmock.RequestsVerifier.verifyPOSTRequest;
-import static io.appflate.restmock.RequestsVerifier.verifyPUTRequest;
+import static io.appflate.restmock.RequestsVerifier.verifyDELETE;
+import static io.appflate.restmock.RequestsVerifier.verifyGET;
+import static io.appflate.restmock.RequestsVerifier.verifyPOST;
+import static io.appflate.restmock.RequestsVerifier.verifyPUT;
 import static io.appflate.restmock.RequestsVerifier.verifyRequest;
 import static io.appflate.restmock.utils.RequestMatchers.pathEndsWith;
 import static org.mockito.Mockito.mock;
@@ -94,10 +94,10 @@ public class RequestVerifierTest {
         TestUtils.delete(path);
         TestUtils.delete(path);
         verifyRequest(INVOKED_MATCHER).exactly(10);
-        verifyGETRequest(INVOKED_MATCHER).exactly(1);
-        verifyPOSTRequest(INVOKED_MATCHER).exactly(2);
-        verifyPUTRequest(INVOKED_MATCHER).exactly(3);
-        verifyDELETERequest(INVOKED_MATCHER).exactly(4);
+        verifyGET(INVOKED_MATCHER).exactly(1);
+        verifyPOST(INVOKED_MATCHER).exactly(2);
+        verifyPUT(INVOKED_MATCHER).exactly(3);
+        verifyDELETE(INVOKED_MATCHER).exactly(4);
     }
 
     @Test

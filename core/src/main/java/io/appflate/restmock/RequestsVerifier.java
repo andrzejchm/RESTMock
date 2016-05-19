@@ -43,23 +43,23 @@ public class RequestsVerifier {
         return new RequestVerification(matcher);
     }
 
-    public static RequestVerification verifyDELETERequest(Matcher<RecordedRequest> matcher) {
+    public static RequestVerification verifyDELETE(Matcher<RecordedRequest> matcher) {
         return verifyRequest(AllOf.allOf(RequestMatchers.isDELETE(), matcher));
     }
 
-    public static RequestVerification verifyGETRequest(Matcher<RecordedRequest> matcher) {
+    public static RequestVerification verifyGET(Matcher<RecordedRequest> matcher) {
         return verifyRequest(AllOf.allOf(RequestMatchers.isGET(), matcher));
     }
 
-    public static RequestVerification verifyPATCHRequest(Matcher<RecordedRequest> matcher) {
+    public static RequestVerification verifyPATCH(Matcher<RecordedRequest> matcher) {
         return verifyRequest(AllOf.allOf(RequestMatchers.isPATCH(), matcher));
     }
 
-    public static RequestVerification verifyPOSTRequest(Matcher<RecordedRequest> matcher) {
+    public static RequestVerification verifyPOST(Matcher<RecordedRequest> matcher) {
         return verifyRequest(AllOf.allOf(RequestMatchers.isPOST(), matcher));
     }
 
-    public static RequestVerification verifyPUTRequest(Matcher<RecordedRequest> matcher) {
+    public static RequestVerification verifyPUT(Matcher<RecordedRequest> matcher) {
         return verifyRequest(AllOf.allOf(RequestMatchers.isPUT(), matcher));
     }
 
