@@ -43,7 +43,7 @@ Add the dependency
 
 ```groovy  
 dependencies {
-	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.1.0'
+	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.1.1'
 }
 ```
 
@@ -119,17 +119,17 @@ RestAdapter adapter = new RestAdapter.Builder()
 It is possible to verify which requests were called and how many times thanks to `RequestsVerifier`. All you have to do is call one of these:
 
 ```java
-//cheks if the request was invoked exactly 2 times
-RequestsVerifier.verifyRequest(pathEndsWith("users")).exactly(2);
+//cheks if the GET request was invoked exactly 2 times
+RequestsVerifier.verifyGET(pathEndsWith("users")).exactly(2);
 
-//cheks if the request was invoked at least 3 times
-RequestsVerifier.verifyRequest(pathEndsWith("users")).atLeast(3);
+//cheks if the GET request was invoked at least 3 times
+RequestsVerifier.verifyGET(pathEndsWith("users")).atLeast(3);
 
-//cheks if the request was invoked exactly 1 time
-RequestsVerifier.verifyRequest(pathEndsWith("users")).invoked();
+//cheks if the GET request was invoked exactly 1 time
+RequestsVerifier.verifyGET(pathEndsWith("users")).invoked();
 
-//cheks if the request was never invoked
-RequestsVerifier.verifyRequest(pathEndsWith("users")).never();
+//cheks if the GET request was never invoked
+RequestsVerifier.verifyGET(pathEndsWith("users")).never();
 ```
 
 ##Logging

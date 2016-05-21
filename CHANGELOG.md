@@ -1,3 +1,8 @@
+## 0.1.1 (22nd May 2016)
+
+* Added convienience methods for verifying `GET, POST, PUT, DELETE` methods to `RequestVerifier` (credits to @matir91)
+
+
 ## 0.1.0 (13th May 2016)
 
 * Added support for unit tests/robolectric tests. See [Unit Tests with Robolectric](README.md#unit-tests-with-robolectric) for more info (credits to @jwir3)
