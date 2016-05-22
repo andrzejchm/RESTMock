@@ -17,10 +17,12 @@
 package io.appflate.restmock;
 
 import org.hamcrest.Matcher;
+import org.hamcrest.core.AllOf;
 
 import io.appflate.restmock.exceptions.RequestInvocationCountMismatchException;
 import io.appflate.restmock.exceptions.RequestInvocationCountNotEnoughException;
 import io.appflate.restmock.exceptions.RequestNotInvokedException;
+import io.appflate.restmock.utils.RequestMatchers;
 import okhttp3.mockwebserver.RecordedRequest;
 
 /**
@@ -39,6 +41,26 @@ public class RequestsVerifier {
 
     public static RequestVerification verifyRequest(Matcher<RecordedRequest> matcher) {
         return new RequestVerification(matcher);
+    }
+
+    public static RequestVerification verifyDELETE(Matcher<RecordedRequest> matcher) {
+        return verifyRequest(AllOf.allOf(RequestMatchers.isDELETE(), matcher));
+    }
+
+    public static RequestVerification verifyGET(Matcher<RecordedRequest> matcher) {
+        return verifyRequest(AllOf.allOf(RequestMatchers.isGET(), matcher));
+    }
+
+    public static RequestVerification verifyPATCH(Matcher<RecordedRequest> matcher) {
+        return verifyRequest(AllOf.allOf(RequestMatchers.isPATCH(), matcher));
+    }
+
+    public static RequestVerification verifyPOST(Matcher<RecordedRequest> matcher) {
+        return verifyRequest(AllOf.allOf(RequestMatchers.isPOST(), matcher));
+    }
+
+    public static RequestVerification verifyPUT(Matcher<RecordedRequest> matcher) {
+        return verifyRequest(AllOf.allOf(RequestMatchers.isPUT(), matcher));
     }
 
     public static class RequestVerification {
