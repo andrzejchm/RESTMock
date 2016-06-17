@@ -173,7 +173,7 @@ You can check out the sample Android app with tests [here](androidsample/)
 * Create API responses recorder that will store the responses in assets
 * ~~setup CI~~
 * ~~create some unit-tests~~
-* ~~add something simmilar to Mockito's `verify()`~~
+* ~~add something similar to Mockito's `verify()`~~
 * ~~add android example~~
 
 ##License

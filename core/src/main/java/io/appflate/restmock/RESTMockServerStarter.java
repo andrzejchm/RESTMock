@@ -59,7 +59,7 @@ public class RESTMockServerStarter {
             threadPoolExecutor.shutdown();
             if (!threadPoolExecutor.awaitTermination(KEEP_ALIVE_TIME, TimeUnit.SECONDS)) {
                 throw new RuntimeException(
-                        "mock server didnt manage to start within the given timeout (60 seconds)");
+                        "mock server didn't manage to start within the given timeout (60 seconds)");
             }
         } catch (InterruptedException e) {
             RESTMockServer.logger.error("Server start error", e);

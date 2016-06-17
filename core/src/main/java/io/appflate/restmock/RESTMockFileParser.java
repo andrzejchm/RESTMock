@@ -27,7 +27,7 @@ public interface RESTMockFileParser {
      *
      * @param jsonFilePath a path to json file.
      * @return json file's contents as a String.
-     * @throws Exception when an error occures while reading the file (f.e. {@link java.io.IOException})
+     * @throws Exception when an error occurs while reading the file (f.e. {@link java.io.IOException})
      */
     String readJsonFile(String jsonFilePath) throws Exception;
 }
