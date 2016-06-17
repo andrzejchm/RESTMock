@@ -104,7 +104,7 @@ public class RESTMockServer {
      * removes the given {@code MatchableCall} from this {@code RESTMockServer}
      *
      * @param call {@code MatchableCall} to be removed
-     * @return true if the {@code MatchableCall} was successfuly removed, false if it was not found
+     * @return true if the {@code MatchableCall} was successfully removed, false if it was not found
      */
     public static boolean removeMatchableCall(MatchableCall call) {
         return dispatcher.removeMatchableCall(call);

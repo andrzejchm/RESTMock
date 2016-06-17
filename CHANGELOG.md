@@ -1,6 +1,6 @@
 ## 0.1.1 (22nd May 2016)
 
-* Added convienience methods for verifying `GET, POST, PUT, DELETE` methods to `RequestVerifier` (credits to @matir91)
+* Added convenience methods for verifying `GET, POST, PUT, DELETE` methods to `RequestVerifier` (credits to @matir91)
 
 
 ## 0.1.0 (13th May 2016)
@@ -8,7 +8,7 @@
 * Added support for unit tests/robolectric tests. See [Unit Tests with Robolectric](README.md#unit-tests-with-robolectric) for more info (credits to @jwir3)
 
 ## 0.0.5 (5th May 2016)
-**Bugfixes**
+**Bug fixes**
 
 * Removed unnecesary <application> tag from AndroidManifest.xml to no longer cause Manifest merge conflicts with espresso-intents dependency
 
@@ -38,7 +38,7 @@ It is possible to verify which requests were called and how many times thanks to
 	 	
 Or you can enable/disable it anytime with `RESTMockServer.enableLogging(RESTMockLogger)` and `RESTMockServer.disableLogging()`
 	
-* bugfixes
+* bug fixes
 
 ## 0.0.2 (22th April 2016)
 Initial release

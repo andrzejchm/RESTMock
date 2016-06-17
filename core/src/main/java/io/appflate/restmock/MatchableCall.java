@@ -95,7 +95,7 @@ public class MatchableCall {
      * <p>This {@code MatchableCall} will be automatically scheduled within the {@code RESTMockServer} if you want to prevent that, see {@link MatchableCall#dontSet()}</p>
      *
      * @param jsonFile a json file's path to return. {@link RESTMockFileParser} is responsible of reading files for given paths.
-     * @return a {@link MatchableCall} thath will return given {@code jsonFile} as a response.
+     * @return a {@link MatchableCall} that will return given {@code jsonFile} as a response.
      */
     public MatchableCall thenReturnFile(String jsonFile) {
         return thenReturnFile(200, jsonFile);
