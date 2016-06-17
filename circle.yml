@@ -4,12 +4,17 @@ machine:
   environment:
     TERM: "dumb"
     GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
+  java:
+    version: openjdk8
 
 ## Customize dependencies
 dependencies:
   pre:
-    - echo y | android update sdk --no-ui --all --filter "tools,build-tools-23.0.3,platform-tools,android-23"
-    - echo y | android update sdk --no-ui --all --filter "build-tools-23.0.3,extra-google-m2repository,xtra-android-support,extra-android-m2repository"
+    - echo y | android update sdk --no-ui --all --filter "tools,build-tools-24,platform-tools"
+    - echo y | android update sdk --no-ui --all --filter "android-24"
+    - echo y | android update sdk --no-ui --all --filter "build-tools-24.0.0"
+    - echo y | android update sdk --no-ui --all --filter "platform-tools-preview"
+    - echo y | android update sdk --no-ui --all --filter "build-tools-24,extra-google-m2repository,xtra-android-support,extra-android-m2repository"
 ## Customize test commands
 test:
   override:
