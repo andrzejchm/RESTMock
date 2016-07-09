@@ -39,7 +39,7 @@ import static junit.framework.Assert.assertNotNull;
 @RunWith(AndroidSampleRobolectricRunner.class)
 @Config(constants = BuildConfig.class,
         application = RobolectricTestApplication.class,
-        sdk = 21)
+        sdk = 23)
 public class RobolectricExampleTest {
 
   public static final String USERNAME_JWIR3 = "jwir3";

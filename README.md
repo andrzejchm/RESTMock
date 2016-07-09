@@ -20,7 +20,6 @@ RESTMockServer.whenGET(pathContains("users/defunkt"))
 - [Logging](#logging)
 - [Unit Tests with Robolectric](#unit-tests-with-robolectric)
 - [Android Sample Project](#android-sample-project)
-- [Changelog](#changelog)
 - [TODO](#todo)
 - [License](#license)
 
@@ -43,7 +42,7 @@ Add the dependency
 
 ```groovy  
 dependencies {
-	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.1.1'
+	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.1.2'
 }
 ```
 
@@ -166,8 +165,6 @@ using `RuntimeEnvironment.application` from within a Robolectric test.
 ## Android Sample Project
 You can check out the sample Android app with tests [here](androidsample/)
 
-## Changelog
-[HERE](CHANGELOG.md)
 
 ##TODO
 * Create API responses recorder that will store the responses in assets
