@@ -18,15 +18,14 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply from: '../quality_tools/findbugs.gradle'
 
-group='com.github.andrzejchm'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 24
+    buildToolsVersion "24"
 
     defaultConfig {
         minSdkVersion 10
-        targetSdkVersion 23
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
     }
@@ -50,6 +49,6 @@ dependencies {
     compile(project(':core')) {
         exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
     }
-    compile 'com.android.support.test:rules:0.4.1'
-    compile 'com.android.support.test:runner:0.4.1'
+    compile 'com.android.support.test:rules:0.5'
+    compile 'com.android.support.test:runner:0.5'
 }
