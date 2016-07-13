@@ -91,7 +91,7 @@ dependencies {
   androidTestCompile 'com.android.support:design:24.0.0'
 
   //the most important, RESTMock! :)
-  androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.1.3'
+  androidTestCompile project(':android')
 
   testCompile 'com.android.support:appcompat-v7:24.0.0'
   testCompile 'com.android.support:design:24.0.0'
