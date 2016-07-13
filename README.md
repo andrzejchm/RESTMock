@@ -20,7 +20,6 @@ RESTMockServer.whenGET(pathContains("users/defunkt"))
 - [Logging](#logging)
 - [Unit Tests with Robolectric](#unit-tests-with-robolectric)
 - [Android Sample Project](#android-sample-project)
-- [TODO](#todo)
 - [License](#license)
 
 ## Setup
@@ -42,7 +41,7 @@ Add the dependency
 
 ```groovy  
 dependencies {
-	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.1.2'
+	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.1.3'
 }
 ```
 
@@ -164,14 +163,6 @@ using `RuntimeEnvironment.application` from within a Robolectric test.
 
 ## Android Sample Project
 You can check out the sample Android app with tests [here](androidsample/)
-
-
-##TODO
-* Create API responses recorder that will store the responses in assets
-* ~~setup CI~~
-* ~~create some unit-tests~~
-* ~~add something similar to Mockito's `verify()`~~
-* ~~add android example~~
 
 ##License
 
