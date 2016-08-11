@@ -34,6 +34,15 @@ public class RequestMatchers {
         };
     }
 
+    public static RequestMatcher pathDoesNotContain(final String urlPart) {
+        return new RequestMatcher("url does not contain: " + urlPart) {
+            @Override
+            protected boolean matchesSafely(RecordedRequest item) {
+                return !item.getPath().toLowerCase(Locale.US).contains(urlPart.toLowerCase(Locale.US));
+            }
+        };
+    }
+
     public static RequestMatcher pathEndsWith(final String urlPart) {
         return new RequestMatcher("url ends with: " + urlPart) {
             @Override
