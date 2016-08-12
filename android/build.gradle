@@ -18,6 +18,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply from: '../quality_tools/findbugs.gradle'
 
+group='com.github.andrzejchm'
 
 android {
     compileSdkVersion 24
