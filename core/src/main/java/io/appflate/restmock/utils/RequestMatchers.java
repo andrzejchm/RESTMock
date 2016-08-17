@@ -94,4 +94,8 @@ public class RequestMatchers {
     public static RequestMatcher isPUT() {
         return httpMethodIs("PUT");
     }
+
+    public static RequestMatcher isHEAD() {
+      return httpMethodIs("HEAD");
+    }
 }

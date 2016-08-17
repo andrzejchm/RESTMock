@@ -49,7 +49,11 @@ class MatchableCallsRequestDispatcher extends Dispatcher {
         } else {
             RESTMockServer.logger.error("<- Response ERROR:\t" + RESTMockServer.RESPONSE_NOT_MOCKED + ": " + recordedRequest);
             MockResponse mockResponse =
-                    new MockResponse().setResponseCode(500).setBody(RESTMockServer.RESPONSE_NOT_MOCKED);
+                    new MockResponse().setResponseCode(500);
+            if (!recordedRequest.getMethod().equals("HEAD")) {
+                mockResponse.setBody(RESTMockServer.RESPONSE_NOT_MOCKED);
+            }
+            
             return mockResponse;
         }
     }

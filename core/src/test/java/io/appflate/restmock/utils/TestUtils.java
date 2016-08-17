@@ -59,6 +59,12 @@ public class TestUtils {
                 null).build());
     }
 
+    public static Response head(String path) throws IOException {
+      path = normalizePath(path);
+      return executeSync(new Request.Builder().url(RESTMockServer.getUrl() + path).method("HEAD",
+                null).build());
+    }
+
     private static Response executeSync(Request request) throws IOException {
         return okHttpClient.newCall(request).execute();
     }
@@ -67,9 +73,17 @@ public class TestUtils {
         assertResponseWithBodyContains(response, 500, RESTMockServer.RESPONSE_NOT_MOCKED);
     }
 
+    public static void assertNotMockedNoBody(Response response) throws IOException {
+      assertResponseCodeIs(response, 500);
+    }
+
     public static void assertMultipleMatches(Response response) throws IOException {
         assertResponseWithBodyContains(response, 500, RESTMockServer.MORE_THAN_ONE_RESPONSE_ERROR);
 
+    }
+
+    public static void assertResponseCodeIs(Response response, int code) {
+      assertEquals(code, response.code());
     }
 
     public static void assertResponseWithBodyContains(Response response,
