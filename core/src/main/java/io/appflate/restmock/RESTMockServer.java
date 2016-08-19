@@ -31,6 +31,7 @@ import static io.appflate.restmock.utils.RequestMatchers.isGET;
 import static io.appflate.restmock.utils.RequestMatchers.isPATCH;
 import static io.appflate.restmock.utils.RequestMatchers.isPOST;
 import static io.appflate.restmock.utils.RequestMatchers.isPUT;
+import static io.appflate.restmock.utils.RequestMatchers.isHEAD;
 import static org.hamcrest.core.AllOf.allOf;
 
 
@@ -187,6 +188,10 @@ public class RESTMockServer {
      */
     public static MatchableCall whenDELETE(Matcher<RecordedRequest>  requestMatcher) {
         return RESTMockServer.whenRequested(allOf(isDELETE(), requestMatcher));
+    }
+
+    public static MatchableCall whenHEAD(Matcher<RecordedRequest> requestMatcher) {
+        return RESTMockServer.whenRequested(allOf(isHEAD(), requestMatcher));
     }
 
     /**
