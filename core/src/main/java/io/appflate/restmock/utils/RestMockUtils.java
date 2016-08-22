@@ -56,17 +56,22 @@ public final class RestMockUtils {
      * @throws UnsupportedEncodingException If unable to decode from UTF-8. This should never happen.
      */
     public static Map<String, List<String>> splitQuery(URL url) throws UnsupportedEncodingException {
-      final Map<String, List<String>> query_pairs = new LinkedHashMap<String, List<String>>();
+      final Map<String, List<String>> queryPairs = new LinkedHashMap<String, List<String>>();
       final String[] pairs = url.getQuery().split("&");
       for (String pair : pairs) {
         final int idx = pair.indexOf("=");
         final String key = idx > 0 ? URLDecoder.decode(pair.substring(0, idx), "UTF-8") : pair;
-        if (!query_pairs.containsKey(key)) {
-          query_pairs.put(key, new LinkedList<String>());
+        List<String> valueList = new LinkedList<>();
+        if (queryPairs.containsKey(key)) {
+          final String value =
+            idx > 0 && pair.length() > idx + 1 ? URLDecoder.decode(pair.substring(idx + 1), "UTF-8")
+                                               : null;
+          valueList.add(value);
         }
-        final String value = idx > 0 && pair.length() > idx + 1 ? URLDecoder.decode(pair.substring(idx + 1), "UTF-8") : null;
-        query_pairs.get(key).add(value);
+
+        queryPairs.put(key, valueList);
       }
-      return query_pairs;
+
+      return queryPairs;
     }
 }
