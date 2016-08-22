@@ -21,7 +21,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import okhttp3.mockwebserver.RecordedRequest;
 
@@ -84,7 +83,7 @@ public class RequestMatchers {
         protected boolean matchesSafely(RecordedRequest item) {
           try {
             URL mockUrl = new URL("http", "localhost", item.getPath());
-            Map<String, List<String>> queryParams = RestMockUtils.splitQuery(mockUrl);
+            List<QueryParam> queryParams = RestMockUtils.splitQuery(mockUrl);
             return queryParams.size() > 0;
           } catch (MalformedURLException e) {
             return false;
@@ -114,18 +113,13 @@ public class RequestMatchers {
         protected boolean matchesSafely(RecordedRequest item) {
           try {
             URL mockUrl = new URL("http", "localhost", item.getPath());
-            Map<String, List<String>> queryParams = RestMockUtils.splitQuery(mockUrl);
-            if (queryParams.size() == 0 || queryParams.size() != expectedParams.length) {
+            List<QueryParam> actualParams = RestMockUtils.splitQuery(mockUrl);
+            if (actualParams.size() == 0 || actualParams.size() != expectedParams.length) {
               return false;
             }
 
             for (QueryParam param : expectedParams) {
-              if (!queryParams.containsKey(param.getKey())) {
-                return false;
-              }
-
-              List<String> paramValues = queryParams.get(param.getKey());
-              if (!paramValues.contains(param.getValue())) {
+              if (!actualParams.contains(param)) {
                 return false;
               }
             }
