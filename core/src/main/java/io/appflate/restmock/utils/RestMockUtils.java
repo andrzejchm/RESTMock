@@ -74,8 +74,8 @@ public final class RestMockUtils {
       }
 
       List<QueryParam> finalParamList = new LinkedList<>();
-      for (String key : queryPairs.keySet()) {
-        QueryParam nextFinalParam = new QueryParam(key, queryPairs.get(key));
+      for (Map.Entry<String, List<String>> entry: queryPairs.entrySet()) {
+        QueryParam nextFinalParam = new QueryParam(entry.getKey(), entry.getValue());
         finalParamList.add(nextFinalParam);
       }
 
