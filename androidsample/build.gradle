@@ -59,7 +59,7 @@ configurations.all {
   resolutionStrategy {
     force "com.android.support:support-annotations:${supportLibraryVersion}"
     force 'com.squareup.okio:okio:1.8.0'
-    force 'com.squareup.okhttp3:okhttp:3.3.0'
+    force "com.squareup.okhttp3:okhttp:${okHttpVersion}"
   }
 }
 dependencies {

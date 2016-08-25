@@ -41,12 +41,12 @@ artifacts {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.squareup.okhttp3:mockwebserver:3.4.0'
+    compile "com.squareup.okhttp3:mockwebserver:${okHttpVersion}"
     compile 'org.hamcrest:hamcrest-core:1.3'
 
     testCompile 'junit:junit:4.11'
     testCompile 'org.mockito:mockito-all:1.9.5'
-    testCompile 'com.squareup.okhttp3:okhttp:3.4.0'
+    testCompile "com.squareup.okhttp3:okhttp:${okHttpVersion}"
 }
 
 jar.dependsOn test
