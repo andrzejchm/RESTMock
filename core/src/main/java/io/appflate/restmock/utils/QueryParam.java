@@ -7,8 +7,8 @@ import java.util.List;
  * A key/value set representing query parameters in an HTTP request.
  */
 public class QueryParam {
-  private String key;
-  private List<String> values;
+  private final String key;
+  private final List<String> values;
 
   public QueryParam(String key, List<String> values) {
     this.key = key;
