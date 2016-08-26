@@ -22,6 +22,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 
+import io.appflate.restmock.RESTMockServer;
+import io.appflate.restmock.logging.RESTMockLogger;
 import okhttp3.mockwebserver.RecordedRequest;
 
 public class RequestMatchers {
@@ -126,6 +128,7 @@ public class RequestMatchers {
 
             return true;
           } catch (MalformedURLException e) {
+            RESTMockServer.logger.error("URL appears to be malformed with path: " + item.getPath());
             return false;
           } catch (UnsupportedEncodingException e) {
             return false;

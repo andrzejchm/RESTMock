@@ -16,22 +16,21 @@
 
 package io.appflate.restmock;
 
-import okhttp3.mockwebserver.MockWebServer;
-import okhttp3.mockwebserver.RecordedRequest;
-
 import org.hamcrest.Matcher;
 
 import java.io.IOException;
 
 import io.appflate.restmock.logging.NOOpLogger;
 import io.appflate.restmock.logging.RESTMockLogger;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
 
 import static io.appflate.restmock.utils.RequestMatchers.isDELETE;
 import static io.appflate.restmock.utils.RequestMatchers.isGET;
+import static io.appflate.restmock.utils.RequestMatchers.isHEAD;
 import static io.appflate.restmock.utils.RequestMatchers.isPATCH;
 import static io.appflate.restmock.utils.RequestMatchers.isPOST;
 import static io.appflate.restmock.utils.RequestMatchers.isPUT;
-import static io.appflate.restmock.utils.RequestMatchers.isHEAD;
 import static org.hamcrest.core.AllOf.allOf;
 
 
@@ -43,7 +42,7 @@ public class RESTMockServer {
     static MatchableCallsRequestDispatcher dispatcher;
     private static String serverBaseUrl;
     private static RESTMockFileParser RESTMockFileParser;
-    static RESTMockLogger logger;
+    public static RESTMockLogger logger = new NOOpLogger();
 
     public synchronized static void init(RESTMockFileParser RESTMockFileParser,
                             RESTMockLogger logger) throws IOException {
@@ -51,11 +50,10 @@ public class RESTMockServer {
             RESTMockServer.shutdown();
         }
         RESTMockServer.mockWebServer = new MockWebServer();
-        if (logger == null) {
-            RESTMockServer.logger = new NOOpLogger();
-        } else {
+        if (logger != null) {
             RESTMockServer.logger = logger;
         }
+
         RESTMockServer.logger.log("## Starting RESTMock server...");
         RESTMockServer.dispatcher = new MatchableCallsRequestDispatcher();
         RESTMockServer.mockWebServer.setDispatcher(dispatcher);
