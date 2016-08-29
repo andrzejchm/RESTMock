@@ -42,7 +42,11 @@ public class RESTMockServer {
     static MatchableCallsRequestDispatcher dispatcher;
     private static String serverBaseUrl;
     private static RESTMockFileParser RESTMockFileParser;
-    public static RESTMockLogger logger = new NOOpLogger();
+    private static RESTMockLogger logger = new NOOpLogger();
+
+    public static RESTMockLogger getLogger() {
+        return logger;
+    }
 
     public synchronized static void init(RESTMockFileParser RESTMockFileParser,
                             RESTMockLogger logger) throws IOException {
@@ -54,7 +58,7 @@ public class RESTMockServer {
             RESTMockServer.logger = logger;
         }
 
-        RESTMockServer.logger.log("## Starting RESTMock server...");
+        RESTMockServer.getLogger().log("## Starting RESTMock server...");
         RESTMockServer.dispatcher = new MatchableCallsRequestDispatcher();
         RESTMockServer.mockWebServer.setDispatcher(dispatcher);
         RESTMockServer.mockWebServer.start();
@@ -62,7 +66,7 @@ public class RESTMockServer {
         RequestsVerifier.init(dispatcher);
 
         RESTMockServer.RESTMockFileParser = RESTMockFileParser;
-        RESTMockServer.logger.log("## RESTMock successfully started!\turl: " + RESTMockServer.serverBaseUrl);
+        RESTMockServer.getLogger().log("## RESTMock successfully started!\turl: " + RESTMockServer.serverBaseUrl);
     }
 
     /**

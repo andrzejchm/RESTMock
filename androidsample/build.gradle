@@ -31,7 +31,7 @@ apply from: '../quality_tools/findbugs.gradle'
 
 android {
   compileSdkVersion 24
-  buildToolsVersion "24"
+  buildToolsVersion "24.0.1"
 
   defaultConfig {
     applicationId "io.appflate.restmock.androidsample"

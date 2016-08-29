@@ -125,10 +125,9 @@ public class RequestMatchers {
                 return false;
               }
             }
-
             return true;
           } catch (MalformedURLException e) {
-            RESTMockServer.logger.error("URL appears to be malformed with path: " + item.getPath());
+              RESTMockServer.getLogger().error("URL appears to be malformed with path: " + item.getPath());
             return false;
           } catch (UnsupportedEncodingException e) {
             return false;

@@ -50,7 +50,7 @@ public class RESTMockServerStarter {
                 try {
                     RESTMockServer.init(mocksFileParser, logger);
                 } catch (IOException e) {
-                    RESTMockServer.logger.error("Server start error", e);
+                    RESTMockServer.getLogger().error("Server start error", e);
                     throw new RuntimeException(e);
                 }
             }
@@ -62,7 +62,7 @@ public class RESTMockServerStarter {
                         "mock server didn't manage to start within the given timeout (60 seconds)");
             }
         } catch (InterruptedException e) {
-            RESTMockServer.logger.error("Server start error", e);
+            RESTMockServer.getLogger().error("Server start error", e);
             throw new RuntimeException(e);
         }
     }
