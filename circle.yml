@@ -23,6 +23,11 @@ test:
   post:
     - mkdir -p $CIRCLE_ARTIFACTS/androidsample/reports
     - mkdir -p $CIRCLE_ARTIFACTS/androidsample/test-results
+    - mkdir -p $CIRCLE_ARTIFACTS/core/reports
+    - mkdir -p $CIRCLE_ARTIFACTS/core/test-results
     - cp -r androidsample/build/test-results/ $CIRCLE_ARTIFACTS/androidsample/test-results
     - cp -r androidsample/build/reports/ $CIRCLE_ARTIFACTS/androidsample/reports
     - cp -r androidsample/build/outputs/ $CIRCLE_ARTIFACTS/androidsample/outputs
+    - cp -r core/build/test-results/ $CIRCLE_ARTIFACTS/core/test-results
+    - cp -r core/build/reports/ $CIRCLE_ARTIFACTS/core/reports
+    - cp -r core/build/outputs/ $CIRCLE_ARTIFACTS/core/outputs
