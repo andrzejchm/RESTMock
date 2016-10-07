@@ -36,20 +36,24 @@ class MatchableCallsRequestDispatcher extends Dispatcher {
     @Override
     public MockResponse dispatch(RecordedRequest recordedRequest) throws InterruptedException {
         requestsHistory.add(recordedRequest);
-        RESTMockServer.logger.log("-> New Request:\t" + recordedRequest);
+        RESTMockServer.getLogger().log("-> New Request:\t" + recordedRequest);
         List<MatchableCall> matchedRequests = getMatchedRequests(recordedRequest);
         if (matchedRequests.size() == 1) {
-            RESTMockServer.logger.log("<- Response:\t" + matchedRequests.get(0).response);
+            RESTMockServer.getLogger().log("<- Response:\t" + matchedRequests.get(0).response);
             return matchedRequests.get(0).response;
         } else if (matchedRequests.size() > 1) {
             String message = prepareTooManyMatchesMessage(recordedRequest, matchedRequests);
-            RESTMockServer.logger.error("<- Response ERROR:\t" + message);
+            RESTMockServer.getLogger().error("<- Response ERROR:\t" + message);
             return createErrorResponse(
                     new IllegalStateException(message));
         } else {
-            RESTMockServer.logger.error("<- Response ERROR:\t" + RESTMockServer.RESPONSE_NOT_MOCKED + ": " + recordedRequest);
+            RESTMockServer.getLogger().error("<- Response ERROR:\t" + RESTMockServer.RESPONSE_NOT_MOCKED + ": " + recordedRequest);
             MockResponse mockResponse =
-                    new MockResponse().setResponseCode(500).setBody(RESTMockServer.RESPONSE_NOT_MOCKED);
+                    new MockResponse().setResponseCode(500);
+            if (!recordedRequest.getMethod().equals("HEAD")) {
+                mockResponse.setBody(RESTMockServer.RESPONSE_NOT_MOCKED);
+            }
+            
             return mockResponse;
         }
     }
@@ -85,19 +89,19 @@ class MatchableCallsRequestDispatcher extends Dispatcher {
     }
 
     void addMatchableCall(MatchableCall matchableCall) {
-        RESTMockServer.logger.log("## Adding new response for:\t" + matchableCall.requestMatcher);
+        RESTMockServer.getLogger().log("## Adding new response for:\t" + matchableCall.requestMatcher);
         if (!matchableCalls.contains(matchableCall)) {
             matchableCalls.add(matchableCall);
         }
     }
 
     void removeAllMatchableCalls() {
-        RESTMockServer.logger.log("## Removing all responses");
+        RESTMockServer.getLogger().log("## Removing all responses");
         matchableCalls.clear();
     }
 
     boolean removeMatchableCall(final MatchableCall call) {
-        RESTMockServer.logger.log("## Removing response for:\t" + call.requestMatcher);
+        RESTMockServer.getLogger().log("## Removing response for:\t" + call.requestMatcher);
         return matchableCalls.remove(call);
     }
 

@@ -70,6 +70,10 @@ public class MatchableCall {
         return thenReturn(response);
     }
 
+    public MatchableCall thenReturnEmpty(int responseCode) {
+      return thenReturnString(responseCode, null);
+    }
+
     /**
      * Makes this {@code MatchableCall} return  {@link MockResponse}
      *
@@ -120,7 +124,7 @@ public class MatchableCall {
                         jsonFile,
                         responseCode);
             } catch (Exception e) {
-                RESTMockServer.logger.error("<- Response FILE READ ERROR",e);
+                RESTMockServer.getLogger().error("<- Response FILE READ ERROR",e);
                 response = dispatcher.createErrorResponse(e);
             }
         }

@@ -16,18 +16,18 @@
 
 package io.appflate.restmock;
 
-import okhttp3.mockwebserver.MockWebServer;
-import okhttp3.mockwebserver.RecordedRequest;
-
 import org.hamcrest.Matcher;
 
 import java.io.IOException;
 
 import io.appflate.restmock.logging.NOOpLogger;
 import io.appflate.restmock.logging.RESTMockLogger;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
 
 import static io.appflate.restmock.utils.RequestMatchers.isDELETE;
 import static io.appflate.restmock.utils.RequestMatchers.isGET;
+import static io.appflate.restmock.utils.RequestMatchers.isHEAD;
 import static io.appflate.restmock.utils.RequestMatchers.isPATCH;
 import static io.appflate.restmock.utils.RequestMatchers.isPOST;
 import static io.appflate.restmock.utils.RequestMatchers.isPUT;
@@ -42,7 +42,11 @@ public class RESTMockServer {
     static MatchableCallsRequestDispatcher dispatcher;
     private static String serverBaseUrl;
     private static RESTMockFileParser RESTMockFileParser;
-    static RESTMockLogger logger;
+    private static RESTMockLogger logger = new NOOpLogger();
+
+    public static RESTMockLogger getLogger() {
+        return logger;
+    }
 
     public synchronized static void init(RESTMockFileParser RESTMockFileParser,
                             RESTMockLogger logger) throws IOException {
@@ -50,12 +54,11 @@ public class RESTMockServer {
             RESTMockServer.shutdown();
         }
         RESTMockServer.mockWebServer = new MockWebServer();
-        if (logger == null) {
-            RESTMockServer.logger = new NOOpLogger();
-        } else {
+        if (logger != null) {
             RESTMockServer.logger = logger;
         }
-        RESTMockServer.logger.log("## Starting RESTMock server...");
+
+        RESTMockServer.getLogger().log("## Starting RESTMock server...");
         RESTMockServer.dispatcher = new MatchableCallsRequestDispatcher();
         RESTMockServer.mockWebServer.setDispatcher(dispatcher);
         RESTMockServer.mockWebServer.start();
@@ -63,7 +66,7 @@ public class RESTMockServer {
         RequestsVerifier.init(dispatcher);
 
         RESTMockServer.RESTMockFileParser = RESTMockFileParser;
-        RESTMockServer.logger.log("## RESTMock successfully started!\turl: " + RESTMockServer.serverBaseUrl);
+        RESTMockServer.getLogger().log("## RESTMock successfully started!\turl: " + RESTMockServer.serverBaseUrl);
     }
 
     /**
@@ -187,6 +190,10 @@ public class RESTMockServer {
      */
     public static MatchableCall whenDELETE(Matcher<RecordedRequest>  requestMatcher) {
         return RESTMockServer.whenRequested(allOf(isDELETE(), requestMatcher));
+    }
+
+    public static MatchableCall whenHEAD(Matcher<RecordedRequest> requestMatcher) {
+        return RESTMockServer.whenRequested(allOf(isHEAD(), requestMatcher));
     }
 
     /**

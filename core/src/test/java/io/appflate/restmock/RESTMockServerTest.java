@@ -28,16 +28,11 @@ import io.appflate.restmock.utils.TestUtils;
 import static io.appflate.restmock.utils.RequestMatchers.pathEndsWith;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.TestCase.assertNotNull;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
-/**
- * Created by andrzejchm on 25/04/16.
- */
 public class RESTMockServerTest {
     static RESTMockFileParser fileParser;
 
@@ -67,6 +62,7 @@ public class RESTMockServerTest {
         TestUtils.assertNotMocked(TestUtils.post(path));
         TestUtils.assertNotMocked(TestUtils.delete(path));
         TestUtils.assertNotMocked(TestUtils.put(path));
+        TestUtils.assertNotMockedNoBody(TestUtils.head(path));
     }
 
     @Test
@@ -83,6 +79,7 @@ public class RESTMockServerTest {
         TestUtils.assertResponseWithBodyContains(TestUtils.post(path), 200, "works");
         TestUtils.assertNotMocked(TestUtils.delete(path));
         TestUtils.assertNotMocked(TestUtils.put(path));
+        TestUtils.assertNotMockedNoBody(TestUtils.head(path));
     }
 
     @Test
@@ -99,6 +96,7 @@ public class RESTMockServerTest {
         TestUtils.assertNotMocked(TestUtils.post(path));
         TestUtils.assertNotMocked(TestUtils.delete(path));
         TestUtils.assertResponseWithBodyContains(TestUtils.put(path), 200, "works");
+        TestUtils.assertNotMockedNoBody(TestUtils.head(path));
     }
 
     @Test
@@ -115,6 +113,23 @@ public class RESTMockServerTest {
         TestUtils.assertNotMocked(TestUtils.post(path));
         TestUtils.assertResponseWithBodyContains(TestUtils.delete(path), 200, worksBody);
         TestUtils.assertNotMocked(TestUtils.put(path));
+        TestUtils.assertNotMockedNoBody(TestUtils.head(path));
+    }
+
+    @Test
+    public void testWhenHEAD() throws Exception {
+        String path = "/sample";
+        MatchableCall matchableCall = RESTMockServer.whenHEAD(pathEndsWith(path));
+        assertNotNull(matchableCall);
+        assertNull(matchableCall.response);
+        verify(RESTMockServer.dispatcher, never()).addMatchableCall(matchableCall);
+        TestUtils.assertNotMocked(TestUtils.get(path));
+        matchableCall.thenReturnEmpty(200);
+        TestUtils.assertNotMocked(TestUtils.get(path));
+        TestUtils.assertNotMocked(TestUtils.post(path));
+        TestUtils.assertResponseCodeIs(TestUtils.head(path), 200);
+        TestUtils.assertNotMocked(TestUtils.put(path));
+        TestUtils.assertNotMocked(TestUtils.delete(path));
     }
 
     @Test

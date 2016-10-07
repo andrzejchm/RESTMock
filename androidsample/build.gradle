@@ -31,7 +31,7 @@ apply from: '../quality_tools/findbugs.gradle'
 
 android {
   compileSdkVersion 24
-  buildToolsVersion "24"
+  buildToolsVersion "24.0.1"
 
   defaultConfig {
     applicationId "io.appflate.restmock.androidsample"
@@ -57,15 +57,15 @@ android {
 
 configurations.all {
   resolutionStrategy {
-    force 'com.android.support:support-annotations:24.1.1'
+    force "com.android.support:support-annotations:${supportLibraryVersion}"
     force 'com.squareup.okio:okio:1.8.0'
-    force 'com.squareup.okhttp3:okhttp:3.3.0'
+    force "com.squareup.okhttp3:okhttp:${okHttpVersion}"
   }
 }
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
-  compile 'com.android.support:appcompat-v7:24.1.1'
-  compile 'com.android.support:design:24.1.1'
+  compile "com.android.support:appcompat-v7:${supportLibraryVersion}"
+  compile "com.android.support:design:${supportLibraryVersion}"
   compile 'com.jakewharton:butterknife:7.0.1'
   compile 'com.google.dagger:dagger:2.2'
   compile 'com.squareup.retrofit2:retrofit:2.1.0'
@@ -86,15 +86,15 @@ dependencies {
     exclude group: 'com.android.support', module: 'support-v4'
     exclude module: 'recyclerview-v7'
   }
-  androidTestCompile 'com.android.support:support-annotations:24.1.1'
-  androidTestCompile 'com.android.support:appcompat-v7:24.1.1'
-  androidTestCompile 'com.android.support:design:24.1.1'
+  androidTestCompile "com.android.support:support-annotations:${supportLibraryVersion}"
+  androidTestCompile "com.android.support:appcompat-v7:${supportLibraryVersion}"
+  androidTestCompile "com.android.support:design:${supportLibraryVersion}"
 
   //the most important, RESTMock! :)
   androidTestCompile project(':android')
 
-  testCompile 'com.android.support:appcompat-v7:24.1.1'
-  testCompile 'com.android.support:design:24.1.1'
+  testCompile "com.android.support:appcompat-v7:${supportLibraryVersion}"
+  testCompile "com.android.support:design:${supportLibraryVersion}"
   testCompile 'junit:junit:4.12'
   testCompile "org.robolectric:robolectric:3.1"
   testCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
