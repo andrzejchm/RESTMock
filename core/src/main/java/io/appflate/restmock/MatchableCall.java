@@ -21,6 +21,7 @@ import org.hamcrest.Matcher;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.appflate.restmock.utils.RestMockUtils;
 import okhttp3.mockwebserver.MockResponse;
@@ -37,6 +38,7 @@ public class MatchableCall {
     private final RESTMockFileParser RESTMockFileParser;
     private MatchableCallsRequestDispatcher dispatcher;
     private List<MockResponse> responses;
+    private List<Long> delays;
     private int responseIndex;
 
     MatchableCall(RESTMockFileParser RESTMockFileParser, Matcher<RecordedRequest> requestMatcher,
@@ -45,6 +47,7 @@ public class MatchableCall {
         this.requestMatcher = requestMatcher;
         this.dispatcher = dispatcher;
         this.responses = new LinkedList<>();
+        this.delays = new LinkedList<>();
         this.responseIndex = 0;
     }
 
@@ -168,6 +171,22 @@ public class MatchableCall {
     }
 
     /**
+     * Sets delays for responses within this {@link MatchableCall}. You can specify more than one delay, which will result in responses
+     * being delayed
+     * in order of specified delays, one by one, while last delay will be applied to all responses exceeding the number of specified
+     * delays.
+     *
+     * @param timeUnit time unit to use for the delay, (see {@link TimeUnit#SECONDS}, {@link TimeUnit#MILLISECONDS})
+     * @param delays comma-separated list of delays to apply to consecutive responses
+     */
+    public MatchableCall delay(TimeUnit timeUnit, long... delays) {
+        for (long delay : delays) {
+            this.delays.add(timeUnit.toMillis(delay));
+        }
+        return this;
+    }
+
+    /**
      * removes this {@code MatchableCall} from being scheduled within {@link RESTMockServer}.
      *
      * @return this {@code MatchableCall}
@@ -177,20 +196,42 @@ public class MatchableCall {
         return this;
     }
 
-    MockResponse nextResponse() {
-        MockResponse mockResponse = peekNextResponse();
+    MockResponse response() {
+        MockResponse mockResponse = peekResponse();
         responseIndex++;
         return mockResponse;
     }
 
-    MockResponse peekNextResponse() {
-        if (responses.size() == 0) {
+    MockResponse peekResponse() {
+        if (responses.isEmpty()) {
             return null;
-        } else if (responseIndex >= responses.size()) {
-            return responses.get(responses.size() - 1);
         } else {
-            return responses.get(responseIndex);
+            MockResponse response = currentResponseInternal();
+            setResponseDelayInternal(response);
+            return response;
         }
+    }
+
+    private MockResponse currentResponseInternal() {
+        MockResponse response;
+        if (responseIndex >= responses.size()) {
+            response = responses.get(responses.size() - 1);
+        } else {
+            response = responses.get(responseIndex);
+        }
+        return response;
+    }
+
+    private void setResponseDelayInternal(MockResponse response) {
+        long delay;
+        if (delays.isEmpty()) {
+            delay = 0;
+        } else if (responseIndex >= delays.size()) {
+            delay = delays.get(delays.size() - 1);
+        } else {
+            delay = delays.get(responseIndex);
+        }
+        response.setBodyDelay(delay, TimeUnit.MILLISECONDS);
     }
 
     List<MockResponse> getResponses() {
