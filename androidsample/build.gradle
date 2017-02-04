@@ -96,13 +96,15 @@ dependencies {
     testCompile "com.android.support:appcompat-v7:${supportLibraryVersion}"
     testCompile "com.android.support:design:${supportLibraryVersion}"
     testCompile 'junit:junit:4.12'
-    testCompile "org.robolectric:robolectric:3.1"
     testCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     testCompile('com.android.support.test.espresso:espresso-contrib:2.2.2') {
         exclude group: 'com.android.support', module: 'appcompat'
         exclude group: 'com.android.support', module: 'support-v4'
         exclude module: 'recyclerview-v7'
     }
+    testCompile "org.robolectric:robolectric:3.2.2"
+
+
     testCompile project(':android')
     testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1' //required to resolve robolectric test problems
     testCompile(project(':core')) {
