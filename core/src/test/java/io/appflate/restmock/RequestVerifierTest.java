@@ -44,16 +44,21 @@ import static org.mockito.Mockito.spy;
  */
 public class RequestVerifierTest {
 
-    static RESTMockFileParser fileParser;
     private static final String path = "sample";
     private static final Matcher<RecordedRequest> INVOKED_MATCHER = pathEndsWith(path);
     private static final Matcher<RecordedRequest> NOT_INVOKED_MATCHER = pathEndsWith("else");
+    static RESTMockFileParser fileParser;
 
     @BeforeClass
     public static void setupClass() {
         fileParser = mock(RESTMockFileParser.class);
         RESTMockServerStarter.startSync(fileParser);
         RESTMockServer.dispatcher = spy(RESTMockServer.dispatcher);
+    }
+
+    @AfterClass
+    public static void teardownClass() throws IOException {
+        RESTMockServer.shutdown();
     }
 
     @Before
@@ -133,8 +138,8 @@ public class RequestVerifierTest {
         RESTMockServer.whenRequested(INVOKED_MATCHER).thenReturnString("a single call");
         RESTMockServer.whenRequested(INVOKED_MATCHER).thenReturnString("a single call");
         TestUtils.get(path);
-        TestUtils.get(path+"something");
-        TestUtils.get(path+"else");
+        TestUtils.get(path + "something");
+        TestUtils.get(path + "else");
         TestUtils.get(path);
         verifyRequest(INVOKED_MATCHER).atLeast(3);
     }
@@ -149,10 +154,5 @@ public class RequestVerifierTest {
         RESTMockServer.whenRequested(INVOKED_MATCHER).thenReturnString("a single call");
         TestUtils.get(path);
         verifyRequest(INVOKED_MATCHER).exactly(3);
-    }
-
-    @AfterClass
-    public static void teardownClass() throws IOException {
-        RESTMockServer.shutdown();
     }
 }

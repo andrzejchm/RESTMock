@@ -41,7 +41,7 @@ Add the dependency
 
 ```groovy  
 dependencies {
-	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.1.4'
+	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.2.0'
 }
 ```
 
@@ -113,6 +113,60 @@ RestAdapter adapter = new RestAdapter.Builder()
                 ...
                 .build();
 ```
+
+##Response chains
+You can chain different responses for a single request matcher, all the `thenReturn*()` methods accept varags parameter with response, or you can call those methods multiple times on a single matcher, examples:
+
+```java
+RESTMockServer.whenGET(pathEndsWith(path))
+                .thenReturnString("a single call")
+                .thenReturnEmpty(200)
+                .thenReturnFile("jsonFile.json");
+```
+
+or 
+
+```java
+RESTMockServer.whenGET(pathEndsWith(path))
+                .thenReturnString("a single call", "answer no 2", "answer no 3");
+```
+
+##Response delays
+Delaying responses is accomplished with the `delay(TimeUnit timeUnit, long delay)` method. Delays can be specified in chain, just like chaining responses:
+ 
+```java
+RESTMockServer.whenGET(pathEndsWith(path))
+                .thenReturnString("a single call")
+                .delay(TimeUnit.SECONDS, 5)
+                .delay(TimeUnit.SECONDS, 10)
+                .delay(TimeUnit.SECONDS, 15);
+```
+
+or
+
+```java
+RESTMockServer.whenGET(pathEndsWith(path))
+                .thenReturnString("a single call")
+                .delay(TimeUnit.SECONDS, 5, 10, 15);
+```
+
+Which will result in 1st response being delayed by 5 seconds, 2nd response by 10 seconds and 3rd, 4th, 5th... by 15 seconds.
+
+####Interleaving delays with responses
+Check out this example:
+
+```java
+RESTMockServer.whenGET(pathEndsWith(path))
+                .thenReturnString("1st call")
+                .delay(TimeUnit.SECONDS, 5)
+                .thenReturnString("2nd call")
+                .delay(TimeUnit.SECONDS, 10)
+                .delay(TimeUnit.SECONDS, 15)
+                .thenReturnString("3rd call")
+                .delay(TimeUnit.SECONDS, 20, 30, 40)
+```
+this will result in `1st call` being returned after 5 seconds, `2nd call` being returned after 10 seconds, `3rd call` being returned after 15 seconds, another one after 20 seconds, and another after 30 seconds, and then every consecutive response with 40 seconds delay
+
 ##Request verification
 It is possible to verify which requests were called and how many times thanks to `RequestsVerifier`. All you have to do is call one of these:
 

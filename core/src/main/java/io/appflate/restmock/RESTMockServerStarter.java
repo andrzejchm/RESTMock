@@ -23,28 +23,21 @@ import java.util.concurrent.TimeUnit;
 
 import io.appflate.restmock.logging.RESTMockLogger;
 
-
 public class RESTMockServerStarter {
+
     public static final int KEEP_ALIVE_TIME = 60;
-
-    private RESTMockServerStarter() {
-    }
-
 
     public static void startSync(final RESTMockFileParser mocksFileParser) {
         startSync(mocksFileParser, null);
     }
 
-    public static void startSync(final RESTMockFileParser mocksFileParser,
-                                 final RESTMockLogger logger) {
+    public static void startSync(final RESTMockFileParser mocksFileParser, final RESTMockLogger logger) {
         // it has to be like that since Android prevents starting testServer on main Thread.
-        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1,
-                1,
-                KEEP_ALIVE_TIME,
-                TimeUnit.SECONDS,
-                new LinkedBlockingQueue<Runnable>(1));
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1, 1, KEEP_ALIVE_TIME, TimeUnit.SECONDS,
+                                                                       new LinkedBlockingQueue<Runnable>(1));
 
         threadPoolExecutor.execute(new Runnable() {
+
             @Override
             public void run() {
                 try {
@@ -58,12 +51,14 @@ public class RESTMockServerStarter {
         try {
             threadPoolExecutor.shutdown();
             if (!threadPoolExecutor.awaitTermination(KEEP_ALIVE_TIME, TimeUnit.SECONDS)) {
-                throw new RuntimeException(
-                        "mock server didn't manage to start within the given timeout (60 seconds)");
+                throw new RuntimeException("mock server didn't manage to start within the given timeout (60 seconds)");
             }
         } catch (InterruptedException e) {
             RESTMockServer.getLogger().error("Server start error", e);
             throw new RuntimeException(e);
         }
+    }
+
+    private RESTMockServerStarter() {
     }
 }

@@ -27,29 +27,17 @@ import okhttp3.mockwebserver.RecordedRequest;
  * Created by andrzejchm on 27/04/16.
  */
 public class RequestVerificationException extends RuntimeException {
-    public RequestVerificationException(String message) {
-        super(message);
-    }
 
-
-    protected static String composeMessage(String messageFormat,
-                                           Matcher<RecordedRequest> requestMatcher,
-                                           int count,
-                                           int times,
+    protected static String composeMessage(String messageFormat, Matcher<RecordedRequest> requestMatcher, int count, int times,
                                            List<RecordedRequest> requestHistory) {
         StringBuilder sb = new StringBuilder();
         sb.append("Request = \"").append(requestMatcher).append("\":\n");
-        sb.append(String.format(Locale.US,
-                messageFormat,
-                times,
-                count));
+        sb.append(String.format(Locale.US, messageFormat, times, count));
         appendHistoryRequests(requestMatcher, requestHistory, sb);
         return sb.toString();
     }
 
-    protected static void appendHistoryRequests(Matcher<RecordedRequest> matcher,
-                                                List<RecordedRequest> requestHistory,
-                                                StringBuilder sb) {
+    protected static void appendHistoryRequests(Matcher<RecordedRequest> matcher, List<RecordedRequest> requestHistory, StringBuilder sb) {
         sb.append("\n\nAll invocations: (\"#\" at the beginning means the request was matched)\n[");
         if (!requestHistory.isEmpty()) {
             sb.append("\n");
@@ -66,5 +54,9 @@ public class RequestVerificationException extends RuntimeException {
             sb.append("\n");
         }
         sb.append("]");
+    }
+
+    public RequestVerificationException(String message) {
+        super(message);
     }
 }

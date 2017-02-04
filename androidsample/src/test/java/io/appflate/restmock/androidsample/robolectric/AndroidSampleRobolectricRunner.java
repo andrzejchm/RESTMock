@@ -18,19 +18,20 @@
 package io.appflate.restmock.androidsample.robolectric;
 
 import org.junit.runners.model.InitializationError;
-import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.TestLifecycle;
 
 /**
  * A runner that uses Robolectric without a "real" Android environment to run unit tests.
  */
-public class AndroidSampleRobolectricRunner extends RobolectricGradleTestRunner {
-  public AndroidSampleRobolectricRunner(Class<?> klass) throws InitializationError {
-    super(klass);
-  }
+public class AndroidSampleRobolectricRunner extends RobolectricTestRunner {
 
-  @Override
-  public Class<? extends TestLifecycle> getTestLifecycleClass() {
-    return AndroidSampleTestLifecycle.class;
-  }
+    public AndroidSampleRobolectricRunner(Class<?> klass) throws InitializationError {
+        super(klass);
+    }
+
+    @Override
+    public Class<? extends TestLifecycle> getTestLifecycleClass() {
+        return AndroidSampleTestLifecycle.class;
+    }
 }
