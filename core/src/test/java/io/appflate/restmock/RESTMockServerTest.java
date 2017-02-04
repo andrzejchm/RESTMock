@@ -26,7 +26,7 @@ import java.io.IOException;
 import io.appflate.restmock.utils.TestUtils;
 
 import static io.appflate.restmock.utils.RequestMatchers.pathEndsWith;
-import static junit.framework.Assert.assertNull;
+import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -60,7 +60,7 @@ public class RESTMockServerTest {
         String worksBody = "works";
         MatchableCall matchableCall = RESTMockServer.whenGET(pathEndsWith(path));
         assertNotNull(matchableCall);
-        assertNull(matchableCall.response);
+        assertEquals(0, matchableCall.getResponses().size());
         verify(RESTMockServer.dispatcher, never()).addMatchableCall(matchableCall);
         TestUtils.assertNotMocked(TestUtils.get(path));
         matchableCall.thenReturnString(worksBody);
@@ -77,7 +77,7 @@ public class RESTMockServerTest {
         String worksBody = "works";
         MatchableCall matchableCall = RESTMockServer.whenPOST(pathEndsWith(path));
         assertNotNull(matchableCall);
-        assertNull(matchableCall.response);
+        assertEquals(0, matchableCall.getResponses().size());
         verify(RESTMockServer.dispatcher, never()).addMatchableCall(matchableCall);
         TestUtils.assertNotMocked(TestUtils.get(path));
         matchableCall.thenReturnString(worksBody);
@@ -94,7 +94,7 @@ public class RESTMockServerTest {
         String worksBody = "works";
         MatchableCall matchableCall = RESTMockServer.whenPUT(pathEndsWith(path));
         assertNotNull(matchableCall);
-        assertNull(matchableCall.response);
+        assertEquals(0, matchableCall.getResponses().size());
         verify(RESTMockServer.dispatcher, never()).addMatchableCall(matchableCall);
         TestUtils.assertNotMocked(TestUtils.get(path));
         matchableCall.thenReturnString(worksBody);
@@ -111,7 +111,7 @@ public class RESTMockServerTest {
         String worksBody = "works";
         MatchableCall matchableCall = RESTMockServer.whenDELETE(pathEndsWith(path));
         assertNotNull(matchableCall);
-        assertNull(matchableCall.response);
+        assertEquals(0, matchableCall.getResponses().size());
         verify(RESTMockServer.dispatcher, never()).addMatchableCall(matchableCall);
         TestUtils.assertNotMocked(TestUtils.get(path));
         matchableCall.thenReturnString(worksBody);
@@ -127,7 +127,7 @@ public class RESTMockServerTest {
         String path = "/sample";
         MatchableCall matchableCall = RESTMockServer.whenHEAD(pathEndsWith(path));
         assertNotNull(matchableCall);
-        assertNull(matchableCall.response);
+        assertEquals(0, matchableCall.getResponses().size());
         verify(RESTMockServer.dispatcher, never()).addMatchableCall(matchableCall);
         TestUtils.assertNotMocked(TestUtils.get(path));
         matchableCall.thenReturnEmpty(200);

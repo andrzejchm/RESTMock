@@ -113,6 +113,24 @@ RestAdapter adapter = new RestAdapter.Builder()
                 ...
                 .build();
 ```
+
+##Response chains
+You can chain different responses for a single request matcher, all the `thenReturn*()` methods accept varags parameter with response, or you can call those methods multiple times on a single matcher, examples:
+
+```java
+RESTMockServer.whenGET(pathEndsWith(path))
+                .thenReturnString("a single call")
+                .thenReturnEmpty(200)
+                .thenReturnFile("jsonFile.json");
+```
+
+or 
+
+```java
+RESTMockServer.whenGET(pathEndsWith(path))
+                .thenReturnString("a single call", "answer no 2", "answer no 3");
+```
+
 ##Request verification
 It is possible to verify which requests were called and how many times thanks to `RequestsVerifier`. All you have to do is call one of these:
 
