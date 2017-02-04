@@ -23,18 +23,19 @@ import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
 
 /**
- * Represents a Http call with the {@link MockResponse} to be returned for a HTTP request matched by {@link io.appflate.restmock.utils.RequestMatcher RequestMatcher}.
+ * Represents a Http call with the {@link MockResponse} to be returned for a HTTP request matched by {@link
+ * io.appflate.restmock.utils.RequestMatcher RequestMatcher}.
  * In order to create new {@code MatchableCall} call  one of the {@link RESTMockServer} methods.
  */
 public class MatchableCall {
+
     public final Matcher<RecordedRequest> requestMatcher;
     private final RESTMockFileParser RESTMockFileParser;
     public MatchableCallsRequestDispatcher dispatcher;
     public MockResponse response;
 
-    MatchableCall(RESTMockFileParser RESTMockFileParser,
-                         Matcher<RecordedRequest> requestMatcher,
-                         MatchableCallsRequestDispatcher dispatcher) {
+    MatchableCall(RESTMockFileParser RESTMockFileParser, Matcher<RecordedRequest> requestMatcher,
+                  MatchableCallsRequestDispatcher dispatcher) {
         this.RESTMockFileParser = RESTMockFileParser;
         this.requestMatcher = requestMatcher;
         this.dispatcher = dispatcher;
@@ -43,7 +44,9 @@ public class MatchableCall {
     /**
      * Same as {@link MatchableCall#thenReturnString(int, String)}, but with the default {@code responseCode} of 200
      *
-     * <p>This {@code MatchableCall} will be automatically scheduled within the {@link RESTMockServer} if you want to prevent that, see {@link MatchableCall#dontSet()}</p>
+     * <p>This {@code MatchableCall} will be automatically scheduled within the {@link RESTMockServer} if you want to prevent that, see
+     * {@link MatchableCall#dontSet()}</p>
+     *
      * @param string body contents to be returned with the response
      * @return this {@code MatchableCall}
      */
@@ -52,16 +55,17 @@ public class MatchableCall {
     }
 
     /**
-     * <p>Makes this {@code MatchableCall} return the given {@code responseString} response with the specified {@code responseCode} as a http status code</p>
+     * <p>Makes this {@code MatchableCall} return the given {@code responseString} response with the specified {@code responseCode} as a
+     * http status code</p>
      *
-     * <p>This {@code MatchableCall} will be automatically scheduled within the {@code RESTMockServer} if you want to prevent that, see {@link MatchableCall#dontSet()}</p>
+     * <p>This {@code MatchableCall} will be automatically scheduled within the {@code RESTMockServer} if you want to prevent that, see
+     * {@link MatchableCall#dontSet()}</p>
      *
      * @param responseCode a http response code to use for the response.
-     * @param responseString         responseString string to return for this matchableCall's request.
+     * @param responseString responseString string to return for this matchableCall's request.
      * @return this {@code MatchableCall}
      */
-    public MatchableCall thenReturnString(int responseCode,
-                                          String responseString) {
+    public MatchableCall thenReturnString(int responseCode, String responseString) {
         MockResponse response = new MockResponse();
         if (responseString != null) {
             response.setBody(responseString);
@@ -71,21 +75,21 @@ public class MatchableCall {
     }
 
     public MatchableCall thenReturnEmpty(int responseCode) {
-      return thenReturnString(responseCode, null);
+        return thenReturnString(responseCode, null);
     }
 
     /**
      * Makes this {@code MatchableCall} return  {@link MockResponse}
      *
-     * <p>This {@code MatchableCall} will be automatically scheduled within the {@code RESTMockServer} if you want to prevent that, see {@link MatchableCall#dontSet()}</p>
+     * <p>This {@code MatchableCall} will be automatically scheduled within the {@code RESTMockServer} if you want to prevent that, see
+     * {@link MatchableCall#dontSet()}</p>
      *
      * @param resp a {@link MockResponse} that will be returned with this {@code MatchableCall}
      * @return this {@code MatchableCall}
      */
     public MatchableCall thenReturn(MockResponse resp) {
         if (response != null) {
-            response = dispatcher.createErrorResponse(
-                    new IllegalStateException("response is already set!"));
+            response = dispatcher.createErrorResponse(new IllegalStateException("response is already set!"));
         } else {
             this.response = resp;
         }
@@ -96,7 +100,8 @@ public class MatchableCall {
     /**
      * same as {@link MatchableCall#thenReturnFile(int, String)} but with the default {@code responseCode} value set to 200.
      *
-     * <p>This {@code MatchableCall} will be automatically scheduled within the {@code RESTMockServer} if you want to prevent that, see {@link MatchableCall#dontSet()}</p>
+     * <p>This {@code MatchableCall} will be automatically scheduled within the {@code RESTMockServer} if you want to prevent that, see
+     * {@link MatchableCall#dontSet()}</p>
      *
      * @param jsonFile a json file's path to return. {@link RESTMockFileParser} is responsible of reading files for given paths.
      * @return a {@link MatchableCall} that will return given {@code jsonFile} as a response.
@@ -108,23 +113,21 @@ public class MatchableCall {
     /**
      * Makes this MatchableCall return the {@code jsonFile}'s contents with the {@code responseCode} as a http status code.
      *
-     * <p>This {@code MatchableCall} will be automatically scheduled within the {@code RESTMockServer} if you want to prevent that, see {@link MatchableCall#dontSet()}</p>
+     * <p>This {@code MatchableCall} will be automatically scheduled within the {@code RESTMockServer} if you want to prevent that, see
+     * {@link MatchableCall#dontSet()}</p>
+     *
      * @param responseCode http status code
      * @param jsonFile a json file's path to return. {@link RESTMockFileParser} is responsible of reading files for given paths.
      * @return this {@code MatchableCall}
      */
-    public MatchableCall thenReturnFile(int responseCode,
-                                        String jsonFile) {
+    public MatchableCall thenReturnFile(int responseCode, String jsonFile) {
         if (response != null) {
-            response = dispatcher.createErrorResponse(
-                    new IllegalStateException("response is already set!"));
+            response = dispatcher.createErrorResponse(new IllegalStateException("response is already set!"));
         } else {
             try {
-                response = RestMockUtils.createResponseFromFile(RESTMockFileParser,
-                        jsonFile,
-                        responseCode);
+                response = RestMockUtils.createResponseFromFile(RESTMockFileParser, jsonFile, responseCode);
             } catch (Exception e) {
-                RESTMockServer.getLogger().error("<- Response FILE READ ERROR",e);
+                RESTMockServer.getLogger().error("<- Response FILE READ ERROR", e);
                 response = dispatcher.createErrorResponse(e);
             }
         }
@@ -134,6 +137,7 @@ public class MatchableCall {
 
     /**
      * removes this {@code MatchableCall} from being scheduled within {@link RESTMockServer}.
+     *
      * @return this {@code MatchableCall}
      */
     public MatchableCall dontSet() {

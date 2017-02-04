@@ -20,6 +20,7 @@ package io.appflate.restmock;
  * Used for parsing json files from local storage to {@code String}
  */
 public interface RESTMockFileParser {
+
     /**
      * reads the json file from {@code jsonFilePath} and returns its contents as a {@code String}
      * <p> It's {@code RESTMockFileParser}'s implementation responsibility to determine how to

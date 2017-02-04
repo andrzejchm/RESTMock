@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2016 Appflate.io
  *
@@ -30,15 +29,8 @@ import okhttp3.mockwebserver.MockResponse;
 
 public final class RestMockUtils {
 
-    private RestMockUtils() {
-        throw new UnsupportedOperationException("(╯‵Д′)╯ PLEASE STAHP!");
-
-    }
-
-    public static MockResponse createResponseFromFile(RESTMockFileParser RESTMockFileParser,
-                                                      String jsonFilePath,
-                                                      int responseCode)
-            throws Exception {
+    public static MockResponse createResponseFromFile(RESTMockFileParser RESTMockFileParser, String jsonFilePath,
+                                                      int responseCode) throws Exception {
         String fileContents = RESTMockFileParser.readJsonFile(jsonFilePath);
         return new MockResponse().setResponseCode(responseCode).setBody(fileContents);
     }
@@ -47,38 +39,39 @@ public final class RestMockUtils {
      * Extract query parameters from a {@link URL}.
      *
      * @param url The {@link URL} to retrieve query parameters for.
-     *
      * @return A {@link List} of {@link QueryParam} objects. Each parameter has one key, and zero or
-     *         more values.
-     *
+     * more values.
      * @throws UnsupportedEncodingException If unable to decode from UTF-8. This should never happen.
      */
     public static List<QueryParam> splitQuery(URL url) throws UnsupportedEncodingException {
-      final Map<String, List<String>> queryPairs = new LinkedHashMap<>();
-      final String[] pairs = url.getQuery().split("&");
-      for (String pair : pairs) {
-        final int idx = pair.indexOf("=");
-        final String key = idx > 0 ? URLDecoder.decode(pair.substring(0, idx), "UTF-8") : pair;
-        List<String> valueList = new LinkedList<>();
+        final Map<String, List<String>> queryPairs = new LinkedHashMap<>();
+        final String[] pairs = url.getQuery().split("&");
+        for (String pair : pairs) {
+            final int idx = pair.indexOf("=");
+            final String key = idx > 0 ? URLDecoder.decode(pair.substring(0, idx), "UTF-8") : pair;
+            List<String> valueList = new LinkedList<>();
 
-        if (queryPairs.containsKey(key)) {
-          valueList = queryPairs.get(key);
+            if (queryPairs.containsKey(key)) {
+                valueList = queryPairs.get(key);
+            }
+
+            final String value = idx > 0 && pair.length() > idx + 1 ? URLDecoder.decode(pair.substring(idx + 1), "UTF-8") : null;
+            valueList.add(value);
+
+            queryPairs.put(key, valueList);
         }
 
-        final String value =
-          idx > 0 && pair.length() > idx + 1 ? URLDecoder.decode(pair.substring(idx + 1), "UTF-8")
-                                             : null;
-        valueList.add(value);
+        List<QueryParam> finalParamList = new LinkedList<>();
+        for (Map.Entry<String, List<String>> entry : queryPairs.entrySet()) {
+            QueryParam nextFinalParam = new QueryParam(entry.getKey(), entry.getValue());
+            finalParamList.add(nextFinalParam);
+        }
 
-        queryPairs.put(key, valueList);
-      }
+        return finalParamList;
+    }
 
-      List<QueryParam> finalParamList = new LinkedList<>();
-      for (Map.Entry<String, List<String>> entry: queryPairs.entrySet()) {
-        QueryParam nextFinalParam = new QueryParam(entry.getKey(), entry.getValue());
-        finalParamList.add(nextFinalParam);
-      }
+    private RestMockUtils() {
+        throw new UnsupportedOperationException("(╯‵Д′)╯ PLEASE STAHP!");
 
-      return finalParamList;
     }
 }

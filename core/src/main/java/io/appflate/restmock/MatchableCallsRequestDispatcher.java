@@ -16,16 +16,17 @@
 
 package io.appflate.restmock;
 
-import okhttp3.mockwebserver.Dispatcher;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.RecordedRequest;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.LinkedList;
 import java.util.List;
 
+import okhttp3.mockwebserver.Dispatcher;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.RecordedRequest;
+
 class MatchableCallsRequestDispatcher extends Dispatcher {
+
     private List<MatchableCall> matchableCalls;
     private List<RecordedRequest> requestsHistory = new LinkedList<>();
 
@@ -44,24 +45,20 @@ class MatchableCallsRequestDispatcher extends Dispatcher {
         } else if (matchedRequests.size() > 1) {
             String message = prepareTooManyMatchesMessage(recordedRequest, matchedRequests);
             RESTMockServer.getLogger().error("<- Response ERROR:\t" + message);
-            return createErrorResponse(
-                    new IllegalStateException(message));
+            return createErrorResponse(new IllegalStateException(message));
         } else {
             RESTMockServer.getLogger().error("<- Response ERROR:\t" + RESTMockServer.RESPONSE_NOT_MOCKED + ": " + recordedRequest);
-            MockResponse mockResponse =
-                    new MockResponse().setResponseCode(500);
+            MockResponse mockResponse = new MockResponse().setResponseCode(500);
             if (!recordedRequest.getMethod().equals("HEAD")) {
                 mockResponse.setBody(RESTMockServer.RESPONSE_NOT_MOCKED);
             }
-            
+
             return mockResponse;
         }
     }
 
-    private String prepareTooManyMatchesMessage(RecordedRequest recordedRequest,
-                                                final List<MatchableCall> matchedRequests) {
-        StringBuilder sb =
-                new StringBuilder(RESTMockServer.MORE_THAN_ONE_RESPONSE_ERROR + recordedRequest + ": ");
+    private String prepareTooManyMatchesMessage(RecordedRequest recordedRequest, final List<MatchableCall> matchedRequests) {
+        StringBuilder sb = new StringBuilder(RESTMockServer.MORE_THAN_ONE_RESPONSE_ERROR + recordedRequest + ": ");
         for (MatchableCall match : matchedRequests) {
             sb.append(match.requestMatcher.toString()).append("\n");
         }
@@ -108,7 +105,6 @@ class MatchableCallsRequestDispatcher extends Dispatcher {
     List<RecordedRequest> getRequestHistory() {
         return requestsHistory;
     }
-
 
     void clearHistoricalRequests() {
         requestsHistory.clear();

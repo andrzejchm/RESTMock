@@ -34,6 +34,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 public class RESTMockServerTest {
+
     static RESTMockFileParser fileParser;
 
     @BeforeClass
@@ -41,6 +42,11 @@ public class RESTMockServerTest {
         fileParser = mock(RESTMockFileParser.class);
         RESTMockServerStarter.startSync(fileParser);
         RESTMockServer.dispatcher = spy(RESTMockServer.dispatcher);
+    }
+
+    @AfterClass
+    public static void teardownClass() throws IOException {
+        RESTMockServer.shutdown();
     }
 
     @Before
@@ -141,10 +147,5 @@ public class RESTMockServerTest {
         TestUtils.assertMultipleMatches(TestUtils.post(path));
         TestUtils.assertMultipleMatches(TestUtils.delete(path));
         TestUtils.assertMultipleMatches(TestUtils.put(path));
-    }
-
-    @AfterClass
-    public static void teardownClass() throws IOException {
-        RESTMockServer.shutdown();
     }
 }

@@ -29,42 +29,24 @@ import okhttp3.mockwebserver.RecordedRequest;
  * Created by andrzejchm on 26/04/16.
  */
 public class RequestsVerifier {
-    private static MatchableCallsRequestDispatcher dispatcher;
-
-    private RequestsVerifier() {
-        throw new UnsupportedOperationException();
-    }
-
-    static void init(MatchableCallsRequestDispatcher dispatcher) {
-        RequestsVerifier.dispatcher = dispatcher;
-    }
-
-    public static RequestVerification verifyRequest(Matcher<RecordedRequest> matcher) {
-        return new RequestVerification(matcher);
-    }
-
-    public static RequestVerification verifyDELETE(Matcher<RecordedRequest> matcher) {
-        return verifyRequest(AllOf.allOf(RequestMatchers.isDELETE(), matcher));
-    }
-
-    public static RequestVerification verifyGET(Matcher<RecordedRequest> matcher) {
-        return verifyRequest(AllOf.allOf(RequestMatchers.isGET(), matcher));
-    }
-
-    public static RequestVerification verifyPATCH(Matcher<RecordedRequest> matcher) {
-        return verifyRequest(AllOf.allOf(RequestMatchers.isPATCH(), matcher));
-    }
-
-    public static RequestVerification verifyPOST(Matcher<RecordedRequest> matcher) {
-        return verifyRequest(AllOf.allOf(RequestMatchers.isPOST(), matcher));
-    }
-
-    public static RequestVerification verifyPUT(Matcher<RecordedRequest> matcher) {
-        return verifyRequest(AllOf.allOf(RequestMatchers.isPUT(), matcher));
-    }
 
     public static class RequestVerification {
+
         Matcher<RecordedRequest> matcher;
+
+        /**
+         * @param requestMatcher needed to match the interesting request.
+         * @return how many times the request was invoked
+         */
+        private static int requestInvocationCount(Matcher<RecordedRequest> requestMatcher) {
+            int count = 0;
+            for (RecordedRequest recordedRequest : dispatcher.getRequestHistory()) {
+                if (requestMatcher.matches(recordedRequest)) {
+                    count++;
+                }
+            }
+            return count;
+        }
 
         RequestVerification(Matcher<RecordedRequest> matcher) {
             this.matcher = matcher;
@@ -96,10 +78,7 @@ public class RequestsVerifier {
             }
             int count = requestInvocationCount(matcher);
             if (count < times) {
-                throw new RequestInvocationCountNotEnoughException(matcher,
-                        count,
-                        times,
-                        dispatcher.getRequestHistory());
+                throw new RequestInvocationCountNotEnoughException(matcher, count, times, dispatcher.getRequestHistory());
             }
 
         }
@@ -114,13 +93,9 @@ public class RequestsVerifier {
             int count = requestInvocationCount(matcher);
             if (count != times) {
                 if (count == 0) {
-                    throw new RequestNotInvokedException(matcher,
-                            dispatcher.getRequestHistory());
+                    throw new RequestNotInvokedException(matcher, dispatcher.getRequestHistory());
                 } else {
-                    throw new RequestInvocationCountMismatchException(count,
-                            times,
-                            matcher,
-                            dispatcher.getRequestHistory());
+                    throw new RequestInvocationCountMismatchException(count, times, matcher, dispatcher.getRequestHistory());
                 }
             }
         }
@@ -131,19 +106,39 @@ public class RequestsVerifier {
             }
         }
 
-        /**
-         * @param requestMatcher needed to match the interesting request.
-         * @return how many times the request was invoked
-         */
-        private static int requestInvocationCount(Matcher<RecordedRequest> requestMatcher) {
-            int count = 0;
-            for (RecordedRequest recordedRequest : dispatcher.getRequestHistory()) {
-                if (requestMatcher.matches(recordedRequest)) {
-                    count++;
-                }
-            }
-            return count;
-        }
+    }
 
+    private static MatchableCallsRequestDispatcher dispatcher;
+
+    static void init(MatchableCallsRequestDispatcher dispatcher) {
+        RequestsVerifier.dispatcher = dispatcher;
+    }
+
+    public static RequestVerification verifyRequest(Matcher<RecordedRequest> matcher) {
+        return new RequestVerification(matcher);
+    }
+
+    public static RequestVerification verifyDELETE(Matcher<RecordedRequest> matcher) {
+        return verifyRequest(AllOf.allOf(RequestMatchers.isDELETE(), matcher));
+    }
+
+    public static RequestVerification verifyGET(Matcher<RecordedRequest> matcher) {
+        return verifyRequest(AllOf.allOf(RequestMatchers.isGET(), matcher));
+    }
+
+    public static RequestVerification verifyPATCH(Matcher<RecordedRequest> matcher) {
+        return verifyRequest(AllOf.allOf(RequestMatchers.isPATCH(), matcher));
+    }
+
+    public static RequestVerification verifyPOST(Matcher<RecordedRequest> matcher) {
+        return verifyRequest(AllOf.allOf(RequestMatchers.isPOST(), matcher));
+    }
+
+    public static RequestVerification verifyPUT(Matcher<RecordedRequest> matcher) {
+        return verifyRequest(AllOf.allOf(RequestMatchers.isPUT(), matcher));
+    }
+
+    private RequestsVerifier() {
+        throw new UnsupportedOperationException();
     }
 }

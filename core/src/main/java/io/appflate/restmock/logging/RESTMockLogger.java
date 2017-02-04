@@ -20,10 +20,10 @@ package io.appflate.restmock.logging;
  * Created by andrzejchm on 23/04/16.
  */
 public interface RESTMockLogger {
+
     void log(String message);
 
     void error(String errorMessage);
 
-    void error(String errorMessage,
-               Throwable exception);
+    void error(String errorMessage, Throwable exception);
 }

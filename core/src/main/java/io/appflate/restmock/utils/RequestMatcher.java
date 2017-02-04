@@ -16,11 +16,10 @@
 
 package io.appflate.restmock.utils;
 
-import okhttp3.mockwebserver.RecordedRequest;
-
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 
+import okhttp3.mockwebserver.RecordedRequest;
 
 /**
  * <p>A RequestMatcher is an extension of {@link org.hamcrest.TypeSafeMatcher} making it easier to specify
@@ -28,6 +27,7 @@ import org.hamcrest.TypeSafeMatcher;
  * <p>See {@link org.hamcrest.Matcher} for more info about hamcrest's matchers</p>
  */
 public abstract class RequestMatcher extends TypeSafeMatcher<RecordedRequest> {
+
     private final String description;
 
     public RequestMatcher(String description) {
