@@ -49,8 +49,8 @@ class MatchableCallsRequestDispatcher extends Dispatcher {
     }
 
     private MockResponse onOneResponseMatched(List<MatchableCall> matchedRequests) {
-        RESTMockServer.getLogger().log("<- Response:\t" + matchedRequests.get(0).peekNextResponse());
-        return matchedRequests.get(0).nextResponse();
+        RESTMockServer.getLogger().log("<- Response:\t" + matchedRequests.get(0).peekResponse());
+        return matchedRequests.get(0).response();
     }
 
     private MockResponse onTooManyResponsesMatched(RecordedRequest recordedRequest, List<MatchableCall> matchedRequests) {

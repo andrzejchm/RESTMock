@@ -23,6 +23,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import io.appflate.restmock.utils.TestUtils;
 import okhttp3.mockwebserver.MockResponse;
@@ -113,4 +114,61 @@ public class RequestsChainTest {
         response = TestUtils.get(path).body().string();
         assertEquals(lastResponse, response);
     }
+
+    @Test
+    public void multipleResponsesWithDifferentDelays() throws Exception {
+        RESTMockServer.whenGET(pathEndsWith(path))
+                .thenReturnString("a single call")
+                .delay(TimeUnit.SECONDS, 1)
+                .thenReturnString("answer no 2")
+                .delay(TimeUnit.MILLISECONDS, 100)
+                .thenReturnString("answer no 3")
+                .delay(TimeUnit.MILLISECONDS, 500);
+
+        long a = System.currentTimeMillis();
+        String response = TestUtils.get(path).body().string();
+        assertEquals("a single call", response);
+        long b = System.currentTimeMillis();
+        assertEquals(1000, b - a, 50);
+
+        a = System.currentTimeMillis();
+        response = TestUtils.get(path).body().string();
+        assertEquals("answer no 2", response);
+        b = System.currentTimeMillis();
+        assertEquals(100, b - a, 50);
+
+        a = System.currentTimeMillis();
+        response = TestUtils.get(path).body().string();
+        assertEquals("answer no 3", response);
+        b = System.currentTimeMillis();
+        assertEquals(500, b - a, 50);
+    }
+
+    @Test
+    public void multipleResponsesWithOneDelay() throws Exception {
+        RESTMockServer.whenGET(pathEndsWith(path))
+                .thenReturnString("a single call")
+                .delay(TimeUnit.MILLISECONDS, 300)
+                .thenReturnString("answer no 2")
+                .thenReturnString("answer no 3");
+
+        long a = System.currentTimeMillis();
+        String response = TestUtils.get(path).body().string();
+        assertEquals("a single call", response);
+        long b = System.currentTimeMillis();
+        assertEquals(300, b - a, 50);
+
+        a = System.currentTimeMillis();
+        response = TestUtils.get(path).body().string();
+        assertEquals("answer no 2", response);
+        b = System.currentTimeMillis();
+        assertEquals(300, b - a, 50);
+
+        a = System.currentTimeMillis();
+        response = TestUtils.get(path).body().string();
+        assertEquals("answer no 3", response);
+        b = System.currentTimeMillis();
+        assertEquals(300, b - a, 50);
+    }
+
 }
