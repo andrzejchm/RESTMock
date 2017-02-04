@@ -20,6 +20,7 @@ package io.appflate.restmock.logging;
  * Created by andrzejchm on 23/04/16.
  */
 public class NOOpLogger implements RESTMockLogger {
+
     @Override
     public void log(String message) {
         //intentionally empty
@@ -31,8 +32,7 @@ public class NOOpLogger implements RESTMockLogger {
     }
 
     @Override
-    public void error(String errorMessage,
-                      Throwable exception) {
+    public void error(String errorMessage, Throwable exception) {
         //intentionally empty
     }
 }

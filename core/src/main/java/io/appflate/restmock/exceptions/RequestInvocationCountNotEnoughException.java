@@ -27,10 +27,9 @@ import okhttp3.mockwebserver.RecordedRequest;
  * count of requests was not as many as expected number.
  */
 public class RequestInvocationCountNotEnoughException extends RequestVerificationException {
-    public RequestInvocationCountNotEnoughException(Matcher<RecordedRequest> matcher,
-                                                    int count,
-                                                    int times,
+
+    public RequestInvocationCountNotEnoughException(Matcher<RecordedRequest> matcher, int count, int times,
                                                     List<RecordedRequest> requestHistory) {
-        super(composeMessage("Wanted to be invoked at least %1$s times, but was only %2$s",matcher,count,times,requestHistory));
+        super(composeMessage("Wanted to be invoked at least %1$s times, but was only %2$s", matcher, count, times, requestHistory));
     }
 }

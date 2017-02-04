@@ -12,29 +12,30 @@ import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 public class QueryParamTest {
-  @Test
-  public void testBasicQueryParamSplit() throws Exception {
-    URL url = new URL("https://www.jwir3.com/someRequest?flag=true&session_length=2");
 
-    List<QueryParam> params = RestMockUtils.splitQuery(url);
+    @Test
+    public void testBasicQueryParamSplit() throws Exception {
+        URL url = new URL("https://www.jwir3.com/someRequest?flag=true&session_length=2");
 
-    QueryParam expectedParam1 = new QueryParam("flag", "true");
-    QueryParam expectedParam2 = new QueryParam("session_length", "2");
+        List<QueryParam> params = RestMockUtils.splitQuery(url);
 
-    assertEquals(2, params.size());
-    assertTrue(params.contains(expectedParam1));
-    assertTrue(params.contains(expectedParam2));
-  }
+        QueryParam expectedParam1 = new QueryParam("flag", "true");
+        QueryParam expectedParam2 = new QueryParam("session_length", "2");
 
-  @Test
-  public void testMultipleValueQueryParamSplit() throws Exception {
-    URL url = new URL("https://www.jwir3.com/someRequest?user_id=1&user_id=2");
+        assertEquals(2, params.size());
+        assertTrue(params.contains(expectedParam1));
+        assertTrue(params.contains(expectedParam2));
+    }
 
-    List<QueryParam> params = RestMockUtils.splitQuery(url);
+    @Test
+    public void testMultipleValueQueryParamSplit() throws Exception {
+        URL url = new URL("https://www.jwir3.com/someRequest?user_id=1&user_id=2");
 
-    QueryParam expectedParam1 = new QueryParam("user_id", "2", "1");
+        List<QueryParam> params = RestMockUtils.splitQuery(url);
 
-    assertEquals(1, params.size());
-    assertTrue(params.contains(expectedParam1));
-  }
+        QueryParam expectedParam1 = new QueryParam("user_id", "2", "1");
+
+        assertEquals(1, params.size());
+        assertTrue(params.contains(expectedParam1));
+    }
 }

@@ -18,12 +18,10 @@ release.properties
 coverage.ec
 
 # IntelliJ
-.idea
+.idea/*
+!.idea/codeStyleSettings.xml
 *.iml
-*.iws
-*.ipr
-classes
-gen-external-apklibs
+
 
 # Robolectric
 tmp

@@ -27,8 +27,8 @@ import okhttp3.mockwebserver.RecordedRequest;
  * request not being called at least once
  */
 public class RequestNotInvokedException extends RequestVerificationException {
-    public RequestNotInvokedException(Matcher<RecordedRequest> requestMatcher,
-                                      List<RecordedRequest> requestHistory) {
+
+    public RequestNotInvokedException(Matcher<RecordedRequest> requestMatcher, List<RecordedRequest> requestHistory) {
         super(composeMessage("Wanted, but not invoked", requestMatcher, -1, -1, requestHistory));
     }
 }

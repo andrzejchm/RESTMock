@@ -28,16 +28,10 @@ import okhttp3.mockwebserver.RecordedRequest;
  */
 public class RequestInvocationCountMismatchException extends RequestVerificationException {
 
-    public RequestInvocationCountMismatchException(int count,
-                                                   int times,
-                                                   Matcher<RecordedRequest> requestMatcher,
+    public RequestInvocationCountMismatchException(int count, int times, Matcher<RecordedRequest> requestMatcher,
                                                    List<RecordedRequest> requestHistory) {
 
-        super(composeMessage("Wanted to be invoked %1$d times, but was %2$d.",
-                requestMatcher,
-                count,
-                times,
-                requestHistory));
+        super(composeMessage("Wanted to be invoked %1$d times, but was %2$d.", requestMatcher, count, times, requestHistory));
     }
 
 }
