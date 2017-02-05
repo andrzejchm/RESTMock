@@ -165,7 +165,7 @@ RESTMockServer.whenGET(pathEndsWith(path))
                 .thenReturnString("3rd call")
                 .delay(TimeUnit.SECONDS, 20, 30, 40)
 ```
-this will result in `1st call` being returned after 5 seconds, `2nd call` being returned after 10 seconds, `3rd call` being returned after 15 seconds, another one after 20 seconds, and another after 30 seconds, and then every consecutive response with 40 seconds delay
+this will result in `1st call` being delayed by 5 seconds, `2nd call` delayed by 10 seconds, `3rd call` delayed by 15 seconds, another one by 20 seconds, and another by 30 seconds, and then every consecutive response with 40 seconds delay
 
 ##Request verification
 It is possible to verify which requests were called and how many times thanks to `RequestsVerifier`. All you have to do is call one of these:
