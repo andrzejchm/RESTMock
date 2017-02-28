@@ -19,6 +19,9 @@ package io.appflate.restmock;
 import org.hamcrest.Matcher;
 import org.hamcrest.core.AllOf;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import io.appflate.restmock.exceptions.RequestInvocationCountMismatchException;
 import io.appflate.restmock.exceptions.RequestInvocationCountNotEnoughException;
 import io.appflate.restmock.exceptions.RequestNotInvokedException;
@@ -136,6 +139,71 @@ public class RequestsVerifier {
 
     public static RequestVerification verifyPUT(Matcher<RecordedRequest> matcher) {
         return verifyRequest(AllOf.allOf(RequestMatchers.isPUT(), matcher));
+    }
+
+    /**
+     * @param count number of most recent requests to return from the history of requests received by RESTMockServer.
+     * @return List of {@code count}-newest requests received by RESTMockServer (from oldest to newest).
+     */
+    public static List<RecordedRequest> takeLast(int count) {
+        List<RecordedRequest> requestHistory = dispatcher.getRequestHistory();
+        return requestHistory.subList(Math.max(0, requestHistory.size() - count), requestHistory.size());
+    }
+
+    /**
+     * @return Most recent request received by RESTMockServer, or null if there were no recorded requests
+     */
+    public static RecordedRequest takeLast() {
+        List<RecordedRequest> lastRequest = takeLast(1);
+        if (lastRequest.isEmpty()) {
+            return null;
+        } else {
+            return lastRequest.get(0);
+        }
+    }
+
+    /**
+     * @param count number of requests to return from the beginning of the history of requests received by RESTMockServer.
+     * @return List of {@code count}-oldest requests received by RESTMockServer (from oldest to newest).
+     */
+    public static List<RecordedRequest> takeFirst(int count) {
+        List<RecordedRequest> requestHistory = dispatcher.getRequestHistory();
+        return requestHistory.subList(0, Math.min(count, requestHistory.size()));
+    }
+
+    /**
+     * @return Oldest recorded request received by RESTMockServer, or null if there were no recorded requests
+     */
+    public static RecordedRequest takeFirst() {
+        List<RecordedRequest> lastRequest = takeFirst(1);
+        if (lastRequest.isEmpty()) {
+            return null;
+        } else {
+            return lastRequest.get(0);
+        }
+    }
+
+    /**
+     * @param fromIndexInclusive low endpoint (inclusive) of the sublist of requests' history.
+     * @param toIndexExclusive high endpoint (exclusive) of the sublist of requests' history.
+     * @return specified range of requests' history (from oldest to newest).
+     */
+    public static List<RecordedRequest> take(int fromIndexInclusive, int toIndexExclusive) {
+        return dispatcher.getRequestHistory().subList(fromIndexInclusive, toIndexExclusive);
+    }
+
+    /**
+     * @param requestMatcher matcher used to find all relevant requests
+     * @return a list of requests received by RESTMockServer, that match the given {@code requestMatcher} (from oldest to newest).
+     */
+    public static List<RecordedRequest> takeAllMatching(Matcher<RecordedRequest> requestMatcher) {
+        List<RecordedRequest> result = new LinkedList<>();
+        for (RecordedRequest recordedRequest : dispatcher.getRequestHistory()) {
+            if (requestMatcher.matches(recordedRequest)) {
+                result.add(recordedRequest);
+            }
+        }
+        return result;
     }
 
     private RequestsVerifier() {

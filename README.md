@@ -41,7 +41,7 @@ Add the dependency
 
 ```groovy  
 dependencies {
-	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.2.0'
+	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.2.1'
 }
 ```
 
@@ -182,6 +182,19 @@ RequestsVerifier.verifyGET(pathEndsWith("users")).invoked();
 
 //cheks if the GET request was never invoked
 RequestsVerifier.verifyGET(pathEndsWith("users")).never();
+```
+
+Additionaly, you can manualy inspect requests received by RESTMockServer. All you have to do is to obtain them trough:
+
+```java
+//gets 5 most recent requests received. (ordered from oldest to newest)
+RequestsVerifier.takeLast(5);
+
+//gets 5 oldest requests received. (ordered from oldest to newest)
+RequestsVerifier.takeFirst(5);
+
+//gets all GET requests.  (ordered from oldest to newest)
+RequestsVerifier.takeAllMatching(isGET());
 ```
 
 ##Logging
