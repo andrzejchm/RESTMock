@@ -41,7 +41,7 @@ Add the dependency
 
 ```groovy  
 dependencies {
-	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.2.0'
+	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.2.1'
 }
 ```
 
@@ -165,7 +165,7 @@ RESTMockServer.whenGET(pathEndsWith(path))
                 .thenReturnString("3rd call")
                 .delay(TimeUnit.SECONDS, 20, 30, 40)
 ```
-this will result in `1st call` being returned after 5 seconds, `2nd call` being returned after 10 seconds, `3rd call` being returned after 15 seconds, another one after 20 seconds, and another after 30 seconds, and then every consecutive response with 40 seconds delay
+this will result in `1st call` being delayed by 5 seconds, `2nd call` delayed by 10 seconds, `3rd call` delayed by 15 seconds, another one by 20 seconds, and another by 30 seconds, and then every consecutive response with 40 seconds delay
 
 ##Request verification
 It is possible to verify which requests were called and how many times thanks to `RequestsVerifier`. All you have to do is call one of these:
@@ -182,6 +182,19 @@ RequestsVerifier.verifyGET(pathEndsWith("users")).invoked();
 
 //cheks if the GET request was never invoked
 RequestsVerifier.verifyGET(pathEndsWith("users")).never();
+```
+
+Additionaly, you can manualy inspect requests received by RESTMockServer. All you have to do is to obtain them trough:
+
+```java
+//gets 5 most recent requests received. (ordered from oldest to newest)
+RequestsVerifier.takeLast(5);
+
+//gets 5 oldest requests received. (ordered from oldest to newest)
+RequestsVerifier.takeFirst(5);
+
+//gets all GET requests.  (ordered from oldest to newest)
+RequestsVerifier.takeAllMatching(isGET());
 ```
 
 ##Logging
