@@ -25,6 +25,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.List;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.appflate.restmock.exceptions.RequestInvocationCountMismatchException;
 import io.appflate.restmock.exceptions.RequestInvocationCountNotEnoughException;
 import io.appflate.restmock.exceptions.RequestNotInvokedException;
@@ -141,6 +142,7 @@ public class RequestVerifierTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT")
     public void takeLastNumOfElementsWithInvalidCountThrowsException() throws Exception {
         RESTMockServer.whenRequested(pathEndsWith(path)).thenReturnString("a single call");
         TestUtils.get(path);
@@ -198,6 +200,7 @@ public class RequestVerifierTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT")
     public void takesSubsetOfRequestsWithInvalidRangeThrowsError() throws Exception {
         RESTMockServer.whenRequested(pathEndsWith(path)).thenReturnString("a single call");
         TestUtils.get(path);
@@ -225,6 +228,7 @@ public class RequestVerifierTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT")
     public void takeFirstNumOfElementsWithInvalidCountThrowsException() throws Exception {
         RESTMockServer.whenRequested(pathEndsWith(path)).thenReturnString("a single call");
         TestUtils.get(path);
