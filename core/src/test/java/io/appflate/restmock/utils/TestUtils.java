@@ -38,27 +38,27 @@ public class TestUtils {
 
     public static Response get(String path) throws IOException {
         path = normalizePath(path);
-        return executeSync(new Request.Builder().url(RESTMockServer.getUrl() + path).build());
+        return executeSync(requestBuilder().url(RESTMockServer.getUrl() + path).build());
     }
 
     public static Response post(String path) throws IOException {
         path = normalizePath(path);
-        return executeSync(new Request.Builder().url(RESTMockServer.getUrl() + path).method("POST", EMPTY_JSON_BODY).build());
+        return executeSync(requestBuilder().url(RESTMockServer.getUrl() + path).method("POST", EMPTY_JSON_BODY).build());
     }
 
     public static Response put(String path) throws IOException {
         path = normalizePath(path);
-        return executeSync(new Request.Builder().url(RESTMockServer.getUrl() + path).method("PUT", EMPTY_JSON_BODY).build());
+        return executeSync(requestBuilder().url(RESTMockServer.getUrl() + path).method("PUT", EMPTY_JSON_BODY).build());
     }
 
     public static Response delete(String path) throws IOException {
         path = normalizePath(path);
-        return executeSync(new Request.Builder().url(RESTMockServer.getUrl() + path).method("DELETE", null).build());
+        return executeSync(requestBuilder().url(RESTMockServer.getUrl() + path).method("DELETE", null).build());
     }
 
     public static Response head(String path) throws IOException {
         path = normalizePath(path);
-        return executeSync(new Request.Builder().url(RESTMockServer.getUrl() + path).method("HEAD", null).build());
+        return executeSync(requestBuilder().url(RESTMockServer.getUrl() + path).method("HEAD", null).build());
     }
 
     private static Response executeSync(Request request) throws IOException {
@@ -92,5 +92,9 @@ public class TestUtils {
             path = "/" + path;
         }
         return path;
+    }
+
+    private static Request.Builder requestBuilder() {
+        return new Request.Builder().addHeader("Connection", "close");
     }
 }

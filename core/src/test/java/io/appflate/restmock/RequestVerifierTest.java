@@ -23,10 +23,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.List;
 
 import io.appflate.restmock.exceptions.RequestInvocationCountMismatchException;
 import io.appflate.restmock.exceptions.RequestInvocationCountNotEnoughException;
 import io.appflate.restmock.exceptions.RequestNotInvokedException;
+import io.appflate.restmock.utils.RequestMatchers;
 import io.appflate.restmock.utils.TestUtils;
 import okhttp3.mockwebserver.RecordedRequest;
 
@@ -36,6 +38,8 @@ import static io.appflate.restmock.RequestsVerifier.verifyPOST;
 import static io.appflate.restmock.RequestsVerifier.verifyPUT;
 import static io.appflate.restmock.RequestsVerifier.verifyRequest;
 import static io.appflate.restmock.utils.RequestMatchers.pathEndsWith;
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
@@ -103,6 +107,144 @@ public class RequestVerifierTest {
         verifyPOST(INVOKED_MATCHER).exactly(2);
         verifyPUT(INVOKED_MATCHER).exactly(3);
         verifyDELETE(INVOKED_MATCHER).exactly(4);
+    }
+
+    @Test
+    public void takesLastNumOfElementsWhenHistoryNotEmpty() throws Exception {
+        RESTMockServer.whenRequested(pathEndsWith(path)).thenReturnString("a single call");
+        TestUtils.get(path);
+        TestUtils.post(path);
+        TestUtils.delete(path);
+        TestUtils.head(path);
+
+        List<RecordedRequest> recordedRequests = RequestsVerifier.takeLast(3);
+        assertEquals(3, recordedRequests.size());
+        assertEquals("POST", recordedRequests.get(0).getMethod().toUpperCase());
+        assertEquals("DELETE", recordedRequests.get(1).getMethod().toUpperCase());
+        assertEquals("HEAD", recordedRequests.get(2).getMethod().toUpperCase());
+    }
+
+    @Test
+    public void takeLastNumOfElementsExceedsHistorySizeTakesWholeHistory() throws Exception {
+        RESTMockServer.whenRequested(pathEndsWith(path)).thenReturnString("a single call");
+        TestUtils.get(path);
+        TestUtils.post(path);
+        TestUtils.delete(path);
+        TestUtils.head(path);
+
+        List<RecordedRequest> recordedRequests = RequestsVerifier.takeLast(10);
+        assertEquals(4, recordedRequests.size());
+        assertEquals("GET", recordedRequests.get(0).getMethod().toUpperCase());
+        assertEquals("POST", recordedRequests.get(1).getMethod().toUpperCase());
+        assertEquals("DELETE", recordedRequests.get(2).getMethod().toUpperCase());
+        assertEquals("HEAD", recordedRequests.get(3).getMethod().toUpperCase());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void takeLastNumOfElementsWithInvalidCountThrowsException() throws Exception {
+        RESTMockServer.whenRequested(pathEndsWith(path)).thenReturnString("a single call");
+        TestUtils.get(path);
+        TestUtils.post(path);
+        TestUtils.delete(path);
+        TestUtils.head(path);
+
+        RequestsVerifier.takeLast(-10);
+    }
+
+    @Test
+    public void takesFirstNumOfElementsWhenHistoryNotEmpty() throws Exception {
+        RESTMockServer.whenRequested(pathEndsWith(path)).thenReturnString("a single call");
+        TestUtils.get(path);
+        TestUtils.post(path);
+        TestUtils.delete(path);
+        TestUtils.head(path);
+
+        List<RecordedRequest> recordedRequests = RequestsVerifier.takeFirst(3);
+        assertEquals(3, recordedRequests.size());
+        assertEquals("GET", recordedRequests.get(0).getMethod().toUpperCase());
+        assertEquals("POST", recordedRequests.get(1).getMethod().toUpperCase());
+        assertEquals("DELETE", recordedRequests.get(2).getMethod().toUpperCase());
+    }
+
+    @Test
+    public void takeFirstNumOfElementsExceedsHistorySizeTakesAllHistory() throws Exception {
+        RESTMockServer.whenRequested(pathEndsWith(path)).thenReturnString("a single call");
+        TestUtils.get(path);
+        TestUtils.post(path);
+        TestUtils.delete(path);
+        TestUtils.head(path);
+
+        List<RecordedRequest> recordedRequests = RequestsVerifier.takeFirst(10);
+        assertEquals(4, recordedRequests.size());
+        assertEquals("GET", recordedRequests.get(0).getMethod().toUpperCase());
+        assertEquals("POST", recordedRequests.get(1).getMethod().toUpperCase());
+        assertEquals("DELETE", recordedRequests.get(2).getMethod().toUpperCase());
+        assertEquals("HEAD", recordedRequests.get(3).getMethod().toUpperCase());
+    }
+
+    @Test
+    public void takesSubsetOfRequests() throws Exception {
+        RESTMockServer.whenRequested(pathEndsWith(path)).thenReturnString("a single call");
+        TestUtils.get(path);
+        TestUtils.post(path);
+        TestUtils.delete(path);
+        TestUtils.head(path);
+
+        List<RecordedRequest> recordedRequests = RequestsVerifier.take(1, 4);
+        assertEquals(3, recordedRequests.size());
+        assertEquals("POST", recordedRequests.get(0).getMethod().toUpperCase());
+        assertEquals("DELETE", recordedRequests.get(1).getMethod().toUpperCase());
+        assertEquals("HEAD", recordedRequests.get(2).getMethod().toUpperCase());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void takesSubsetOfRequestsWithInvalidRangeThrowsError() throws Exception {
+        RESTMockServer.whenRequested(pathEndsWith(path)).thenReturnString("a single call");
+        TestUtils.get(path);
+        TestUtils.post(path);
+        TestUtils.delete(path);
+        TestUtils.head(path);
+
+        RequestsVerifier.take(5, 3);
+    }
+
+    @Test
+    public void takeMatchingFindsAllRelevantRequests() throws Exception {
+        RESTMockServer.whenRequested(pathEndsWith(path)).thenReturnString("a single call");
+        TestUtils.get(path);
+        TestUtils.post(path);
+        TestUtils.delete(path);
+        TestUtils.get(path);
+        TestUtils.head(path);
+        TestUtils.get(path);
+        List<RecordedRequest> recordedRequests = RequestsVerifier.takeAllMatching(RequestMatchers.isGET());
+        assertEquals(3, recordedRequests.size());
+        assertEquals("GET", recordedRequests.get(0).getMethod().toUpperCase());
+        assertEquals("GET", recordedRequests.get(1).getMethod().toUpperCase());
+        assertEquals("GET", recordedRequests.get(2).getMethod().toUpperCase());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void takeFirstNumOfElementsWithInvalidCountThrowsException() throws Exception {
+        RESTMockServer.whenRequested(pathEndsWith(path)).thenReturnString("a single call");
+        TestUtils.get(path);
+        TestUtils.post(path);
+        TestUtils.delete(path);
+        TestUtils.head(path);
+
+        RequestsVerifier.takeFirst(-10);
+    }
+
+    @Test
+    public void takeSingleFirstWhenNoHistoryIsNull() throws Exception {
+        RESTMockServer.whenRequested(pathEndsWith(path)).thenReturnString("a single call");
+        assertNull(RequestsVerifier.takeFirst());
+    }
+
+    @Test
+    public void takeSingleLastWhenNoHistoryIsNull() throws Exception {
+        RESTMockServer.whenRequested(pathEndsWith(path)).thenReturnString("a single call");
+        assertNull(RequestsVerifier.takeLast());
     }
 
     @Test
