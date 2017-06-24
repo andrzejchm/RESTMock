@@ -60,8 +60,18 @@ class MatchableCallsRequestDispatcher extends Dispatcher {
     }
 
     private MockResponse onNoResponsesMatched(RecordedRequest recordedRequest) {
-        RESTMockServer.getLogger().error("<- Response ERROR:\t" + RESTMockServer.RESPONSE_NOT_MOCKED + ": " + recordedRequest);
+        RESTMockServer.getLogger()
+                .error("<- Response ERROR:\t" + RESTMockServer.RESPONSE_NOT_MOCKED + ": " + recordedRequest
+                               + "\n list of mocked requests:\n" + prepareAllMocksMessage());
         return createNotMockedResponse(recordedRequest.getMethod());
+    }
+
+    private String prepareAllMocksMessage() {
+        StringBuilder sb = new StringBuilder();
+        for (MatchableCall match : matchableCalls) {
+            sb.append(match.requestMatcher.toString()).append("\n");
+        }
+        return sb.toString();
     }
 
     private MockResponse createNotMockedResponse(String httpMethod) {
