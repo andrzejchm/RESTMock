@@ -26,9 +26,7 @@ import io.appflate.restmock.RESTMockServer;
 import io.appflate.restmock.RequestsVerifier;
 import io.appflate.restmock.androidsample.pageobjects.MainActivityPageObject;
 import io.appflate.restmock.androidsample.view.activities.MainActivity;
-import io.appflate.restmock.utils.RequestMatchers;
 
-import static io.appflate.restmock.RequestsVerifier.verifyRequest;
 import static io.appflate.restmock.utils.RequestMatchers.pathEndsWith;
 
 /**
@@ -41,7 +39,8 @@ public class MainActivityTest {
     private static final String NAME_ANDRZEJ_CHMIELEWSKI = "RESTMock: Andrzej Chmielewski";
     private static final String PATH_USER_NOT_FOUND = "mocks/users/user_not_found.json";
     private static final String REPOS = "/repos";
-    @Rule public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(
+    @Rule
+    public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(
             MainActivity.class,
             true,
             false);
@@ -68,8 +67,7 @@ public class MainActivityTest {
 
     @Test
     public void testNotFound() throws Exception {
-        RESTMockServer.whenGET(pathEndsWith(USERNAME_ANDRZEJCHM)).thenReturnFile(404,
-                PATH_USER_NOT_FOUND);
+        RESTMockServer.whenGET(pathEndsWith(USERNAME_ANDRZEJCHM)).thenReturnFile(404, PATH_USER_NOT_FOUND);
         //launches activity with default intent
         rule.launchActivity(null);
         pageObject.typeUsername(USERNAME_ANDRZEJCHM);

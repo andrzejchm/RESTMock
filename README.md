@@ -3,7 +3,8 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-RESTMock-green.svg?style=true)](https://android-arsenal.com/details/1/3468) [![Circle CI](https://circleci.com/gh/andrzejchm/RESTMock.svg?style=svg)](https://circleci.com/gh/andrzejchm/RESTMock)
 
 REST API mocking made easy.
-##About
+
+## About
 RESTMock is a library working on top of Square's [okhttp/MockWebServer](https://github.com/square/okhttp/tree/master/mockwebserver). It allows you to specify [Hamcrest](https://github.com/hamcrest/JavaHamcrest) matchers to match HTTP requests and specify what response to return. It is as easy as:
 
 ```java
@@ -13,7 +14,7 @@ RESTMockServer.whenGET(pathContains("users/defunkt"))
 **Article**
 - [ITDD - Instrumentation TDD for Android](https://medium.com/@andrzejchm/ittd-instrumentation-ttd-for-android-4894cbb82d37)
 
-##Table of Contents
+## Table of Contents
 - [About](#about)
 - [Setup](#setup)
 - [Request verification](#request-verification)
@@ -25,7 +26,7 @@ RESTMockServer.whenGET(pathContains("users/defunkt"))
 ## Setup
 Here are the basic rules to set up RESTMock for Android
 
-####Step 1: Repository
+#### Step 1: Repository
 Add it in your root build.gradle at the end of repositories:
 
 ```groovy  
@@ -36,16 +37,16 @@ allprojects {
 	}
 }
 ```
-####Step 2: Dependencies
+#### Step 2: Dependencies
 Add the dependency
 
 ```groovy  
 dependencies {
-	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.2.1'
+	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.2.2'
 }
 ```
 
-####Step 3: Start the server
+#### Step 3: Start the server
 It's good to start server before the tested application starts, there are few methods:
 
 ##### a) RESTMockTestRunner
@@ -75,9 +76,9 @@ public class MyAppTestRunner extends AndroidJUnitRunner {
 ```
 
 
-####Step 4: Specify Mocks
+#### Step 4: Specify Mocks
 
-#####a) Files
+##### a) Files
 By default, the `RESTMockTestRunner` uses `AndroidAssetsFileParser` as a mocks file parser, which reads the files from the assets folder. To make them visible for the RESTMock you have to put them in the correct folder in your project, for example:
 
 	.../src/androidTest/assets/users/defunkt.json
@@ -88,23 +89,23 @@ RESTMockServer.whenGET(pathContains("users/defunkt"))
             .thenReturnFile(200, "users/defunkt.json");
 ```
 
-#####b) Strings
+##### b) Strings
 If the response You wish to return is simple, you can just specify a string:
 
 ```java
 RESTMockServer.whenGET(pathContains("users/defunkt"))
             .thenReturnString(200, "{}");
 ```
-#####c) MockResponse
+##### c) MockResponse
 If you wish to have a greater control over the response, you can pass the `MockResponse`
 ```java
 RESTMockServer.whenGET(pathContains("users/defunkt")).thenReturn(new MockResponse().setBody("").setResponseCode(401).addHeader("Header","Value"));
 ```
 
-####Step 5: Request Matchers
+#### Step 5: Request Matchers
 You can either use some of the predefined matchers from `RequestMatchers` util class, or create your own. remember to extend from `RequestMatcher`
 
-####Step 6: Specify API Endpoint
+#### Step 6: Specify API Endpoint
 The most important step, in order for your app to communicate with the testServer, you have to specify it as an endpoint for all your API calls. For that, you can use the ` RESTMockServer.getUrl()`. If you use Retrofit, it is as easy as:
 
 ```java
@@ -114,7 +115,7 @@ RestAdapter adapter = new RestAdapter.Builder()
                 .build();
 ```
 
-##Response chains
+## Response chains
 You can chain different responses for a single request matcher, all the `thenReturn*()` methods accept varags parameter with response, or you can call those methods multiple times on a single matcher, examples:
 
 ```java
@@ -131,7 +132,7 @@ RESTMockServer.whenGET(pathEndsWith(path))
                 .thenReturnString("a single call", "answer no 2", "answer no 3");
 ```
 
-##Response delays
+## Response delays
 Delaying responses is accomplished with the `delay(TimeUnit timeUnit, long delay)` method. Delays can be specified in chain, just like chaining responses:
  
 ```java
@@ -152,7 +153,7 @@ RESTMockServer.whenGET(pathEndsWith(path))
 
 Which will result in 1st response being delayed by 5 seconds, 2nd response by 10 seconds and 3rd, 4th, 5th... by 15 seconds.
 
-####Interleaving delays with responses
+#### Interleaving delays with responses
 Check out this example:
 
 ```java
@@ -167,7 +168,7 @@ RESTMockServer.whenGET(pathEndsWith(path))
 ```
 this will result in `1st call` being delayed by 5 seconds, `2nd call` delayed by 10 seconds, `3rd call` delayed by 15 seconds, another one by 20 seconds, and another by 30 seconds, and then every consecutive response with 40 seconds delay
 
-##Request verification
+## Request verification
 It is possible to verify which requests were called and how many times thanks to `RequestsVerifier`. All you have to do is call one of these:
 
 ```java
@@ -197,7 +198,7 @@ RequestsVerifier.takeFirst(5);
 RequestsVerifier.takeAllMatching(isGET());
 ```
 
-##Logging
+## Logging
 RESTMock supports logging events. You just have to provide the RESTMock with the implementation of `RESTMockLogger`. For Android there is an `AndroidLogger` implemented already. All you have to do is use the `RESTMockTestRunner` or call
 
 ```java
@@ -231,7 +232,7 @@ using `RuntimeEnvironment.application` from within a Robolectric test.
 ## Android Sample Project
 You can check out the sample Android app with tests [here](androidsample/)
 
-##License
+## License
 
 	Copyright (C) 2016 Appflate.io
 

@@ -30,13 +30,13 @@ apply plugin: 'android-apt'
 apply from: '../quality_tools/findbugs.gradle'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "25.0.3"
 
     defaultConfig {
         applicationId "io.appflate.restmock.androidsample"
-        minSdkVersion 10
-        targetSdkVersion 25
+        minSdkVersion 14
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner 'io.appflate.restmock.androidsample.CustomTestRunner'
@@ -58,7 +58,6 @@ android {
 configurations.all {
     resolutionStrategy {
         force "com.android.support:support-annotations:${supportLibraryVersion}"
-        force 'com.squareup.okio:okio:1.8.0'
         force "com.squareup.okhttp3:okhttp:${okHttpVersion}"
     }
 }
@@ -103,7 +102,7 @@ dependencies {
         exclude module: 'recyclerview-v7'
     }
     testCompile "org.robolectric:robolectric:3.2.2"
-    
+
     testCompile project(':android')
     testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1' //required to resolve robolectric test problems
     testCompile(project(':core')) {

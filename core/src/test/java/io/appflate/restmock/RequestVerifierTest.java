@@ -24,6 +24,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.appflate.restmock.exceptions.RequestInvocationCountMismatchException;
@@ -120,9 +121,9 @@ public class RequestVerifierTest {
 
         List<RecordedRequest> recordedRequests = RequestsVerifier.takeLast(3);
         assertEquals(3, recordedRequests.size());
-        assertEquals("POST", recordedRequests.get(0).getMethod().toUpperCase());
-        assertEquals("DELETE", recordedRequests.get(1).getMethod().toUpperCase());
-        assertEquals("HEAD", recordedRequests.get(2).getMethod().toUpperCase());
+        assertEquals("POST", recordedRequests.get(0).getMethod().toUpperCase(Locale.US));
+        assertEquals("DELETE", recordedRequests.get(1).getMethod().toUpperCase(Locale.US));
+        assertEquals("HEAD", recordedRequests.get(2).getMethod().toUpperCase(Locale.US));
     }
 
     @Test
@@ -135,10 +136,10 @@ public class RequestVerifierTest {
 
         List<RecordedRequest> recordedRequests = RequestsVerifier.takeLast(10);
         assertEquals(4, recordedRequests.size());
-        assertEquals("GET", recordedRequests.get(0).getMethod().toUpperCase());
-        assertEquals("POST", recordedRequests.get(1).getMethod().toUpperCase());
-        assertEquals("DELETE", recordedRequests.get(2).getMethod().toUpperCase());
-        assertEquals("HEAD", recordedRequests.get(3).getMethod().toUpperCase());
+        assertEquals("GET", recordedRequests.get(0).getMethod().toUpperCase(Locale.US));
+        assertEquals("POST", recordedRequests.get(1).getMethod().toUpperCase(Locale.US));
+        assertEquals("DELETE", recordedRequests.get(2).getMethod().toUpperCase(Locale.US));
+        assertEquals("HEAD", recordedRequests.get(3).getMethod().toUpperCase(Locale.US));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -163,9 +164,9 @@ public class RequestVerifierTest {
 
         List<RecordedRequest> recordedRequests = RequestsVerifier.takeFirst(3);
         assertEquals(3, recordedRequests.size());
-        assertEquals("GET", recordedRequests.get(0).getMethod().toUpperCase());
-        assertEquals("POST", recordedRequests.get(1).getMethod().toUpperCase());
-        assertEquals("DELETE", recordedRequests.get(2).getMethod().toUpperCase());
+        assertEquals("GET", recordedRequests.get(0).getMethod().toUpperCase(Locale.US));
+        assertEquals("POST", recordedRequests.get(1).getMethod().toUpperCase(Locale.US));
+        assertEquals("DELETE", recordedRequests.get(2).getMethod().toUpperCase(Locale.US));
     }
 
     @Test
@@ -178,10 +179,10 @@ public class RequestVerifierTest {
 
         List<RecordedRequest> recordedRequests = RequestsVerifier.takeFirst(10);
         assertEquals(4, recordedRequests.size());
-        assertEquals("GET", recordedRequests.get(0).getMethod().toUpperCase());
-        assertEquals("POST", recordedRequests.get(1).getMethod().toUpperCase());
-        assertEquals("DELETE", recordedRequests.get(2).getMethod().toUpperCase());
-        assertEquals("HEAD", recordedRequests.get(3).getMethod().toUpperCase());
+        assertEquals("GET", recordedRequests.get(0).getMethod().toUpperCase(Locale.US));
+        assertEquals("POST", recordedRequests.get(1).getMethod().toUpperCase(Locale.US));
+        assertEquals("DELETE", recordedRequests.get(2).getMethod().toUpperCase(Locale.US));
+        assertEquals("HEAD", recordedRequests.get(3).getMethod().toUpperCase(Locale.US));
     }
 
     @Test
@@ -194,9 +195,9 @@ public class RequestVerifierTest {
 
         List<RecordedRequest> recordedRequests = RequestsVerifier.take(1, 4);
         assertEquals(3, recordedRequests.size());
-        assertEquals("POST", recordedRequests.get(0).getMethod().toUpperCase());
-        assertEquals("DELETE", recordedRequests.get(1).getMethod().toUpperCase());
-        assertEquals("HEAD", recordedRequests.get(2).getMethod().toUpperCase());
+        assertEquals("POST", recordedRequests.get(0).getMethod().toUpperCase(Locale.US));
+        assertEquals("DELETE", recordedRequests.get(1).getMethod().toUpperCase(Locale.US));
+        assertEquals("HEAD", recordedRequests.get(2).getMethod().toUpperCase(Locale.US));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -222,9 +223,9 @@ public class RequestVerifierTest {
         TestUtils.get(path);
         List<RecordedRequest> recordedRequests = RequestsVerifier.takeAllMatching(RequestMatchers.isGET());
         assertEquals(3, recordedRequests.size());
-        assertEquals("GET", recordedRequests.get(0).getMethod().toUpperCase());
-        assertEquals("GET", recordedRequests.get(1).getMethod().toUpperCase());
-        assertEquals("GET", recordedRequests.get(2).getMethod().toUpperCase());
+        assertEquals("GET", recordedRequests.get(0).getMethod().toUpperCase(Locale.US));
+        assertEquals("GET", recordedRequests.get(1).getMethod().toUpperCase(Locale.US));
+        assertEquals("GET", recordedRequests.get(2).getMethod().toUpperCase(Locale.US));
     }
 
     @Test(expected = IllegalArgumentException.class)
