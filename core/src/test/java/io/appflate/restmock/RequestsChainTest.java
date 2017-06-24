@@ -26,11 +26,13 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import io.appflate.restmock.utils.TestUtils;
+import okhttp3.Response;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
 
 import static io.appflate.restmock.utils.RequestMatchers.pathEndsWith;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
@@ -169,6 +171,26 @@ public class RequestsChainTest {
         assertEquals("answer no 3", response);
         b = System.currentTimeMillis();
         assertEquals(300, b - a, 50);
+    }
+
+    @Test
+    public void delaysBodyNotResponse() throws Exception {
+        RESTMockServer.whenGET(pathEndsWith(path))
+                .thenReturnString("a single call")
+                .delay(TimeUnit.MILLISECONDS, 500)
+                .thenReturnString("answer no 2")
+                .thenReturnString("answer no 3");
+
+        long a = System.currentTimeMillis();
+        Response response = TestUtils.get(path);
+        assertEquals(200, response.code());
+        long b = System.currentTimeMillis();
+        assertEquals(0, b - a, 100);
+
+        String body = response.body().string();
+        assertNotNull(body);
+        long c = System.currentTimeMillis();
+        assertEquals(500, c - b, 100);
     }
 
 }
