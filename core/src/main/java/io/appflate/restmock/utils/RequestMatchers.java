@@ -47,17 +47,22 @@ public class RequestMatchers {
         };
     }
 
-    public static RequestMatcher pathEndsWith(final String urlPart) {
-        return new RequestMatcher("url ends with: " + urlPart) {
-
-            @Override
+    public static RequestMatcher pathEndsWith(final String endOfUrlPath) {
+        return new RequestMatcher("url ends with: ${endOfUrlPath}") {
             protected boolean matchesSafely(RecordedRequest item) {
-                String urlPartWithoutEndingSlash = urlPart.endsWith("/") ? urlPart.substring(0, urlPart.length() - 1) : urlPart;
-                String itemPathWithoutEndingSlash = item.getPath().endsWith("/") ? item.getPath()
-                        .substring(0, item.getPath().length() - 1) : item.getPath();
-                return itemPathWithoutEndingSlash.toLowerCase(Locale.US).endsWith(urlPartWithoutEndingSlash.toLowerCase(Locale.US));
+                String endOfPathSanitized = sanitizePath(endOfUrlPath);
+                String recordedPathSanitized = sanitizePath(item.getPath());
+                return recordedPathSanitized.endsWith(endOfPathSanitized);
             }
         };
+    }
+
+    private static String sanitizePath(String path) {
+        try {
+            return new URL("http", "localhost", path).getPath().replaceAll("/$", "");
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static RequestMatcher pathStartsWith(final String urlPart) {

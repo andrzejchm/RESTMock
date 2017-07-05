@@ -38,4 +38,13 @@ public class QueryParamTest {
         assertEquals(1, params.size());
         assertTrue(params.contains(expectedParam1));
     }
+
+    @Test
+    public void testNoQueryParams() throws Exception {
+        URL url = new URL("https://www.jwir3.com/someRequest");
+
+        List<QueryParam> params = RestMockUtils.splitQuery(url);
+
+        assertEquals(0, params.size());
+    }
 }
