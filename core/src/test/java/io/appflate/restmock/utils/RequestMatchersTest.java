@@ -10,6 +10,7 @@ import java.net.Socket;
 
 import okhttp3.mockwebserver.RecordedRequest;
 
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -62,6 +63,30 @@ public class RequestMatchersTest {
 
         // then
         assertTrue(matcher.matches(recordedRequest));
+    }
+
+    @Test
+    public void shouldMatchProperSubsetOfQueryParametersNames() throws IOException {
+        // given
+        RecordedRequest recordedRequest = createRecordedRequest("foo/?bar=bar&baz=baz&boo=boo");
+
+        // when
+        RequestMatcher matcher = RequestMatchers.hasQueryParameterNames("bar", "baz");
+
+        // then
+        assertTrue(matcher.matches(recordedRequest));
+    }
+
+    @Test
+    public void shouldNotMatchInproperSubsetOfQueryParametersNames() throws IOException {
+        // given
+        RecordedRequest recordedRequest = createRecordedRequest("foo/?bar=bar&baz=baz&boo=boo");
+
+        // when
+        RequestMatcher matcher = RequestMatchers.hasQueryParameterNames("bar", "ban");
+
+        // then
+        assertFalse(matcher.matches(recordedRequest));
     }
 
     private RecordedRequest createRecordedRequest(String path) {
