@@ -29,6 +29,30 @@ public class RequestMatchersTest {
     }
 
     @Test
+    public void queryParamsAreTakenIntoAccount() throws IOException {
+        // given
+        RecordedRequest recordedRequest = createRecordedRequest("foo/bar?baz=boo");
+
+        // when
+        RequestMatcher matcher = RequestMatchers.pathEndsWith("boo");
+
+        // then
+        assertTrue(matcher.matches(recordedRequest));
+    }
+
+    @Test
+    public void queryParamsAreIgnored() throws IOException {
+        // given
+        RecordedRequest recordedRequest = createRecordedRequest("foo/bar?baz=boo");
+
+        // when
+        RequestMatcher matcher = RequestMatchers.pathEndsWithIgnoringQueryParams("bar");
+
+        // then
+        assertTrue(matcher.matches(recordedRequest));
+    }
+
+    @Test
     public void shouldRecognizeProperQueryParameters() throws IOException {
         // given
         RecordedRequest recordedRequest = createRecordedRequest("foo/bar?baz=ban");

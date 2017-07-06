@@ -47,7 +47,19 @@ public class RequestMatchers {
         };
     }
 
-    public static RequestMatcher pathEndsWith(final String endOfUrlPath) {
+    public static RequestMatcher pathEndsWith(final String urlPart) {
+        return new RequestMatcher("url ends with: " + urlPart) {
+
+            @Override
+            protected boolean matchesSafely(RecordedRequest item) {
+                String urlPartWithoutEndingSlash = urlPart.replaceAll("/$", "");
+                String itemPathWithoutEndingSlash = item.getPath().replaceAll("/$", "");
+                return itemPathWithoutEndingSlash.toLowerCase(Locale.US).endsWith(urlPartWithoutEndingSlash.toLowerCase(Locale.US));
+            }
+        };
+    }
+
+    public static RequestMatcher pathEndsWithIgnoringQueryParams(final String endOfUrlPath) {
         return new RequestMatcher("url ends with: ${endOfUrlPath}") {
             protected boolean matchesSafely(RecordedRequest item) {
                 String endOfPathSanitized = sanitizePath(endOfUrlPath);
