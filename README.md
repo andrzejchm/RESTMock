@@ -115,6 +115,7 @@ RestAdapter adapter = new RestAdapter.Builder()
                 .build();
 ```
 
+take a look at [#68](https://github.com/andrzejchm/RESTMock/issues/68) for better reference
 ## Response chains
 You can chain different responses for a single request matcher, all the `thenReturn*()` methods accept varags parameter with response, or you can call those methods multiple times on a single matcher, examples:
 
