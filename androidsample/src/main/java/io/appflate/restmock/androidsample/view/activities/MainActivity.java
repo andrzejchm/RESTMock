@@ -28,7 +28,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.appflate.restmock.androidsample.R;
@@ -46,10 +46,10 @@ public class MainActivity extends AppCompatActivity {
     private static final int POSITION_PROGRESS_VIEW = 1;
     @Inject GithubApi githubApi;
 
-    @Bind(R.id.fullNameText) TextView fullNameTextView;
-    @Bind(R.id.showReposButton) Button showReposButton;
-    @Bind(R.id.usernameEditText) EditText usernameEditText;
-    @Bind(R.id.resultAnimator) ViewAnimator resultAnimator;
+    @BindView(R.id.fullNameText) TextView fullNameTextView;
+    @BindView(R.id.showReposButton) Button showReposButton;
+    @BindView(R.id.usernameEditText) EditText usernameEditText;
+    @BindView(R.id.resultAnimator) ViewAnimator resultAnimator;
     private String currentUsername;
 
     @Override

@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.tasks.AndroidTestTask
+
 /*
  * Copyright (C) 2016 Appflate.io
  *
@@ -19,10 +21,11 @@
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.2'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -32,11 +35,15 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        google()
         maven { url "https://jitpack.io" }
         maven { url "https://maven.google.com" }
     }
     version = "0.2.2"
 }
+
+ext.okHttpVersion = "3.9.1"
+ext.supportVersion = "27.0.2"
 
 ext.preDexLibraries = project.hasProperty('preDexLibraries')
 
@@ -51,7 +58,7 @@ subprojects {
 
     afterEvaluate {
         // Log instrumentation tests results.
-        tasks.withType(com.android.build.gradle.internal.tasks.AndroidTestTask) { task ->
+        tasks.withType(AndroidTestTask) { task ->
             task.doFirst {
                 logging.level = LogLevel.INFO
             }

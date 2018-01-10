@@ -19,7 +19,6 @@ RESTMockServer.whenGET(pathContains("users/defunkt"))
 - [Setup](#setup)
 - [Request verification](#request-verification)
 - [Logging](#logging)
-- [Unit Tests with Robolectric](#unit-tests-with-robolectric)
 - [Android Sample Project](#android-sample-project)
 - [License](#license)
 
@@ -212,23 +211,6 @@ or
 RESTMockServer.enableLogging(RESTMockLogger)
 RESTMockServer.disableLogging()
 ```
-
-## Unit Tests with Robolectric
-If you want to write unit tests (no emulator or device necessary), you can use [Robolectric](http://robolectric.org)
-to accomplish this. There is a sample project with Robolectric tests in [androidsample](androidsample/).
-
-One change you will need to make is to the file parser that you use. Since Robolectric doesn't
-create an actual device/emulator environment, you will need to use the local file system in lieu of
-`getAssets()`. A file parser for this has been provided for you, called, `AndroidLocalFileParser`.
-The `AndroidLocalFileParser` will look for files in the `resources/` directory, which should be a
-child of `/test/`.
-```
-RESTMockServerStarter.startSync(new AndroidLocalFileParser(application),new AndroidLogger());
-```
-
-It is necessary to pass in the `application` variable at construction time, so that the Robolectric
-runner knows where to find the base path for files. You can retrieve the application at runtime
-using `RuntimeEnvironment.application` from within a Robolectric test.
 
 ## Android Sample Project
 You can check out the sample Android app with tests [here](androidsample/)
