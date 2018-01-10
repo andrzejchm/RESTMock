@@ -23,9 +23,6 @@ coverage.ec
 *.iml
 
 
-# Robolectric
-tmp
-
 .DS_Store
 
 *.class

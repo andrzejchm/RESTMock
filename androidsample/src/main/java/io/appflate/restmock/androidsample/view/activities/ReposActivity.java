@@ -28,7 +28,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.appflate.restmock.androidsample.R;
 import io.appflate.restmock.androidsample.SampleApplication;
@@ -46,8 +46,8 @@ public class ReposActivity extends AppCompatActivity implements Callback<List<Re
 
     @Inject GithubApi githubApi;
 
-    @Bind(R.id.reposRecyclerView) RecyclerView reposRecyclerView;
-    @Bind(R.id.reposAnimator) ViewAnimator reposAnimator;
+    @BindView(R.id.reposRecyclerView) RecyclerView reposRecyclerView;
+    @BindView(R.id.reposAnimator) ViewAnimator reposAnimator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
