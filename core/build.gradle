@@ -14,39 +14,39 @@
  * limitations under the License.
  */
 
-apply plugin: 'java'
-apply plugin: 'maven'
-apply from: '../quality_tools/findbugs.gradle'
+apply plugin: "java"
+apply plugin: "maven"
+apply from: "../quality_tools/findbugs.gradle"
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-group = 'com.github.andrzejchm'
+group = "com.github.andrzejchm"
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-  classifier = 'sources'
-  from sourceSets.main.allSource
+    classifier = "sources"
+    from sourceSets.main.allSource
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-  classifier = 'javadoc'
-  from javadoc.destinationDir
+    classifier = "javadoc"
+    from javadoc.destinationDir
 }
 
 artifacts {
-  archives sourcesJar
-  archives javadocJar
+    archives sourcesJar
+    archives javadocJar
 }
 
 dependencies {
-  compile fileTree(dir: 'libs', include: ['*.jar'])
-  compile "com.squareup.okhttp3:mockwebserver:${okHttpVersion}"
-  compile 'org.hamcrest:hamcrest-core:1.3'
+    compile fileTree(dir: "libs", include: ["*.jar"])
+    compile "com.squareup.okhttp3:mockwebserver:${okHttpVersion}"
+    compile "org.hamcrest:hamcrest-core:1.3"
 
-  testCompile 'junit:junit:4.11'
-  testCompile 'org.mockito:mockito-all:1.9.5'
-  testCompile "com.squareup.okhttp3:okhttp:${okHttpVersion}"
-  testCompile 'com.google.code.findbugs:annotations:2.0.3'
+    testCompile "junit:junit:4.12"
+    testCompile "org.mockito:mockito-all:1.9.5"
+    testCompile "com.squareup.okhttp3:okhttp:${okHttpVersion}"
+    testCompile "com.google.code.findbugs:annotations:2.0.3"
 }
 
 jar.dependsOn test

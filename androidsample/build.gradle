@@ -14,46 +14,40 @@
  * limitations under the License.
  */
 
-buildscript {
-    repositories {
-        mavenCentral()
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-    }
-}
-
-apply plugin: 'com.android.application'
-apply plugin: 'android-apt'
-apply from: '../quality_tools/findbugs.gradle'
+apply plugin: "com.android.application"
+apply from: "../quality_tools/findbugs.gradle"
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 27
+    buildToolsVersion "26.0.3"
+
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
 
     defaultConfig {
         applicationId "io.appflate.restmock.androidsample"
         minSdkVersion 14
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner 'io.appflate.restmock.androidsample.CustomTestRunner'
+        testInstrumentationRunner "io.appflate.restmock.androidsample.CustomTestRunner"
     }
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
 
     lintOptions {
         warningsAsErrors true
         abortOnError true
-        disable 'InvalidPackage'
+        disable "InvalidPackage"
+        disable "ObsoleteLintCustomCheck" //https://github.com/JakeWharton/butterknife/issues/1074
     }
 }
+
 
 configurations.all {
     resolutionStrategy {
@@ -61,51 +55,50 @@ configurations.all {
         force "com.squareup.okhttp3:okhttp:${okHttpVersion}"
     }
 }
+
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile "com.android.support:appcompat-v7:${supportLibraryVersion}"
-    compile "com.android.support:design:${supportLibraryVersion}"
-    compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.google.dagger:dagger:2.2'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    compile 'com.google.code.gson:gson:2.7'
-    compile 'com.google.code.findbugs:annotations:2.0.3'
-    provided 'javax.annotation:jsr250-api:1.0'
-    apt 'com.google.dagger:dagger-compiler:2.2'
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "com.android.support:appcompat-v7:${supportVersion}"
+    implementation "com.android.support:design:${supportVersion}"
+    implementation "com.jakewharton:butterknife:8.8.1"
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation "com.google.dagger:dagger:2.14.1"
+    implementation "com.squareup.retrofit2:retrofit:2.3.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.3.0"
+    implementation "com.google.code.gson:gson:2.8.2"
+    implementation "com.google.code.findbugs:annotations:2.0.3"
+    provided "javax.annotation:jsr250-api:1.0"
+    annotationProcessor "com.google.dagger:dagger-compiler:2.14.1"
 
     //Test dependencies
-    androidTestCompile 'com.android.support.test:runner:0.5'
-    androidTestCompile 'com.android.support.test:rules:0.5'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestImplementation "com.android.support.test:runner:1.0.1"
+    androidTestImplementation "com.android.support.test:rules:1.0.1"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.1"
     //this dependency tends to break things for most users. Im adding it to check whether the app compiles correctly
-    androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
-    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.2') {
-        exclude group: 'com.android.support', module: 'appcompat'
-        exclude group: 'com.android.support', module: 'support-v4'
-        exclude module: 'recyclerview-v7'
+    androidTestImplementation "com.android.support.test.espresso:espresso-intents:3.0.1"
+    androidTestImplementation("com.android.support.test.espresso:espresso-contrib:3.0.1") {
+        exclude group: "com.android.support", module: "appcompat"
+        exclude group: "com.android.support", module: "support-v4"
+        exclude module: "recyclerview-v7"
     }
-    androidTestCompile "com.android.support:support-annotations:${supportLibraryVersion}"
-    androidTestCompile "com.android.support:appcompat-v7:${supportLibraryVersion}"
-    androidTestCompile "com.android.support:design:${supportLibraryVersion}"
+    androidTestImplementation "com.android.support:support-annotations:${supportVersion}"
+    androidTestImplementation "com.android.support:appcompat-v7:${supportVersion}"
+    androidTestImplementation "com.android.support:design:${supportVersion}"
 
     //the most important, RESTMock! :)
-    androidTestCompile project(':android')
+    androidTestImplementation project(":android")
 
-    testCompile "com.android.support:appcompat-v7:${supportLibraryVersion}"
-    testCompile "com.android.support:design:${supportLibraryVersion}"
-    testCompile 'junit:junit:4.12'
-    testCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-    testCompile('com.android.support.test.espresso:espresso-contrib:2.2.2') {
-        exclude group: 'com.android.support', module: 'appcompat'
-        exclude group: 'com.android.support', module: 'support-v4'
-        exclude module: 'recyclerview-v7'
+    testImplementation "com.android.support:appcompat-v7:${supportVersion}"
+    testImplementation "com.android.support:design:${supportVersion}"
+    testImplementation "junit:junit:4.12"
+    testImplementation "com.android.support.test.espresso:espresso-core:3.0.1"
+    testImplementation("com.android.support.test.espresso:espresso-contrib:3.0.1") {
+        exclude group: "com.android.support", module: "appcompat"
+        exclude group: "com.android.support", module: "support-v4"
+        exclude module: "recyclerview-v7"
     }
-    testCompile "org.robolectric:robolectric:3.2.2"
-
-    testCompile project(':android')
-    testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1' //required to resolve robolectric test problems
-    testCompile(project(':core')) {
-        exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
+    testImplementation project(":android")
+    testImplementation(project(":core")) {
+        exclude group: "org.bouncycastle", module: "bcprov-jdk15on"
     }
 }
