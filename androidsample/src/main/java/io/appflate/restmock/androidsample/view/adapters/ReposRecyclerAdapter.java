@@ -24,7 +24,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.appflate.restmock.androidsample.R;
@@ -64,8 +64,8 @@ public class ReposRecyclerAdapter extends RecyclerView.Adapter<ReposRecyclerAdap
     }
 
     public static class RepoViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.repoTitleText) TextView title;
-        @Bind(R.id.repoStarsCountText) TextView starsCount;
+        @BindView(R.id.repoTitleText) TextView title;
+        @BindView(R.id.repoStarsCountText) TextView starsCount;
 
         public RepoViewHolder(View itemView) {
             super(itemView);

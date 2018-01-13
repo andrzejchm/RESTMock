@@ -21,12 +21,12 @@ apply from: '../quality_tools/findbugs.gradle'
 group = 'com.github.andrzejchm'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 27
+    buildToolsVersion "26.0.3"
 
     defaultConfig {
         minSdkVersion 10
-        targetSdkVersion 26
+        targetSdkVersion 27
     }
     buildTypes {
         release {
@@ -43,11 +43,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile(project(':core')) {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
+    api(project(':core')) {
         exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
     }
-    compile 'com.android.support.test:rules:0.5'
-    compile 'com.android.support.test:runner:0.5'
+    implementation 'com.android.support.test:rules:1.0.1'
+    implementation 'com.android.support.test:runner:1.0.1'
 }
