@@ -19,6 +19,9 @@ package io.appflate.restmock.utils;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -52,12 +55,29 @@ public class RequestMatchers {
 
             @Override
             protected boolean matchesSafely(RecordedRequest item) {
-                String urlPartWithoutEndingSlash = urlPart.endsWith("/") ? urlPart.substring(0, urlPart.length() - 1) : urlPart;
-                String itemPathWithoutEndingSlash = item.getPath().endsWith("/") ? item.getPath()
-                        .substring(0, item.getPath().length() - 1) : item.getPath();
+                String urlPartWithoutEndingSlash = urlPart.replaceAll("/$", "");
+                String itemPathWithoutEndingSlash = item.getPath().replaceAll("/$", "");
                 return itemPathWithoutEndingSlash.toLowerCase(Locale.US).endsWith(urlPartWithoutEndingSlash.toLowerCase(Locale.US));
             }
         };
+    }
+
+    public static RequestMatcher pathEndsWithIgnoringQueryParams(final String endOfUrlPath) {
+        return new RequestMatcher("url ends with: ${endOfUrlPath}") {
+            protected boolean matchesSafely(RecordedRequest item) {
+                String endOfPathSanitized = sanitizePath(endOfUrlPath);
+                String recordedPathSanitized = sanitizePath(item.getPath());
+                return recordedPathSanitized.endsWith(endOfPathSanitized);
+            }
+        };
+    }
+
+    private static String sanitizePath(String path) {
+        try {
+            return new URL("http", "localhost", path).getPath().replaceAll("/$", "");
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static RequestMatcher pathStartsWith(final String urlPart) {
@@ -93,6 +113,53 @@ public class RequestMatchers {
                 }
             }
         };
+    }
+
+    /**
+     * Creates a {@link RequestMatcher} object for determining if a {@link RecordedRequest} contains
+     * a specific set of query parameters names.
+     *
+     * @param expectedParamsNames A set of {@link String} objects to be matched.
+     * @return A new {@link RequestMatcher} object that will match a {@link RecordedRequest} if it
+     * contains the specified query parameters names in its path.
+     */
+    public static RequestMatcher hasQueryParameterNames(final String... expectedParamsNames) {
+        return new RequestMatcher("matched query parameters names") {
+
+            @Override
+            protected boolean matchesSafely(RecordedRequest item) {
+                try {
+                    URL mockUrl = new URL("http", "localhost", item.getPath());
+                    List<QueryParam> actualParams = RestMockUtils.splitQuery(mockUrl);
+                    if (actualParams.size() == 0 || expectedParamsNames.length == 0) {
+                        return false;
+                    }
+
+                    List<String> expectedParamNamesList = varArgToList(expectedParamsNames);
+
+                    int matchedParams = 0;
+                    for (QueryParam actualParam : actualParams) {
+                        if (expectedParamNamesList.contains(actualParam.getKey())) {
+                            matchedParams++;
+                        }
+                    }
+
+                    return matchedParams == expectedParamsNames.length;
+
+                } catch (MalformedURLException e) {
+                    RESTMockServer.getLogger().error("URL appears to be malformed with path: " + item.getPath());
+                    return false;
+                } catch (UnsupportedEncodingException e) {
+                    return false;
+                }
+            }
+        };
+    }
+
+    private static List<String> varArgToList(String... args) {
+        List<String> strings = new ArrayList<>(args.length);
+        Collections.addAll(strings, args);
+        return strings;
     }
 
     /**

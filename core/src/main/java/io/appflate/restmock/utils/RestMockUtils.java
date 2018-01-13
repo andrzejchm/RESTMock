@@ -19,6 +19,7 @@ package io.appflate.restmock.utils;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,7 +46,13 @@ public final class RestMockUtils {
      */
     public static List<QueryParam> splitQuery(URL url) throws UnsupportedEncodingException {
         final Map<String, List<String>> queryPairs = new LinkedHashMap<>();
-        final String[] pairs = url.getQuery().split("&");
+
+        String query = url.getQuery();
+        if (query == null || query.trim().length() == 0) {
+            return Collections.emptyList();
+        }
+
+        final String[] pairs = query.split("&");
         for (String pair : pairs) {
             final int idx = pair.indexOf("=");
             final String key = idx > 0 ? URLDecoder.decode(pair.substring(0, idx), "UTF-8") : pair;
