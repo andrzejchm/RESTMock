@@ -17,6 +17,7 @@
 package io.appflate.restmock.utils;
 
 import java.io.IOException;
+import java.util.Map;
 
 import io.appflate.restmock.RESTMockServer;
 import okhttp3.MediaType;
@@ -39,6 +40,16 @@ public class TestUtils {
     public static Response get(String path) throws IOException {
         path = normalizePath(path);
         return executeSync(requestBuilder().url(RESTMockServer.getUrl() + path).build());
+    }
+
+    public static Response get(String path, Map.Entry<String, String>... headers) throws IOException {
+        path = normalizePath(path);
+        Request.Builder builder = new Request.Builder()
+                .url(RESTMockServer.getUrl() + path);
+        for (Map.Entry<String, String> entry : headers) {
+            builder.addHeader(entry.getKey(), entry.getValue());
+        }
+        return executeSync(builder.build());
     }
 
     public static Response post(String path) throws IOException {

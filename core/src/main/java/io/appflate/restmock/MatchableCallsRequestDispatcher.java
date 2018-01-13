@@ -40,7 +40,7 @@ class MatchableCallsRequestDispatcher extends Dispatcher {
         RESTMockServer.getLogger().log("-> New Request:\t" + recordedRequest);
         List<MatchableCall> matchedCalls = getMatchedRequests(recordedRequest);
         if (matchedCalls.size() == 1) {
-            return onOneResponseMatched(matchedCalls);
+            return onOneResponseMatched(recordedRequest, matchedCalls);
         } else if (matchedCalls.size() > 1) {
             return onTooManyResponsesMatched(recordedRequest, matchedCalls);
         } else {
@@ -48,9 +48,10 @@ class MatchableCallsRequestDispatcher extends Dispatcher {
         }
     }
 
-    private MockResponse onOneResponseMatched(List<MatchableCall> matchedRequests) {
-        RESTMockServer.getLogger().log("<- Response:\t" + matchedRequests.get(0).peekResponse());
-        return matchedRequests.get(0).response();
+    private MockResponse onOneResponseMatched(RecordedRequest recordedRequest, List<MatchableCall> matchedRequests) {
+        MockResponse response = matchedRequests.get(0).nextResponse(recordedRequest);
+        RESTMockServer.getLogger().log("<- Response:\t" + response);
+        return response;
     }
 
     private MockResponse onTooManyResponsesMatched(RecordedRequest recordedRequest, List<MatchableCall> matchedRequests) {
@@ -62,7 +63,7 @@ class MatchableCallsRequestDispatcher extends Dispatcher {
     private MockResponse onNoResponsesMatched(RecordedRequest recordedRequest) {
         RESTMockServer.getLogger()
                 .error("<- Response ERROR:\t" + RESTMockServer.RESPONSE_NOT_MOCKED + ": " + recordedRequest
-                               + "\n list of mocked requests:\n" + prepareAllMocksMessage());
+                        + "\n list of mocked requests:\n" + prepareAllMocksMessage());
         return createNotMockedResponse(recordedRequest.getMethod());
     }
 
@@ -111,9 +112,9 @@ class MatchableCallsRequestDispatcher extends Dispatcher {
     }
 
     void addMatchableCall(MatchableCall matchableCall) {
-        if (matchableCall.getResponses().size() > 0) {
+        if (matchableCall.getNumberOfAnswers() > 0) {
             RESTMockServer.getLogger().log("## Adding new response for:\t" + matchableCall.requestMatcher);
-            if (!matchableCalls.contains(matchableCall) && !matchableCall.getResponses().isEmpty()) {
+            if (!matchableCalls.contains(matchableCall)) {
                 matchableCalls.add(matchableCall);
             }
         } else {

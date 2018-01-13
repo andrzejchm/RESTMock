@@ -100,6 +100,20 @@ If you wish to have a greater control over the response, you can pass the `MockR
 ```java
 RESTMockServer.whenGET(pathContains("users/defunkt")).thenReturn(new MockResponse().setBody("").setResponseCode(401).addHeader("Header","Value"));
 ```
+##### c) MockAnswer
+You can always build dynamic `MockResponse`s by using the `RecordedRequest` object
+```java
+RESTMockServer.whenGET(pathContains("users/defunkt")).thenAnswer(new MockAnswer() {
+
+            @Override
+            public MockResponse answer(RecordedRequest request) {
+                    return new MockResponse()
+                            .setBody(request.getHeaders().get("header1"))
+                            .setResponseCode(200);
+            }
+        });
+```
+
 
 #### Step 5: Request Matchers
 You can either use some of the predefined matchers from `RequestMatchers` util class, or create your own. remember to extend from `RequestMatcher`
