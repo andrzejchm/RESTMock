@@ -22,8 +22,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.AbstractMap;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.appflate.restmock.utils.TestUtils;
+import okhttp3.Response;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.RecordedRequest;
 
 import static io.appflate.restmock.utils.RequestMatchers.pathEndsWith;
 import static junit.framework.TestCase.assertEquals;
@@ -60,7 +65,7 @@ public class RESTMockServerTest {
         String worksBody = "works";
         MatchableCall matchableCall = RESTMockServer.whenGET(pathEndsWith(path));
         assertNotNull(matchableCall);
-        assertEquals(0, matchableCall.getResponses().size());
+        assertEquals(0, matchableCall.getNumberOfAnswers());
         verify(RESTMockServer.dispatcher, never()).addMatchableCall(matchableCall);
         TestUtils.assertNotMocked(TestUtils.get(path));
         matchableCall.thenReturnString(worksBody);
@@ -77,7 +82,7 @@ public class RESTMockServerTest {
         String worksBody = "works";
         MatchableCall matchableCall = RESTMockServer.whenPOST(pathEndsWith(path));
         assertNotNull(matchableCall);
-        assertEquals(0, matchableCall.getResponses().size());
+        assertEquals(0, matchableCall.getNumberOfAnswers());
         verify(RESTMockServer.dispatcher, never()).addMatchableCall(matchableCall);
         TestUtils.assertNotMocked(TestUtils.get(path));
         matchableCall.thenReturnString(worksBody);
@@ -94,7 +99,7 @@ public class RESTMockServerTest {
         String worksBody = "works";
         MatchableCall matchableCall = RESTMockServer.whenPUT(pathEndsWith(path));
         assertNotNull(matchableCall);
-        assertEquals(0, matchableCall.getResponses().size());
+        assertEquals(0, matchableCall.getNumberOfAnswers());
         verify(RESTMockServer.dispatcher, never()).addMatchableCall(matchableCall);
         TestUtils.assertNotMocked(TestUtils.get(path));
         matchableCall.thenReturnString(worksBody);
@@ -111,7 +116,7 @@ public class RESTMockServerTest {
         String worksBody = "works";
         MatchableCall matchableCall = RESTMockServer.whenDELETE(pathEndsWith(path));
         assertNotNull(matchableCall);
-        assertEquals(0, matchableCall.getResponses().size());
+        assertEquals(0, matchableCall.getNumberOfAnswers());
         verify(RESTMockServer.dispatcher, never()).addMatchableCall(matchableCall);
         TestUtils.assertNotMocked(TestUtils.get(path));
         matchableCall.thenReturnString(worksBody);
@@ -127,7 +132,7 @@ public class RESTMockServerTest {
         String path = "/sample";
         MatchableCall matchableCall = RESTMockServer.whenHEAD(pathEndsWith(path));
         assertNotNull(matchableCall);
-        assertEquals(0, matchableCall.getResponses().size());
+        assertEquals(0, matchableCall.getNumberOfAnswers());
         verify(RESTMockServer.dispatcher, never()).addMatchableCall(matchableCall);
         TestUtils.assertNotMocked(TestUtils.get(path));
         matchableCall.thenReturnEmpty(200);
@@ -147,5 +152,33 @@ public class RESTMockServerTest {
         TestUtils.assertMultipleMatches(TestUtils.post(path));
         TestUtils.assertMultipleMatches(TestUtils.delete(path));
         TestUtils.assertMultipleMatches(TestUtils.put(path));
+    }
+
+    @Test
+    @SuppressFBWarnings("SIC_INNER_SHOULD_BE_STATIC_ANON")
+    public void testThenAnswer() throws Exception {
+        String path = "sample";
+        RESTMockServer.whenGET(pathEndsWith(path)).thenAnswer(new MockAnswer() {
+
+            @Override
+            public MockResponse answer(RecordedRequest request) {
+                if ("True".equals(request.getHeaders().get("header"))) {
+                    return new MockResponse()
+                            .setBody("OK")
+                            .setResponseCode(200);
+                } else {
+                    return new MockResponse()
+                            .setBody("NOT OK")
+                            .setResponseCode(400);
+                }
+            }
+        });
+        Response responseTrue = TestUtils.get(path, new AbstractMap.SimpleEntry<>("header", "True"));
+        Response responseFalse = TestUtils.get(path, new AbstractMap.SimpleEntry<>("header", "False"));
+        assertEquals(200, responseTrue.code());
+        assertEquals(400, responseFalse.code());
+        assertEquals("OK", responseTrue.body().string());
+        assertEquals("NOT OK", responseFalse.body().string());
+
     }
 }
