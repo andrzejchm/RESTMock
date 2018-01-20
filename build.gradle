@@ -39,7 +39,7 @@ allprojects {
         maven { url "https://jitpack.io" }
         maven { url "https://maven.google.com" }
     }
-    version = "0.2.2"
+    version = "0.3.0"
 }
 
 ext.okHttpVersion = "3.9.1"
