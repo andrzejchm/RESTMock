@@ -1,6 +1,5 @@
 package io.appflate.restmock.utils;
 
-
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -8,8 +7,10 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import okhttp3.Headers;
 import okhttp3.mockwebserver.RecordedRequest;
 
+import static io.appflate.restmock.utils.RequestMatchers.hasHeaderNames;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -89,9 +90,49 @@ public class RequestMatchersTest {
         assertFalse(matcher.matches(recordedRequest));
     }
 
-    private RecordedRequest createRecordedRequest(String path) {
+    @Test
+    public void hasHeaderNamesFailWhenNoHeaders() {
+        //given
+        RecordedRequest request = createRecordedRequest("path");
+
+        //when
+        RequestMatcher matcher = hasHeaderNames("header1");
+
+        //then
+        assertFalse(matcher.matches(request));
+    }
+
+    @Test
+    public void hasHeaderNamesSuccessWhenMatchesAll() {
+        //given
+        RecordedRequest request = createRecordedRequest("path", "h1", "v1", "h2", "v2", "h3", "v3");
+
+        //when
+        RequestMatcher matcher = hasHeaderNames("h1", "h2", "h3");
+
+        //then
+        assertTrue(matcher.matches(request));
+    }
+
+    @Test
+    public void hasHeaderNamesSuccessWhenMatchesAllAsSubset() {
+        //given
+        RecordedRequest request = createRecordedRequest("path", "h1", "v1", "h2", "v2", "h3", "v3");
+
+        //when
+        RequestMatcher matcher = hasHeaderNames("h1", "h2");
+
+        //then
+        assertTrue(matcher.matches(request));
+    }
+
+    private RecordedRequest createRecordedRequest(String path, String... headerNamesAndValues) {
         Socket socket = Mockito.mock(Socket.class);
         when(socket.getInetAddress()).thenReturn(mock(InetAddress.class));
-        return new RecordedRequest("GET " + path + " HTTP/1.1", null, null, 0, null, 0, socket);
+        Headers headers = null;
+        if (headerNamesAndValues != null && headerNamesAndValues.length >= 2) {
+            headers = Headers.of(headerNamesAndValues);
+        }
+        return new RecordedRequest("GET " + path + " HTTP/1.1", headers, null, 0, null, 0, socket);
     }
 }
