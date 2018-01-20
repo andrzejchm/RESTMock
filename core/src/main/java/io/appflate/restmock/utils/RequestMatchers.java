@@ -28,7 +28,11 @@ import java.util.Locale;
 import io.appflate.restmock.RESTMockServer;
 import okhttp3.mockwebserver.RecordedRequest;
 
-public class RequestMatchers {
+public final class RequestMatchers {
+
+    private RequestMatchers() {
+        throw new UnsupportedOperationException();
+    }
 
     public static RequestMatcher pathContains(final String urlPart) {
         return new RequestMatcher("url contains: " + urlPart) {
@@ -64,6 +68,7 @@ public class RequestMatchers {
 
     public static RequestMatcher pathEndsWithIgnoringQueryParams(final String endOfUrlPath) {
         return new RequestMatcher("url ends with: ${endOfUrlPath}") {
+
             protected boolean matchesSafely(RecordedRequest item) {
                 String endOfPathSanitized = sanitizePath(endOfUrlPath);
                 String recordedPathSanitized = sanitizePath(item.getPath());
@@ -80,12 +85,49 @@ public class RequestMatchers {
         }
     }
 
+    /**
+     * Checks whether matched request's path starts with given string.
+     * path is a part of the url after the server's url. Example:
+     * {@code pathStartsWith("login")} would match {@code https://localhost:4583/login}
+     *
+     * @param urlPart desired beginning of the path we want to match with
+     * @return A new {@link RequestMatcher} object that will match {@link RecordedRequest} if it's
+     * path starts with given urlPart
+     */
     public static RequestMatcher pathStartsWith(final String urlPart) {
         return new RequestMatcher("url starts with: " + urlPart) {
 
             @Override
             protected boolean matchesSafely(RecordedRequest item) {
                 return item.getPath().toLowerCase(Locale.US).startsWith(urlPart.toLowerCase(Locale.US));
+            }
+        };
+    }
+
+    /**
+     * Checks whether matched request contains non-null headers with given names
+     *
+     * @param headerNames names of headers to match
+     * @return A new {@link RequestMatcher} object that will match {@link RecordedRequest} if it
+     * contains specified header names
+     */
+    public static RequestMatcher hasHeaderNames(final String... headerNames) {
+        return new RequestMatcher("has headers: " + Arrays.toString(headerNames)) {
+
+            @Override
+            protected boolean matchesSafely(RecordedRequest item) {
+                if (headerNames == null) {
+                    throw new IllegalArgumentException("You did not specify any header names");
+                }
+                if (headerNames.length > 0 && item.getHeaders() == null) {
+                    return false;
+                }
+                for (String header : headerNames) {
+                    if (item.getHeader(header) == null) {
+                        return false;
+                    }
+                }
+                return true;
             }
         };
     }
@@ -154,12 +196,6 @@ public class RequestMatchers {
                 }
             }
         };
-    }
-
-    private static List<String> varArgToList(String... args) {
-        List<String> strings = new ArrayList<>(args.length);
-        Collections.addAll(strings, args);
-        return strings;
     }
 
     /**
@@ -236,7 +272,9 @@ public class RequestMatchers {
         return httpMethodIs("HEAD");
     }
 
-    private RequestMatchers() {
-        throw new UnsupportedOperationException();
+    private static List<String> varArgToList(String... args) {
+        List<String> strings = new ArrayList<>(args.length);
+        Collections.addAll(strings, args);
+        return strings;
     }
 }

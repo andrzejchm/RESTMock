@@ -26,8 +26,14 @@ import io.appflate.restmock.RESTMockServer;
 import io.appflate.restmock.RequestsVerifier;
 import io.appflate.restmock.androidsample.pageobjects.MainActivityPageObject;
 import io.appflate.restmock.androidsample.view.activities.MainActivity;
+import okhttp3.mockwebserver.MockResponse;
 
+import static io.appflate.restmock.utils.RequestMatchers.hasQueryParameterNames;
+import static io.appflate.restmock.utils.RequestMatchers.hasQueryParameters;
 import static io.appflate.restmock.utils.RequestMatchers.pathEndsWith;
+import static io.appflate.restmock.utils.RequestMatchers.pathEndsWithIgnoringQueryParams;
+import static io.appflate.restmock.utils.RequestMatchers.pathStartsWith;
+import static org.hamcrest.CoreMatchers.not;
 
 /**
  * Created by andrzejchm on 23/04/16.
@@ -63,6 +69,15 @@ public class MainActivityTest {
         pageObject.pressOk();
         pageObject.verifyWelcomeMessageForUser(NAME_ANDRZEJ_CHMIELEWSKI);
         RequestsVerifier.verifyRequest(pathEndsWith(USERNAME_ANDRZEJCHM)).invoked();
+        RESTMockServer.whenGET(pathStartsWith("login"))
+                .thenAnswer((request) -> {
+                    if (not(hasQueryParameters()).matches(request)) {
+                        return new MockResponse().setBody("NOT OK").setResponseCode(401);
+                    } else if (hasQueryParameterNames("user","pass").matches(request)) {
+                        return new MockResponse().setBody("OK").setResponseCode(200);
+                    }
+                    return new MockResponse().setBody("NOT MOCKED").setResponseCode(500);
+                });
     }
 
     @Test
