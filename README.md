@@ -42,7 +42,7 @@ Add the dependency
 
 ```groovy  
 dependencies {
-	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.3.0'
+	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.3.1'
 }
 ```
 

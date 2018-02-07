@@ -22,7 +22,7 @@ import okhttp3.mockwebserver.RecordedRequest;
 /**
  * An interface that specifies the answer to return based on the received request
  */
-interface MockAnswer {
+public interface MockAnswer {
 
     /**
      * This method gets called by {@link MatchableCallsRequestDispatcher} with a matched {@link RecordedRequest} and should
