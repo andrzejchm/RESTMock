@@ -46,6 +46,22 @@ android {
         disable "InvalidPackage"
         disable "ObsoleteLintCustomCheck" //https://github.com/JakeWharton/butterknife/issues/1074
     }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+
+    flavorDimensions "tier"
+
+    productFlavors {
+        demo {
+            dimension "tier"
+        }
+
+        mocked {
+            dimension "tier"
+        }
+    }
 }
 
 
@@ -57,26 +73,25 @@ configurations.all {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.android.support:appcompat-v7:${supportVersion}"
     implementation "com.android.support:design:${supportVersion}"
-    implementation "com.jakewharton:butterknife:8.8.1"
+    implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    implementation "com.google.dagger:dagger:2.14.1"
-    implementation "com.squareup.retrofit2:retrofit:2.3.0"
-    implementation "com.squareup.retrofit2:converter-gson:2.3.0"
-    implementation "com.google.code.gson:gson:2.8.2"
-    implementation "com.google.code.findbugs:annotations:2.0.3"
-    provided "javax.annotation:jsr250-api:1.0"
+    implementation 'com.google.dagger:dagger:2.14.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.google.code.findbugs:annotations:2.0.3'
+    provided 'javax.annotation:jsr250-api:1.0'
     annotationProcessor "com.google.dagger:dagger-compiler:2.14.1"
-
     //Test dependencies
-    androidTestImplementation "com.android.support.test:runner:1.0.1"
-    androidTestImplementation "com.android.support.test:rules:1.0.1"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.1"
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test:rules:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     //this dependency tends to break things for most users. Im adding it to check whether the app compiles correctly
-    androidTestImplementation "com.android.support.test.espresso:espresso-intents:3.0.1"
-    androidTestImplementation("com.android.support.test.espresso:espresso-contrib:3.0.1") {
+    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.1'
+    androidTestImplementation('com.android.support.test.espresso:espresso-contrib:3.0.1') {
         exclude group: "com.android.support", module: "appcompat"
         exclude group: "com.android.support", module: "support-v4"
         exclude module: "recyclerview-v7"
@@ -84,21 +99,29 @@ dependencies {
     androidTestImplementation "com.android.support:support-annotations:${supportVersion}"
     androidTestImplementation "com.android.support:appcompat-v7:${supportVersion}"
     androidTestImplementation "com.android.support:design:${supportVersion}"
-
     //the most important, RESTMock! :)
-    androidTestImplementation project(":android")
-
+//    androidTestImplementation project(':android')
     testImplementation "com.android.support:appcompat-v7:${supportVersion}"
     testImplementation "com.android.support:design:${supportVersion}"
-    testImplementation "junit:junit:4.12"
-    testImplementation "com.android.support.test.espresso:espresso-core:3.0.1"
-    testImplementation("com.android.support.test.espresso:espresso-contrib:3.0.1") {
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    testImplementation('com.android.support.test.espresso:espresso-contrib:3.0.1') {
         exclude group: "com.android.support", module: "appcompat"
         exclude group: "com.android.support", module: "support-v4"
         exclude module: "recyclerview-v7"
     }
-    testImplementation project(":android")
-    testImplementation(project(":core")) {
-        exclude group: "org.bouncycastle", module: "bcprov-jdk15on"
-    }
+//    testImplementation project(':android')
+//    testImplementation(project(':core')) {
+//        exclude group: "org.bouncycastle", module: "bcprov-jdk15on"
+//    }
+    androidTestImplementation 'com.github.andrzejchm.RESTMock:android:0.3.1'
+    androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.3.1'
+    compile 'com.github.andrzejchm.RESTMock:android:0.3.1'
+}
+
+
+allprojects {
+  repositories {
+    maven { url "https://jitpack.io" }
+  }
 }
