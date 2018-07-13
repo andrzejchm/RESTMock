@@ -19,7 +19,7 @@ apply from: "../quality_tools/findbugs.gradle"
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "26.0.3"
+    buildToolsVersion '27.0.3'
 
     testOptions {
         unitTests.includeAndroidResources = true
@@ -46,6 +46,11 @@ android {
         disable "InvalidPackage"
         disable "ObsoleteLintCustomCheck" //https://github.com/JakeWharton/butterknife/issues/1074
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 
@@ -67,16 +72,16 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:2.3.0"
     implementation "com.google.code.gson:gson:2.8.2"
     implementation "com.google.code.findbugs:annotations:2.0.3"
-    provided "javax.annotation:jsr250-api:1.0"
+    compileOnly "javax.annotation:jsr250-api:1.0"
     annotationProcessor "com.google.dagger:dagger-compiler:2.14.1"
 
     //Test dependencies
-    androidTestImplementation "com.android.support.test:runner:1.0.1"
-    androidTestImplementation "com.android.support.test:rules:1.0.1"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.1"
+    androidTestImplementation "com.android.support.test:runner:1.0.2"
+    androidTestImplementation "com.android.support.test:rules:1.0.2"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.2"
     //this dependency tends to break things for most users. Im adding it to check whether the app compiles correctly
-    androidTestImplementation "com.android.support.test.espresso:espresso-intents:3.0.1"
-    androidTestImplementation("com.android.support.test.espresso:espresso-contrib:3.0.1") {
+    androidTestImplementation "com.android.support.test.espresso:espresso-intents:3.0.2"
+    androidTestImplementation("com.android.support.test.espresso:espresso-contrib:3.0.2") {
         exclude group: "com.android.support", module: "appcompat"
         exclude group: "com.android.support", module: "support-v4"
         exclude module: "recyclerview-v7"
@@ -91,8 +96,8 @@ dependencies {
     testImplementation "com.android.support:appcompat-v7:${supportVersion}"
     testImplementation "com.android.support:design:${supportVersion}"
     testImplementation "junit:junit:4.12"
-    testImplementation "com.android.support.test.espresso:espresso-core:3.0.1"
-    testImplementation("com.android.support.test.espresso:espresso-contrib:3.0.1") {
+    testImplementation "com.android.support.test.espresso:espresso-core:3.0.2"
+    testImplementation("com.android.support.test.espresso:espresso-contrib:3.0.2") {
         exclude group: "com.android.support", module: "appcompat"
         exclude group: "com.android.support", module: "support-v4"
         exclude module: "recyclerview-v7"

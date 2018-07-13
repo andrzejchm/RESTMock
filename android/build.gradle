@@ -22,7 +22,7 @@ group = 'com.github.andrzejchm'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "26.0.3"
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         minSdkVersion 10
@@ -48,6 +48,6 @@ dependencies {
     api(project(':core')) {
         exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
     }
-    implementation 'com.android.support.test:rules:1.0.1'
-    implementation 'com.android.support.test:runner:1.0.1'
+    implementation 'com.android.support.test:rules:1.0.2'
+    implementation 'com.android.support.test:runner:1.0.2'
 }
