@@ -17,9 +17,8 @@
 package io.appflate.restmock.android;
 
 import android.os.Bundle;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnitRunner;
-
+import io.appflate.restmock.RESTMockOptions;
 import io.appflate.restmock.RESTMockServerStarter;
 
 /**
@@ -30,6 +29,9 @@ public class RESTMockTestRunner extends AndroidJUnitRunner {
     @Override
     public void onCreate(Bundle arguments) {
         super.onCreate(arguments);
-        RESTMockServerStarter.startSync(new AndroidAssetsFileParser(getContext()),new AndroidLogger());
+        RESTMockServerStarter.startSync(new AndroidAssetsFileParser(getContext()), new AndroidLogger(),
+            new RESTMockOptions.Builder()
+                .useHttps(true)
+                .build());
     }
 }

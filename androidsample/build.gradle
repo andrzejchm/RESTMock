@@ -15,11 +15,11 @@
  */
 
 apply plugin: "com.android.application"
-apply from: "../quality_tools/findbugs.gradle"
+apply from: "../quality_tools/lint.gradle"
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion rootProject.ext.compileSdk
+    buildToolsVersion rootProject.ext.buildTools
 
     testOptions {
         unitTests.includeAndroidResources = true
@@ -27,8 +27,8 @@ android {
 
     defaultConfig {
         applicationId "io.appflate.restmock.androidsample"
-        minSdkVersion 14
-        targetSdkVersion 27
+        minSdkVersion rootProject.ext.minSdk
+        targetSdkVersion rootProject.ext.targetSdk
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "io.appflate.restmock.androidsample.CustomTestRunner"
@@ -40,13 +40,6 @@ android {
         }
     }
 
-    lintOptions {
-        warningsAsErrors true
-        abortOnError true
-        disable "InvalidPackage"
-        disable "ObsoleteLintCustomCheck" //https://github.com/JakeWharton/butterknife/issues/1074
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -56,7 +49,7 @@ android {
 
 configurations.all {
     resolutionStrategy {
-        force "com.android.support:support-annotations:${supportLibraryVersion}"
+        force "com.android.support:support-annotations:${supportVersion}"
         force "com.squareup.okhttp3:okhttp:${okHttpVersion}"
     }
 }
@@ -67,13 +60,16 @@ dependencies {
     implementation "com.android.support:design:${supportVersion}"
     implementation "com.jakewharton:butterknife:8.8.1"
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    implementation "com.google.dagger:dagger:2.14.1"
+    implementation "com.google.dagger:dagger:2.15"
     implementation "com.squareup.retrofit2:retrofit:2.3.0"
     implementation "com.squareup.retrofit2:converter-gson:2.3.0"
-    implementation "com.google.code.gson:gson:2.8.2"
+    implementation "com.squareup.okhttp3:logging-interceptor:${okHttpVersion}"
+    implementation "com.squareup.okhttp3:okhttp:${okHttpVersion}"
+
+    implementation "com.google.code.gson:gson:2.8.5"
     implementation "com.google.code.findbugs:annotations:2.0.3"
     compileOnly "javax.annotation:jsr250-api:1.0"
-    annotationProcessor "com.google.dagger:dagger-compiler:2.14.1"
+    annotationProcessor "com.google.dagger:dagger-compiler:2.15"
 
     //Test dependencies
     androidTestImplementation "com.android.support.test:runner:1.0.2"
@@ -103,7 +99,6 @@ dependencies {
         exclude module: "recyclerview-v7"
     }
     testImplementation project(":android")
-    testImplementation(project(":core")) {
-        exclude group: "org.bouncycastle", module: "bcprov-jdk15on"
-    }
+    testImplementation(project(":core"))
+
 }

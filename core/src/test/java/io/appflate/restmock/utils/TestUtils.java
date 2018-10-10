@@ -16,16 +16,16 @@
 
 package io.appflate.restmock.utils;
 
+import io.appflate.restmock.RESTMockServer;
 import java.io.IOException;
 import java.util.Map;
-
-import io.appflate.restmock.RESTMockServer;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static okhttp3.tls.internal.TlsUtil.localhost;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -35,7 +35,8 @@ import static org.junit.Assert.assertTrue;
 public class TestUtils {
 
     private static final RequestBody EMPTY_JSON_BODY = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), "");
-    private static OkHttpClient okHttpClient = new OkHttpClient();
+    private static OkHttpClient okHttpClient =
+        new OkHttpClient.Builder().sslSocketFactory(RESTMockServer.getSSLSocketFactory(), RESTMockServer.getTrustManager()).build();
 
     public static Response get(String path) throws IOException {
         path = normalizePath(path);
@@ -44,8 +45,7 @@ public class TestUtils {
 
     public static Response get(String path, Map.Entry<String, String>... headers) throws IOException {
         path = normalizePath(path);
-        Request.Builder builder = new Request.Builder()
-                .url(RESTMockServer.getUrl() + path);
+        Request.Builder builder = new Request.Builder().url(RESTMockServer.getUrl() + path);
         for (Map.Entry<String, String> entry : headers) {
             builder.addHeader(entry.getKey(), entry.getValue());
         }
@@ -86,7 +86,6 @@ public class TestUtils {
 
     public static void assertMultipleMatches(Response response) throws IOException {
         assertResponseWithBodyContains(response, 500, RESTMockServer.MORE_THAN_ONE_RESPONSE_ERROR);
-
     }
 
     public static void assertResponseCodeIs(Response response, int code) {

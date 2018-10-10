@@ -16,32 +16,44 @@
 
 package io.appflate.restmock;
 
+import io.appflate.restmock.logging.RESTMockLogger;
 import java.io.IOException;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
-import io.appflate.restmock.logging.RESTMockLogger;
 
 public class RESTMockServerStarter {
 
     public static final int KEEP_ALIVE_TIME = 60;
 
     public static void startSync(final RESTMockFileParser mocksFileParser) {
-        startSync(mocksFileParser, null);
+        startSync(mocksFileParser, null,
+            new RESTMockOptions.Builder().build());
+    }
+
+    public static void startSync(final RESTMockFileParser mocksFileParser, RESTMockOptions options) {
+        startSync(mocksFileParser, null, options);
     }
 
     public static void startSync(final RESTMockFileParser mocksFileParser, final RESTMockLogger logger) {
-        // it has to be like that since Android prevents starting testServer on main Thread.
-        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1, 1, KEEP_ALIVE_TIME, TimeUnit.SECONDS,
-                                                                       new LinkedBlockingQueue<Runnable>(1));
+        startSync(mocksFileParser, logger, new RESTMockOptions.Builder().build());
+    }
+
+    public static void startSync(
+        final RESTMockFileParser mocksFileParser,
+        final RESTMockLogger logger,
+        final RESTMockOptions restMockOptions
+    ) {
+        // it has to be like that since Android prevents starting x on main Thread.
+        ThreadPoolExecutor threadPoolExecutor =
+            new ThreadPoolExecutor(1, 1, KEEP_ALIVE_TIME, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(1));
 
         threadPoolExecutor.execute(new Runnable() {
 
             @Override
             public void run() {
                 try {
-                    RESTMockServer.init(mocksFileParser, logger);
+                    RESTMockServer.init(mocksFileParser, logger, restMockOptions);
                 } catch (IOException e) {
                     RESTMockServer.getLogger().error("Server start error", e);
                     throw new RuntimeException(e);

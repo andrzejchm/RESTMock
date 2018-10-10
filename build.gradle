@@ -15,21 +15,25 @@ import com.android.build.gradle.internal.tasks.AndroidTestTask
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     repositories {
         jcenter()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.3'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath 'com.android.tools.build:gradle:3.2.0'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
+}
+
+ext {
+    libraryVersion = "0.3.2"
+    compileSdk = 28
+    targetSdk = 28
+    minSdk = 14
+    buildTools = "28.0.3"
+    okHttpVersion = "3.11.0"
+    supportVersion = "28.0.0"
 }
 
 allprojects {
@@ -39,18 +43,16 @@ allprojects {
         maven { url "https://jitpack.io" }
         maven { url "https://maven.google.com" }
     }
-    version = "0.3.1"
+    version = rootProject.ext.libraryVersion
 }
 
-ext.okHttpVersion = "3.11.0"
-ext.supportVersion = "27.1.1"
 
 ext.preDexLibraries = project.hasProperty('preDexLibraries')
 
 subprojects {
     project.plugins.whenPluginAdded { plugin ->
-        if ('com.android.build.gradle.AppPlugin'.equals(plugin.class.name) ||
-                'com.android.build.gradle.LibraryPlugin'.equals(plugin.class.name)) {
+        if ('com.android.build.gradle.AppPlugin'.equals(plugin.class.name) || 'com.android.build.gradle.LibraryPlugin'.equals(
+            plugin.class.name)) {
             // enable or disable pre-dexing
             project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibraries
         }

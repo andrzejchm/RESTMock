@@ -16,7 +16,6 @@
 
 package io.appflate.restmock.androidsample;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.appflate.restmock.RESTMockServer;
 import io.appflate.restmock.androidsample.di.AppModule;
 import io.appflate.restmock.androidsample.di.DaggerAppComponent;
@@ -27,11 +26,10 @@ import io.appflate.restmock.androidsample.di.DaggerAppComponent;
 public class TestApplication extends SampleApplication {
 
     @Override
-    @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
     protected void setupGraph() {
         //here I'm supplying the AppModule with RESTMock's url instead of github's API url
         appComponent = DaggerAppComponent.builder()
-                .appModule(new AppModule(RESTMockServer.getUrl()))
-                .build();
+            .appModule(new AppModule(RESTMockServer.getUrl(), RESTMockServer.getSSLSocketFactory(), RESTMockServer.getTrustManager()))
+            .build();
     }
 }
