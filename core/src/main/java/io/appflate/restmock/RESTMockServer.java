@@ -16,14 +16,14 @@
 
 package io.appflate.restmock;
 
-import org.hamcrest.Matcher;
-
-import java.io.IOException;
-
 import io.appflate.restmock.logging.NOOpLogger;
 import io.appflate.restmock.logging.RESTMockLogger;
+import java.io.IOException;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.X509TrustManager;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.hamcrest.Matcher;
 
 import static io.appflate.restmock.utils.RequestMatchers.isDELETE;
 import static io.appflate.restmock.utils.RequestMatchers.isGET;
@@ -33,6 +33,7 @@ import static io.appflate.restmock.utils.RequestMatchers.isPOST;
 import static io.appflate.restmock.utils.RequestMatchers.isPUT;
 import static org.hamcrest.core.AllOf.allOf;
 
+@SuppressWarnings("unused")
 public class RESTMockServer {
 
     public static final String RESPONSE_NOT_MOCKED = "NOT MOCKED";
@@ -42,12 +43,27 @@ public class RESTMockServer {
     private static String serverBaseUrl;
     private static RESTMockFileParser RESTMockFileParser;
     private static RESTMockLogger logger = new NOOpLogger();
+    private static SSLSocketFactory socketFactory;
+    private static X509TrustManager trustManager;
+
+    public static SSLSocketFactory getSSLSocketFactory() {
+        return socketFactory;
+    }
+
+    public static X509TrustManager getTrustManager() {
+        return trustManager;
+    }
 
     public static RESTMockLogger getLogger() {
         return logger;
     }
 
-    public synchronized static void init(RESTMockFileParser RESTMockFileParser, RESTMockLogger logger) throws IOException {
+    public synchronized static void init(RESTMockFileParser restMockFileParser, RESTMockLogger logger) throws IOException {
+        init(restMockFileParser, logger, new RESTMockOptions.Builder().build());
+    }
+
+    public synchronized static void init(RESTMockFileParser restMockFileParser, RESTMockLogger logger, RESTMockOptions restMockOptions)
+        throws IOException {
         if (RESTMockServer.mockWebServer != null) {
             RESTMockServer.shutdown();
         }
@@ -55,6 +71,7 @@ public class RESTMockServer {
         if (logger != null) {
             RESTMockServer.logger = logger;
         }
+        setUpHttps(restMockOptions);
 
         RESTMockServer.getLogger().log("## Starting RESTMock server...");
         RESTMockServer.dispatcher = new MatchableCallsRequestDispatcher();
@@ -63,8 +80,22 @@ public class RESTMockServer {
         RESTMockServer.serverBaseUrl = mockWebServer.url("/").toString();
         RequestsVerifier.init(dispatcher);
 
-        RESTMockServer.RESTMockFileParser = RESTMockFileParser;
+        RESTMockServer.RESTMockFileParser = restMockFileParser;
         RESTMockServer.getLogger().log("## RESTMock successfully started!\turl: " + RESTMockServer.serverBaseUrl);
+    }
+
+    private static void setUpHttps(RESTMockOptions options) {
+        if (options.isUseHttps()) {
+            socketFactory = options.getSocketFactory();
+            if (socketFactory == null) {
+                socketFactory = SslUtils.localhost().sslSocketFactory();
+            }
+            trustManager = options.getTrustManager();
+            if (trustManager == null) {
+                trustManager = SslUtils.localhost().trustManager();
+            }
+            mockWebServer.useHttps(socketFactory, false);
+        }
     }
 
     /**

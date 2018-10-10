@@ -16,23 +16,23 @@
 
 package io.appflate.restmock;
 
-import org.hamcrest.Matcher;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.appflate.restmock.exceptions.RequestInvocationCountMismatchException;
 import io.appflate.restmock.exceptions.RequestInvocationCountNotEnoughException;
 import io.appflate.restmock.exceptions.RequestNotInvokedException;
 import io.appflate.restmock.utils.RequestMatchers;
 import io.appflate.restmock.utils.TestUtils;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.hamcrest.Matcher;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import static io.appflate.restmock.RequestsVerifier.verifyDELETE;
 import static io.appflate.restmock.RequestsVerifier.verifyGET;
@@ -48,6 +48,7 @@ import static org.mockito.Mockito.spy;
 /**
  * Created by andrzejchm on 26/04/16.
  */
+@RunWith(Parameterized.class)
 public class RequestVerifierTest {
 
     private static final String path = "sample";
@@ -55,21 +56,29 @@ public class RequestVerifierTest {
     private static final Matcher<RecordedRequest> NOT_INVOKED_MATCHER = pathEndsWith("else");
     static RESTMockFileParser fileParser;
 
-    @BeforeClass
-    public static void setupClass() {
-        fileParser = mock(RESTMockFileParser.class);
-        RESTMockServerStarter.startSync(fileParser);
-        RESTMockServer.dispatcher = spy(RESTMockServer.dispatcher);
+    private final boolean useHttps;
+
+    @Parameterized.Parameters(name = "useHttps={0}")
+    public static Collection<Object> data() {
+        return Arrays.asList(new Object[] {
+            true, false
+        });
     }
 
-    @AfterClass
-    public static void teardownClass() throws IOException {
-        RESTMockServer.shutdown();
+    public RequestVerifierTest(boolean useHttps) {
+        this.useHttps = useHttps;
     }
 
     @Before
     public void setup() {
-        RESTMockServer.reset();
+        fileParser = mock(RESTMockFileParser.class);
+        RESTMockServerStarter.startSync(fileParser, new RESTMockOptions.Builder().useHttps(useHttps).build());
+        RESTMockServer.dispatcher = spy(RESTMockServer.dispatcher);
+    }
+
+    @After
+    public void teardown() throws IOException {
+        RESTMockServer.shutdown();
     }
 
     @Test
@@ -143,7 +152,6 @@ public class RequestVerifierTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT")
     public void takeLastNumOfElementsWithInvalidCountThrowsException() throws Exception {
         RESTMockServer.whenRequested(pathEndsWith(path)).thenReturnString("a single call");
         TestUtils.get(path);
@@ -201,7 +209,6 @@ public class RequestVerifierTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT")
     public void takesSubsetOfRequestsWithInvalidRangeThrowsError() throws Exception {
         RESTMockServer.whenRequested(pathEndsWith(path)).thenReturnString("a single call");
         TestUtils.get(path);
@@ -229,7 +236,6 @@ public class RequestVerifierTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT")
     public void takeFirstNumOfElementsWithInvalidCountThrowsException() throws Exception {
         RESTMockServer.whenRequested(pathEndsWith(path)).thenReturnString("a single call");
         TestUtils.get(path);

@@ -16,17 +16,17 @@
 
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
-apply from: '../quality_tools/findbugs.gradle'
+apply from: '../quality_tools/lint.gradle'
 
 group = 'com.github.andrzejchm'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion rootProject.ext.compileSdk
+    buildToolsVersion rootProject.ext.buildTools
 
     defaultConfig {
-        minSdkVersion 10
-        targetSdkVersion 27
+        minSdkVersion rootProject.ext.minSdk
+        targetSdkVersion rootProject.ext.targetSdk
     }
     buildTypes {
         release {
@@ -34,20 +34,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-    lintOptions {
-        warningsAsErrors true
-        abortOnError true
-        disable 'InvalidPackage'
-    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
-    api(project(':core')) {
-        exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
-    }
+    api(project(':core'))
+
     implementation 'com.android.support.test:rules:1.0.2'
     implementation 'com.android.support.test:runner:1.0.2'
 }

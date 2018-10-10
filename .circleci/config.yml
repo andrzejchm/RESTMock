@@ -2,7 +2,7 @@ version: 2
 defaults: &defaults
   working_directory: ~/code
   docker:
-    - image: circleci/android:api-27-alpha
+    - image: circleci/android:api-28-alpha
   environment:
     JVM_OPTS: -Xmx3200m
 jobs:

@@ -1,11 +1,12 @@
+
 # RESTMock
 [![](https://jitpack.io/v/andrzejchm/RESTMock.svg)](https://jitpack.io/#andrzejchm/RESTMock)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-RESTMock-green.svg?style=true)](https://android-arsenal.com/details/1/3468) [![Circle CI](https://circleci.com/gh/andrzejchm/RESTMock.svg?style=svg)](https://circleci.com/gh/andrzejchm/RESTMock)
 
 REST API mocking made easy.
 
-## About
 RESTMock is a library working on top of Square's [okhttp/MockWebServer](https://github.com/square/okhttp/tree/master/mockwebserver). It allows you to specify [Hamcrest](https://github.com/hamcrest/JavaHamcrest) matchers to match HTTP requests and specify what response to return. It is as easy as:
+
 
 ```java
 RESTMockServer.whenGET(pathContains("users/defunkt"))
@@ -14,14 +15,34 @@ RESTMockServer.whenGET(pathContains("users/defunkt"))
 **Article**
 - [ITDD - Instrumentation TDD for Android](https://medium.com/@andrzejchm/ittd-instrumentation-ttd-for-android-4894cbb82d37)
 
-## Table of Contents
-- [About](#about)
+## Table of contents
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
 - [Setup](#setup)
+    - [Step 1: Repository](#step-1-repository)
+    - [Step 2: Dependencies](#step-2-dependencies)
+    - [Step 3: Start the server](#step-3-start-the-server)
+      - [a) RESTMockTestRunner](#a-restmocktestrunner)
+      - [b) RESTMockServerStarter](#b-restmockserverstarter)
+    - [Step 4: Specify Mocks](#step-4-specify-mocks)
+      - [a) Files](#a-files)
+      - [b) Strings](#b-strings)
+      - [c) MockResponse](#c-mockresponse)
+      - [c) MockAnswer](#c-mockanswer)
+    - [Step 5: Request Matchers](#step-5-request-matchers)
+    - [Step 6: Specify API Endpoint](#step-6-specify-api-endpoint)
+- [Response chains](#response-chains)
+- [Response delays](#response-delays)
+    - [Interleaving delays with responses](#interleaving-delays-with-responses)
 - [Request verification](#request-verification)
 - [Logging](#logging)
 - [Android Sample Project](#android-sample-project)
 - [Donation](#donation)
 - [License](#license)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Setup
 Here are the basic rules to set up RESTMock for Android
@@ -42,7 +63,7 @@ Add the dependency
 
 ```groovy  
 dependencies {
-	androidTestCompile 'com.github.andrzejchm.RESTMock:android:0.3.1'
+	androidTestCompile 'com.github.andrzejchm.RESTMock:android:${LATEST_VERSION}'
 }
 ```
 
@@ -130,6 +151,22 @@ RestAdapter adapter = new RestAdapter.Builder()
 ```
 
 take a look at [#68](https://github.com/andrzejchm/RESTMock/issues/68) for better reference
+
+## HTTPS
+
+By default, RESTMockServer will serve responses using Http. In order to use HTTPS, during initialization you have to pass RESTMockOptions` object with `useHttps` set to true:
+```java
+RESTMockServerStarter.startSync(new AndroidAssetsFileParser(getContext()),new AndroidLogger(), new RESTMockOptions.Builder().useHttps(true).build());
+```
+
+there is a possibility to set up your own `SSLSocketFactory` and `TrustManager`, if you do not specify those, then default ones will be created for you. You can easly retrieve them with `RESTMockServer.getSSLSocketFactory()` and `RESTMockServer.getTrustManager()` to be able to build your client that will accept the default certificate:
+
+```java
+new OkHttpClient.Builder().sslSocketFactory(RESTMockServer.getSSLSocketFactory(), RESTMockServer.getTrustManager()).build();
+```
+
+A sample how to use https with RESTMock in android tests can be found in `androidsample` gradle module within this repository.
+
 ## Response chains
 You can chain different responses for a single request matcher, all the `thenReturn*()` methods accept varags parameter with response, or you can call those methods multiple times on a single matcher, examples:
 
@@ -217,7 +254,7 @@ RequestsVerifier.takeAllMatching(isGET());
 RESTMock supports logging events. You just have to provide the RESTMock with the implementation of `RESTMockLogger`. For Android there is an `AndroidLogger` implemented already. All you have to do is use the `RESTMockTestRunner` or call
 
 ```java
-RESTMockServerStarter.startSync(new AndroidAssetsFileParser(getContext()),new AndroidLogger());
+RESTMockServerStarter.startSync(new AndroidAssetsFileParser(getContext()),new AndroidLogger(), new RESTMockOptions());
 ```
 
 or

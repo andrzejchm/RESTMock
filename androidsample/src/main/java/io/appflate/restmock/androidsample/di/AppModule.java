@@ -19,6 +19,10 @@ package io.appflate.restmock.androidsample.di;
 import dagger.Module;
 import dagger.Provides;
 import io.appflate.restmock.androidsample.domain.GithubApi;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.X509TrustManager;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -30,18 +34,30 @@ public class AppModule {
 
     private String baseUrl;
 
-    public AppModule(String baseUrl) {
+    private SSLSocketFactory socketFactory;
+
+    private X509TrustManager trustManager;
+
+    public AppModule(String baseUrl, SSLSocketFactory socketFactory, X509TrustManager trustManager) {
         this.baseUrl = baseUrl;
+        this.socketFactory = socketFactory;
+        this.trustManager = trustManager;
     }
 
     @Provides
     GithubApi provideRestService() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+        if (socketFactory != null && trustManager != null) {
+            clientBuilder.sslSocketFactory(socketFactory, trustManager).addInterceptor(interceptor);
+        }
 
-        GithubApi githubApi = retrofit.create(GithubApi.class);
-        return githubApi;
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(baseUrl)
+            .client(clientBuilder.build())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
+        return retrofit.create(GithubApi.class);
     }
 }

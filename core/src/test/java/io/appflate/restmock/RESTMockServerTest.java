@@ -16,19 +16,19 @@
 
 package io.appflate.restmock;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
+import io.appflate.restmock.utils.TestUtils;
 import java.io.IOException;
 import java.util.AbstractMap;
-
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import io.appflate.restmock.utils.TestUtils;
+import java.util.Arrays;
+import java.util.Collection;
 import okhttp3.Response;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import static io.appflate.restmock.utils.RequestMatchers.pathEndsWith;
 import static junit.framework.TestCase.assertEquals;
@@ -38,25 +38,34 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
+@RunWith(Parameterized.class)
 public class RESTMockServerTest {
 
     static RESTMockFileParser fileParser;
+    private final boolean useHttps;
 
-    @BeforeClass
-    public static void setupClass() {
-        fileParser = mock(RESTMockFileParser.class);
-        RESTMockServerStarter.startSync(fileParser);
-        RESTMockServer.dispatcher = spy(RESTMockServer.dispatcher);
+
+    @Parameterized.Parameters(name = "useHttps={0}")
+    public static Collection<Object> data() {
+        return Arrays.asList(new Object[] {
+            true, false
+        });
     }
 
-    @AfterClass
-    public static void teardownClass() throws IOException {
-        RESTMockServer.shutdown();
+    public RESTMockServerTest(boolean useHttps) {
+        this.useHttps = useHttps;
     }
 
     @Before
     public void setup() {
-        RESTMockServer.reset();
+        fileParser = mock(RESTMockFileParser.class);
+        RESTMockServerStarter.startSync(fileParser, new RESTMockOptions.Builder().useHttps(useHttps).build());
+        RESTMockServer.dispatcher = spy(RESTMockServer.dispatcher);
+    }
+
+    @After
+    public void teardown() throws IOException {
+        RESTMockServer.shutdown();
     }
 
     @Test
@@ -155,7 +164,6 @@ public class RESTMockServerTest {
     }
 
     @Test
-    @SuppressFBWarnings("SIC_INNER_SHOULD_BE_STATIC_ANON")
     public void testThenAnswer() throws Exception {
         String path = "sample";
         RESTMockServer.whenGET(pathEndsWith(path)).thenAnswer(new MockAnswer() {
@@ -163,13 +171,9 @@ public class RESTMockServerTest {
             @Override
             public MockResponse answer(RecordedRequest request) {
                 if ("True".equals(request.getHeaders().get("header"))) {
-                    return new MockResponse()
-                            .setBody("OK")
-                            .setResponseCode(200);
+                    return new MockResponse().setBody("OK").setResponseCode(200);
                 } else {
-                    return new MockResponse()
-                            .setBody("NOT OK")
-                            .setResponseCode(400);
+                    return new MockResponse().setBody("NOT OK").setResponseCode(400);
                 }
             }
         });
@@ -179,6 +183,5 @@ public class RESTMockServerTest {
         assertEquals(400, responseFalse.code());
         assertEquals("OK", responseTrue.body().string());
         assertEquals("NOT OK", responseFalse.body().string());
-
     }
 }
