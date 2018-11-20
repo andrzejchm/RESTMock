@@ -272,7 +272,7 @@ You can check out the sample Android app with tests [here](androidsample/)
 If you think the library is awesome and want to buy me a beer, you can do so by sending some...
 * ![Ethereum](https://s2.coinmarketcap.com/static/img/coins/16x16/1027.png) **ETH** here: `0xf7354a0F7B34A380f6d68a2661bE465C10D6AEd7`
 * ![Bitcoin](https://s2.coinmarketcap.com/static/img/coins/16x16/1.png) **BTC** here: `12bU3BMibFqbBBymaftXTDnoHojFymD7a6`
-* ![NEO](https://s2.coinmarketcap.com/static/img/coins/16x16/13.png) **NEO** or **GAS** here: `AX1ovzRN2N28WJrtehjYXjwtHSvcqva6Ri`
+* ![NEO](https://s2.coinmarketcap.com/static/img/coins/16x16/1376.png) **NEO** or **GAS** here: `AX1ovzRN2N28WJrtehjYXjwtHSvcqva6Ri`
 
 ## License
 
