@@ -155,7 +155,7 @@ take a look at [#68](https://github.com/andrzejchm/RESTMock/issues/68) for bette
 
 ## HTTPS
 
-By default, RESTMockServer will serve responses using Http. In order to use HTTPS, during initialization you have to pass RESTMockOptions` object with `useHttps` set to true:
+By default, RESTMockServer will serve responses using Http. In order to use HTTPS, during initialization you have to pass `RESTMockOptions` object with `useHttps` set to true:
 ```java
 RESTMockServerStarter.startSync(new AndroidAssetsFileParser(getContext()),new AndroidLogger(), new RESTMockOptions.Builder().useHttps(true).build());
 ```
@@ -270,9 +270,9 @@ You can check out the sample Android app with tests [here](androidsample/)
 
 ## Donation
 If you think the library is awesome and want to buy me a beer, you can do so by sending some...
-* ![Ethereum](https://files.coinmarketcap.com/static/img/coins/16x16/1027.png) **ETH** here: `0xf7354a0F7B34A380f6d68a2661bE465C10D6AEd7`
-* ![Bitcoin](https://files.coinmarketcap.com/static/img/coins/16x16/1.png) **BTC** here: `12bU3BMibFqbBBymaftXTDnoHojFymD7a6`
-* ![NEO](https://files.coinmarketcap.com/static/img/coins/16x16/1376.png) **NEO** or **GAS** here: `AX1ovzRN2N28WJrtehjYXjwtHSvcqva6Ri`
+* ![Ethereum](https://s2.coinmarketcap.com/static/img/coins/16x16/1027.png) **ETH** here: `0xf7354a0F7B34A380f6d68a2661bE465C10D6AEd7`
+* ![Bitcoin](https://s2.coinmarketcap.com/static/img/coins/16x16/1.png) **BTC** here: `12bU3BMibFqbBBymaftXTDnoHojFymD7a6`
+* ![NEO](https://s2.coinmarketcap.com/static/img/coins/16x16/13.png) **NEO** or **GAS** here: `AX1ovzRN2N28WJrtehjYXjwtHSvcqva6Ri`
 
 ## License
 
