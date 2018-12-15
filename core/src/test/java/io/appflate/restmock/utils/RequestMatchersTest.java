@@ -21,7 +21,7 @@ public class RequestMatchersTest {
     @Test
     public void endingSlashNotTakenIntoAccount() throws IOException {
         // given
-        RecordedRequest recordedRequest = createRecordedRequest("foo/bar/");
+        RecordedRequest recordedRequest = createRecordedRequest("/foo/bar/");
 
         // when
         RequestMatcher matcher = RequestMatchers.pathEndsWith("bar");
@@ -33,7 +33,7 @@ public class RequestMatchersTest {
     @Test
     public void queryParamsAreTakenIntoAccount() throws IOException {
         // given
-        RecordedRequest recordedRequest = createRecordedRequest("foo/bar?baz=boo");
+        RecordedRequest recordedRequest = createRecordedRequest("/foo/bar?baz=boo");
 
         // when
         RequestMatcher matcher = RequestMatchers.pathEndsWith("boo");
@@ -45,7 +45,7 @@ public class RequestMatchersTest {
     @Test
     public void queryParamsAreIgnored() throws IOException {
         // given
-        RecordedRequest recordedRequest = createRecordedRequest("foo/bar?baz=boo");
+        RecordedRequest recordedRequest = createRecordedRequest("/foo/bar?baz=boo");
 
         // when
         RequestMatcher matcher = RequestMatchers.pathEndsWithIgnoringQueryParams("bar");
@@ -57,7 +57,7 @@ public class RequestMatchersTest {
     @Test
     public void shouldRecognizeProperQueryParameters() throws IOException {
         // given
-        RecordedRequest recordedRequest = createRecordedRequest("foo/bar?baz=ban");
+        RecordedRequest recordedRequest = createRecordedRequest("/foo/bar?baz=ban");
 
         // when
         RequestMatcher matcher = RequestMatchers.hasQueryParameters();
@@ -69,7 +69,7 @@ public class RequestMatchersTest {
     @Test
     public void shouldMatchProperSubsetOfQueryParametersNames() throws IOException {
         // given
-        RecordedRequest recordedRequest = createRecordedRequest("foo/?bar=bar&baz=baz&boo=boo");
+        RecordedRequest recordedRequest = createRecordedRequest("/foo/?bar=bar&baz=baz&boo=boo");
 
         // when
         RequestMatcher matcher = RequestMatchers.hasQueryParameterNames("bar", "baz");
@@ -81,7 +81,7 @@ public class RequestMatchersTest {
     @Test
     public void shouldNotMatchInproperSubsetOfQueryParametersNames() throws IOException {
         // given
-        RecordedRequest recordedRequest = createRecordedRequest("foo/?bar=bar&baz=baz&boo=boo");
+        RecordedRequest recordedRequest = createRecordedRequest("/foo/?bar=bar&baz=baz&boo=boo");
 
         // when
         RequestMatcher matcher = RequestMatchers.hasQueryParameterNames("bar", "ban");
@@ -93,7 +93,7 @@ public class RequestMatchersTest {
     @Test
     public void hasHeaderNamesFailWhenNoHeaders() {
         //given
-        RecordedRequest request = createRecordedRequest("path");
+        RecordedRequest request = createRecordedRequest("/path");
 
         //when
         RequestMatcher matcher = hasHeaderNames("header1");
@@ -105,7 +105,7 @@ public class RequestMatchersTest {
     @Test
     public void hasHeaderNamesSuccessWhenMatchesAll() {
         //given
-        RecordedRequest request = createRecordedRequest("path", "h1", "v1", "h2", "v2", "h3", "v3");
+        RecordedRequest request = createRecordedRequest("/path", "h1", "v1", "h2", "v2", "h3", "v3");
 
         //when
         RequestMatcher matcher = hasHeaderNames("h1", "h2", "h3");
@@ -117,7 +117,7 @@ public class RequestMatchersTest {
     @Test
     public void hasHeaderNamesSuccessWhenMatchesAllAsSubset() {
         //given
-        RecordedRequest request = createRecordedRequest("path", "h1", "v1", "h2", "v2", "h3", "v3");
+        RecordedRequest request = createRecordedRequest("/path", "h1", "v1", "h2", "v2", "h3", "v3");
 
         //when
         RequestMatcher matcher = hasHeaderNames("h1", "h2");
