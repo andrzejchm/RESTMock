@@ -128,7 +128,7 @@ public class RequestMatchersTest {
 
     private RecordedRequest createRecordedRequest(String path, String... headerNamesAndValues) {
         Socket socket = Mockito.mock(Socket.class);
-        when(socket.getInetAddress()).thenReturn(mock(InetAddress.class));
+        when(socket.getLocalAddress()).thenReturn(mock(InetAddress.class));
         Headers headers = null;
         if (headerNamesAndValues != null && headerNamesAndValues.length >= 2) {
             headers = Headers.of(headerNamesAndValues);
