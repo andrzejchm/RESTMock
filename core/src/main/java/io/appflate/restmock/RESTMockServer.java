@@ -244,7 +244,7 @@ public class RESTMockServer {
         removeMatchableCall(requestMatcher);
         return new MatchableCall(RESTMockServer.RESTMockFileParser, requestMatcher, dispatcher);
     }
-    shouldNotMatchInproperSubsetOfQueryParametersNames
+
     /**
      * Shuts down the instance of RESTMockServer
      *
