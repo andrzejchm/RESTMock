@@ -79,7 +79,7 @@ public class RequestMatchersTest {
     }
 
     @Test
-    public void shouldNotMatchInproperSubsetOfQueryParametersNames() throws IOException {
+    public void shouldNotMatchImproperSubsetOfQueryParametersNames() throws IOException {
         // given
         RecordedRequest recordedRequest = createRecordedRequest("foo/?bar=bar&baz=baz&boo=boo");
 

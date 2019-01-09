@@ -16,6 +16,8 @@
 
 package io.appflate.restmock;
 
+import org.hamcrest.Matcher;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.LinkedList;
@@ -130,6 +132,15 @@ class MatchableCallsRequestDispatcher extends Dispatcher {
     boolean removeMatchableCall(final MatchableCall call) {
         RESTMockServer.getLogger().log("## Removing response for:\t" + call.requestMatcher);
         return matchableCalls.remove(call);
+    }
+
+    boolean removeMatchableCall(Matcher<RecordedRequest> recordedRequest) {
+        for (MatchableCall match : matchableCalls) {
+            if (match.requestMatcher == recordedRequest) {
+                return removeMatchableCall(match);
+            }
+        }
+        return false;
     }
 
     List<RecordedRequest> getRequestHistory() {

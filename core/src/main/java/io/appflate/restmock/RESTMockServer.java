@@ -142,6 +142,16 @@ public class RESTMockServer {
     }
 
     /**
+     * removes the {@code MatchableCall} from this {@code RESTMockServer} based on the given {@code Matcher<RecordedRequest>}
+     *
+     * @param recordedRequest {@code Matcher<RecordedRequest>} to be removed
+     * @return true if the {@code MatchableCall} was successfully removed, false if it was not found
+     */
+    public static boolean removeMatchableCall(Matcher<RecordedRequest> recordedRequest) {
+        return dispatcher.removeMatchableCall(recordedRequest);
+    }
+
+    /**
      * replaces {@code call} with {@code replacement} in this {@code RESTMockServer}
      *
      * @param call {@code MatchableCall} to be removed from {@code RESTMockServer}
@@ -231,9 +241,10 @@ public class RESTMockServer {
      * @return a MatchableCall that will get matched by the {@code requestMatcher}
      */
     public static MatchableCall whenRequested(Matcher<RecordedRequest> requestMatcher) {
+        removeMatchableCall(requestMatcher);
         return new MatchableCall(RESTMockServer.RESTMockFileParser, requestMatcher, dispatcher);
     }
-
+    shouldNotMatchInproperSubsetOfQueryParametersNames
     /**
      * Shuts down the instance of RESTMockServer
      *
