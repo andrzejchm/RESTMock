@@ -50,8 +50,9 @@ public class AppModule {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
         if (socketFactory != null && trustManager != null) {
-            clientBuilder.sslSocketFactory(socketFactory, trustManager).addInterceptor(interceptor);
+            clientBuilder.sslSocketFactory(socketFactory, trustManager);
         }
+        clientBuilder.addInterceptor(interceptor);
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl(baseUrl)
             .client(clientBuilder.build())

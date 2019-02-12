@@ -44,7 +44,7 @@ public class RESTMockServerStarter {
         final RESTMockLogger logger,
         final RESTMockOptions restMockOptions
     ) {
-        // it has to be like that since Android prevents starting x on main Thread.
+        // it has to be like that since Android prevents starting testServer on main Thread.
         ThreadPoolExecutor threadPoolExecutor =
             new ThreadPoolExecutor(1, 1, KEEP_ALIVE_TIME, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(1));
 
