@@ -35,7 +35,7 @@ public final class RequestMatchers {
     }
 
     public static RequestMatcher pathContains(final String urlPart) {
-        return new RequestMatcher("url contains: " + urlPart) {
+        return new RequestMatcher("path contains: " + urlPart) {
 
             @Override
             protected boolean matchesSafely(RecordedRequest item) {
@@ -45,7 +45,7 @@ public final class RequestMatchers {
     }
 
     public static RequestMatcher pathDoesNotContain(final String urlPart) {
-        return new RequestMatcher("url does not contain: " + urlPart) {
+        return new RequestMatcher("path does not contain: " + urlPart) {
 
             @Override
             protected boolean matchesSafely(RecordedRequest item) {
@@ -54,8 +54,18 @@ public final class RequestMatchers {
         };
     }
 
+    public static RequestMatcher pathMatchesRegex(final String pattern) {
+        return new RequestMatcher("path matches with regex:" + pattern) {
+
+            @Override
+            protected boolean matchesSafely(RecordedRequest item) {
+                return item.getPath().toLowerCase(Locale.US).matches(pattern);
+            }
+        };
+    }
+
     public static RequestMatcher pathEndsWith(final String urlPart) {
-        return new RequestMatcher("url ends with: " + urlPart) {
+        return new RequestMatcher("path ends with: " + urlPart) {
 
             @Override
             protected boolean matchesSafely(RecordedRequest item) {
@@ -67,7 +77,7 @@ public final class RequestMatchers {
     }
 
     public static RequestMatcher pathEndsWithIgnoringQueryParams(final String endOfUrlPath) {
-        return new RequestMatcher("url ends with: ${endOfUrlPath}") {
+        return new RequestMatcher("path ends with: ${endOfUrlPath}") {
 
             protected boolean matchesSafely(RecordedRequest item) {
                 String endOfPathSanitized = sanitizePath(endOfUrlPath);
@@ -95,7 +105,7 @@ public final class RequestMatchers {
      * path starts with given urlPart
      */
     public static RequestMatcher pathStartsWith(final String urlPart) {
-        return new RequestMatcher("url starts with: " + urlPart) {
+        return new RequestMatcher("path starts with: " + urlPart) {
 
             @Override
             protected boolean matchesSafely(RecordedRequest item) {
