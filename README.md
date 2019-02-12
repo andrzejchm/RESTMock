@@ -9,8 +9,8 @@ RESTMock is a library working on top of Square's [okhttp/MockWebServer](https://
 
 
 ```java
-RESTMockServer.whenGET(pathContains("users/defunkt"))
-            .thenReturnFile(200, "users/defunkt.json");
+RESTMockServer.whenGET(pathContains("users/andrzejchm"))
+            .thenReturnFile(200, "users/andrzejchm.json");
 ```
 **Article**
 - [ITDD - Instrumentation TDD for Android](https://medium.com/@andrzejchm/ittd-instrumentation-ttd-for-android-4894cbb82d37)
