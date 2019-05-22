@@ -17,7 +17,7 @@
 package io.appflate.restmock.android;
 
 import android.os.Bundle;
-import android.support.test.runner.AndroidJUnitRunner;
+import androidx.test.runner.AndroidJUnitRunner;
 import io.appflate.restmock.RESTMockOptions;
 import io.appflate.restmock.RESTMockServerStarter;
 

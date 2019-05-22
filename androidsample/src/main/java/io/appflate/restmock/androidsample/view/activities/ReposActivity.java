@@ -19,15 +19,15 @@ package io.appflate.restmock.androidsample.view.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.widget.ViewAnimator;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.appflate.restmock.androidsample.R;
@@ -46,7 +46,8 @@ public class ReposActivity extends AppCompatActivity implements Callback<List<Re
 
     @Inject GithubApi githubApi;
 
-    @BindView(R.id.reposRecyclerView) RecyclerView reposRecyclerView;
+    @BindView(R.id.reposRecyclerView)
+    RecyclerView reposRecyclerView;
     @BindView(R.id.reposAnimator) ViewAnimator reposAnimator;
 
     @Override
@@ -74,7 +75,7 @@ public class ReposActivity extends AppCompatActivity implements Callback<List<Re
                            Response<List<Repository>> response) {
         if (response.isSuccessful()) {
             reposRecyclerView.setLayoutManager(new LinearLayoutManager(this,
-                    LinearLayoutManager.VERTICAL,
+                    RecyclerView.VERTICAL,
                     false));
             reposRecyclerView.setAdapter(new ReposRecyclerAdapter(response.body()));
             reposAnimator.setDisplayedChild(1);

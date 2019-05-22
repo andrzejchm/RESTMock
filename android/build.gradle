@@ -18,6 +18,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply from: '../quality_tools/lint.gradle'
 
+//noinspection GroovyUnusedAssignment
 group = 'com.github.andrzejchm'
 
 android {
@@ -41,6 +42,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     api(project(':core'))
 
-    implementation 'com.android.support.test:rules:1.0.2'
-    implementation 'com.android.support.test:runner:1.0.2'
+    implementation "androidx.test:rules:${androidXTestVersion}"
+    implementation "androidx.test:runner:${androidXTestVersion}"
 }

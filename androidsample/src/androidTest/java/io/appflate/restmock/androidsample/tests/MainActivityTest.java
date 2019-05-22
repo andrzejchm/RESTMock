@@ -16,8 +16,8 @@
 
 package io.appflate.restmock.androidsample.tests;
 
-import android.support.test.rule.ActivityTestRule;
 
+import androidx.test.rule.ActivityTestRule;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,7 +31,6 @@ import okhttp3.mockwebserver.MockResponse;
 import static io.appflate.restmock.utils.RequestMatchers.hasQueryParameterNames;
 import static io.appflate.restmock.utils.RequestMatchers.hasQueryParameters;
 import static io.appflate.restmock.utils.RequestMatchers.pathEndsWith;
-import static io.appflate.restmock.utils.RequestMatchers.pathEndsWithIgnoringQueryParams;
 import static io.appflate.restmock.utils.RequestMatchers.pathStartsWith;
 import static org.hamcrest.CoreMatchers.not;
 
@@ -40,27 +39,27 @@ import static org.hamcrest.CoreMatchers.not;
  */
 public class MainActivityTest {
 
-    public static final String USERNAME_ANDRZEJCHM = "andrzejchm";
-    public static final String PATH_ANDRZEJCHM_PROFILE = "mocks/users/andrzejchm/index.json";
+    private static final String USERNAME_ANDRZEJCHM = "andrzejchm";
+    private static final String PATH_ANDRZEJCHM_PROFILE = "mocks/users/andrzejchm/index.json";
     private static final String NAME_ANDRZEJ_CHMIELEWSKI = "RESTMock: Andrzej Chmielewski";
     private static final String PATH_USER_NOT_FOUND = "mocks/users/user_not_found.json";
     private static final String REPOS = "/repos";
     @Rule
     public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(
-            MainActivity.class,
-            true,
-            false);
+      MainActivity.class,
+      true,
+      false);
     private MainActivityPageObject pageObject;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         pageObject = new MainActivityPageObject();
         //be sure to reset it before each test!
         RESTMockServer.reset();
     }
 
     @Test
-    public void testGoodAnswer() throws Exception {
+    public void testGoodAnswer() {
         RESTMockServer.whenGET(pathEndsWith(USERNAME_ANDRZEJCHM)).thenReturnFile(
                 PATH_ANDRZEJCHM_PROFILE);
         //launches activity with default intent
@@ -81,7 +80,7 @@ public class MainActivityTest {
     }
 
     @Test
-    public void testNotFound() throws Exception {
+    public void testNotFound() {
         RESTMockServer.whenGET(pathEndsWith(USERNAME_ANDRZEJCHM)).thenReturnFile(404, PATH_USER_NOT_FOUND);
         //launches activity with default intent
         rule.launchActivity(null);
@@ -92,7 +91,7 @@ public class MainActivityTest {
     }
 
     @Test
-    public void testShowEmptyRepos() throws Exception {
+    public void testShowEmptyRepos() {
         RESTMockServer.whenGET(pathEndsWith(USERNAME_ANDRZEJCHM)).thenReturnFile(
                 PATH_ANDRZEJCHM_PROFILE);
         RESTMockServer.whenGET(pathEndsWith(REPOS)).thenReturnString("[]");

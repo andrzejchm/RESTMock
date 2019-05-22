@@ -16,7 +16,6 @@
 
 package io.appflate.restmock.androidsample.view.adapters;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +23,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.appflate.restmock.androidsample.R;
@@ -39,8 +40,9 @@ public class ReposRecyclerAdapter extends RecyclerView.Adapter<ReposRecyclerAdap
         this.repositories = repositories;
     }
 
+    @NonNull
     @Override
-    public RepoViewHolder onCreateViewHolder(ViewGroup parent,
+    public RepoViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                              int viewType) {
         return new RepoViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_repo_view,
                 parent,
@@ -48,7 +50,7 @@ public class ReposRecyclerAdapter extends RecyclerView.Adapter<ReposRecyclerAdap
     }
 
     @Override
-    public void onBindViewHolder(RepoViewHolder holder,
+    public void onBindViewHolder(@NonNull RepoViewHolder holder,
                                  int position) {
         Repository repository = repositories.get(position);
         holder.title.setText(repository.name);
@@ -61,11 +63,11 @@ public class ReposRecyclerAdapter extends RecyclerView.Adapter<ReposRecyclerAdap
         return repositories.size();
     }
 
-    public static class RepoViewHolder extends RecyclerView.ViewHolder {
+    static class RepoViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.repoTitleText) TextView title;
         @BindView(R.id.repoStarsCountText) TextView starsCount;
 
-        public RepoViewHolder(View itemView) {
+        RepoViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
