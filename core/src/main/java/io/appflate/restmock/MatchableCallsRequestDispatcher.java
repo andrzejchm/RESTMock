@@ -18,9 +18,10 @@ package io.appflate.restmock;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
+import java.util.concurrent.CopyOnWriteArrayList;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -28,10 +29,10 @@ import okhttp3.mockwebserver.RecordedRequest;
 class MatchableCallsRequestDispatcher extends Dispatcher {
 
     private List<MatchableCall> matchableCalls;
-    private List<RecordedRequest> requestsHistory = new LinkedList<>();
+    private List<RecordedRequest> requestsHistory = new CopyOnWriteArrayList<>();
 
     public MatchableCallsRequestDispatcher() {
-        matchableCalls = new LinkedList<>();
+        matchableCalls = new CopyOnWriteArrayList<>();
     }
 
     @Override
@@ -62,8 +63,12 @@ class MatchableCallsRequestDispatcher extends Dispatcher {
 
     private MockResponse onNoResponsesMatched(RecordedRequest recordedRequest) {
         RESTMockServer.getLogger()
-                .error("<- Response ERROR:\t" + RESTMockServer.RESPONSE_NOT_MOCKED + ": " + recordedRequest
-                        + "\n list of mocked requests:\n" + prepareAllMocksMessage());
+            .error("<- Response ERROR:\t"
+                + RESTMockServer.RESPONSE_NOT_MOCKED
+                + ": "
+                + recordedRequest
+                + "\n list of mocked requests:\n"
+                + prepareAllMocksMessage());
         return createNotMockedResponse(recordedRequest.getMethod());
     }
 
@@ -133,7 +138,7 @@ class MatchableCallsRequestDispatcher extends Dispatcher {
     }
 
     List<RecordedRequest> getRequestHistory() {
-        return requestsHistory;
+        return new ArrayList<>(requestsHistory);
     }
 
     void clearHistoricalRequests() {
