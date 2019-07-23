@@ -27,7 +27,7 @@ buildscript {
 }
 
 ext {
-    libraryVersion = "0.3.2"
+    libraryVersion = "0.4.0"
     compileSdk = 28
     targetSdk = 28
     minSdk = 14
