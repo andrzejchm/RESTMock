@@ -28,7 +28,10 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdk
         targetSdkVersion rootProject.ext.targetSdk
+
+        consumerProguardFiles "lib-proguard-rules.pro"
     }
+
     buildTypes {
         release {
             minifyEnabled false

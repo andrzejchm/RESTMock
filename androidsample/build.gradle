@@ -46,7 +46,6 @@ android {
     }
 }
 
-
 configurations.all {
     resolutionStrategy {
         force "androidx.annotation:annotation:1.0.2"
@@ -62,8 +61,8 @@ dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     implementation "com.google.dagger:dagger:${daggerVersion}"
     annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
-    implementation "com.squareup.retrofit2:retrofit:2.5.0"
-    implementation "com.squareup.retrofit2:converter-gson:2.5.0"
+    implementation "com.squareup.retrofit2:retrofit:2.6.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.6.0"
     implementation "com.squareup.okhttp3:logging-interceptor:${okHttpVersion}"
     implementation "com.squareup.okhttp3:okhttp:${okHttpVersion}"
 
@@ -79,7 +78,7 @@ dependencies {
 
     //this dependency tends to break things for most users. Im adding it to check whether the app compiles correctly
     androidTestImplementation("androidx.test.espresso:espresso-contrib:${espressoVersion}")
-    androidTestImplementation "androidx.annotation:annotation:1.0.2"
+    androidTestImplementation "androidx.annotation:annotation:1.1.0"
 
     //the most important, RESTMock! :)
     androidTestImplementation project(":android")
@@ -91,5 +90,4 @@ dependencies {
     testImplementation("androidx.test.espresso:espresso-contrib:${espressoVersion}")
     testImplementation project(":android")
     testImplementation(project(":core"))
-
 }

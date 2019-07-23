@@ -1,5 +1,7 @@
 package io.appflate.restmock.utils;
 
+import java.util.Collections;
+import okio.Buffer;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -129,10 +131,10 @@ public class RequestMatchersTest {
     private RecordedRequest createRecordedRequest(String path, String... headerNamesAndValues) {
         Socket socket = Mockito.mock(Socket.class);
         when(socket.getLocalAddress()).thenReturn(mock(InetAddress.class));
-        Headers headers = null;
+        Headers headers = Headers.of();
         if (headerNamesAndValues != null && headerNamesAndValues.length >= 2) {
             headers = Headers.of(headerNamesAndValues);
         }
-        return new RecordedRequest("GET " + path + " HTTP/1.1", headers, null, 0, null, 0, socket);
+        return new RecordedRequest("GET " + path + " HTTP/1.1", headers, Collections.<Integer>emptyList(), 0, new Buffer(), 0, socket);
     }
 }
