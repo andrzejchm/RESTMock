@@ -16,20 +16,22 @@
 
 package io.appflate.restmock;
 
-import io.appflate.restmock.utils.TestUtils;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.concurrent.TimeUnit;
-import okhttp3.Response;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.RecordedRequest;
 import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.concurrent.TimeUnit;
+
+import io.appflate.restmock.utils.TestUtils;
+import okhttp3.Response;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.RecordedRequest;
 
 import static io.appflate.restmock.utils.RequestMatchers.pathEndsWith;
 import static org.junit.Assert.assertEquals;
@@ -51,8 +53,8 @@ public class RequestsChainTest {
 
     @Parameterized.Parameters(name = "useHttps={0}")
     public static Collection<Object> data() {
-        return Arrays.asList(new Object[] {
-            true, false
+        return Arrays.asList(new Object[]{
+                true, false
         });
     }
 
@@ -81,9 +83,9 @@ public class RequestsChainTest {
     @Test
     public void multipleResponsesReturnedOneByOne() throws Exception {
         RESTMockServer.whenGET(pathEndsWith(path))
-            .thenReturnString("a single call")
-            .thenReturnString("answer no 2")
-            .thenReturnString("answer no 3");
+                .thenReturnString("a single call")
+                .thenReturnString("answer no 2")
+                .thenReturnString("answer no 3");
 
         String response = TestUtils.get(path).body().string();
         assertEquals("a single call", response);
@@ -126,12 +128,12 @@ public class RequestsChainTest {
     @Test
     public void multipleResponsesWithDifferentDelays() throws Exception {
         RESTMockServer.whenGET(pathEndsWith(path))
-            .thenReturnString("a single call")
-            .delay(TimeUnit.SECONDS, 1)
-            .thenReturnString("answer no 2")
-            .delay(TimeUnit.MILLISECONDS, 100)
-            .thenReturnString("answer no 3")
-            .delay(TimeUnit.MILLISECONDS, 500);
+                .thenReturnString("a single call")
+                .delayBody(TimeUnit.SECONDS, 1)
+                .thenReturnString("answer no 2")
+                .delayBody(TimeUnit.MILLISECONDS, 100)
+                .thenReturnString("answer no 3")
+                .delayBody(TimeUnit.MILLISECONDS, 500);
 
         long a = System.currentTimeMillis();
         String response = TestUtils.get(path).body().string();
@@ -155,10 +157,10 @@ public class RequestsChainTest {
     @Test
     public void multipleResponsesWithOneDelay() throws Exception {
         RESTMockServer.whenGET(pathEndsWith(path))
-            .thenReturnString("a single call")
-            .delay(TimeUnit.MILLISECONDS, 300)
-            .thenReturnString("answer no 2")
-            .thenReturnString("answer no 3");
+                .thenReturnString("a single call")
+                .delayBody(TimeUnit.MILLISECONDS, 300)
+                .thenReturnString("answer no 2")
+                .thenReturnString("answer no 3");
 
         long a = System.currentTimeMillis();
         String response = TestUtils.get(path).body().string();
@@ -182,10 +184,10 @@ public class RequestsChainTest {
     @Test
     public void delaysBodyNotResponse() throws Exception {
         RESTMockServer.whenGET(pathEndsWith(path))
-            .thenReturnString("a single call")
-            .delay(TimeUnit.MILLISECONDS, 500)
-            .thenReturnString("answer no 2")
-            .thenReturnString("answer no 3");
+                .thenReturnString("a single call")
+                .delayBody(TimeUnit.MILLISECONDS, 500)
+                .thenReturnString("answer no 2")
+                .thenReturnString("answer no 3");
 
         long a = System.currentTimeMillis();
         Response response = TestUtils.get(path);
@@ -197,5 +199,21 @@ public class RequestsChainTest {
         assertNotNull(body);
         long c = System.currentTimeMillis();
         assertEquals(500, c - b, 100);
+    }
+
+    @Test
+    public void delaysHeaders() throws Exception {
+        RESTMockServer.whenGET(pathEndsWith(path))
+                .thenReturnString("a single call")
+                .delayHeaders(TimeUnit.MILLISECONDS, 400)
+                .thenReturnString("answer no 2")
+                .thenReturnString("answer no 3");
+
+        long a = System.currentTimeMillis();
+        Response response = TestUtils.get(path);
+        int code = response.code();
+        long b = System.currentTimeMillis();
+        assertEquals(200, code);
+        assertEquals(400, b - a, 250);
     }
 }

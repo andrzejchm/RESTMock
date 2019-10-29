@@ -38,7 +38,8 @@ public class MatchableCall {
     private final RESTMockFileParser RESTMockFileParser;
     private MatchableCallsRequestDispatcher dispatcher;
     private List<MockAnswer> answers;
-    private List<Long> delays;
+    private List<Long> bodyDelays;
+    private List<Long> headerDelays;
     private int responseIndex;
 
     MatchableCall(RESTMockFileParser RESTMockFileParser, Matcher<RecordedRequest> requestMatcher,
@@ -47,7 +48,8 @@ public class MatchableCall {
         this.requestMatcher = requestMatcher;
         this.dispatcher = dispatcher;
         this.answers = new LinkedList<>();
-        this.delays = new LinkedList<>();
+        this.bodyDelays = new LinkedList<>();
+        this.headerDelays = new LinkedList<>();
         this.responseIndex = 0;
     }
 
@@ -78,9 +80,9 @@ public class MatchableCall {
      * <p>If you specify more than one response, each consecutive call to server will return next response from the list, if number of
      * requests exceeds number of specified responses, the last response will be repeated</p>
      *
-     * @param responseCode a http response code to use for the response.
+     * @param responseCode    a http response code to use for the response.
      * @param responseStrings strings to return for this matchableCall's request one for each consecutive request, last string
-     * will be returned for all requests exceeding number of defined responses.
+     *                        will be returned for all requests exceeding number of defined responses.
      * @return this {@code MatchableCall}
      */
     public MatchableCall thenReturnString(int responseCode, String... responseStrings) {
@@ -112,7 +114,7 @@ public class MatchableCall {
      * requests exceeds number of specified responses, the last response will be repeated</p>
      *
      * @param jsonFiles a comma-separated list of files' path to return. {@link RESTMockFileParser} is responsible of reading files for
-     * given paths.
+     *                  given paths.
      * @return a {@link MatchableCall} that will return given {@code jsonFile} as a response.
      */
     public MatchableCall thenReturnFile(String... jsonFiles) {
@@ -129,8 +131,8 @@ public class MatchableCall {
      * requests exceeds number of specified responses, the last response will be repeated</p>
      *
      * @param responseCode http status code
-     * @param jsonFiles a comma-separated list of json files' paths that will be returned. {@link RESTMockFileParser} is responsible of
-     * reading files for given paths.
+     * @param jsonFiles    a comma-separated list of json files' paths that will be returned. {@link RESTMockFileParser} is responsible of
+     *                     reading files for given paths.
      * @return this {@code MatchableCall}
      */
     public MatchableCall thenReturnFile(int responseCode, String... jsonFiles) {
@@ -147,17 +149,45 @@ public class MatchableCall {
     }
 
     /**
-     * Sets delays for responses within this {@link MatchableCall}. You can specify more than one delay, which will result in responses
+     * @deprecated this method is deprecated, use {@link #delayBody(TimeUnit, long...)} instead.
+     */
+    @Deprecated
+    public MatchableCall delay(TimeUnit timeUnit, long... delays) {
+        return delayBody(timeUnit, delays);
+    }
+
+    /**
+     * Sets delays for responses' body within this {@link MatchableCall}. You can specify more than one delay, which will result in responses
      * being delayed
      * in order of specified delays, one by one, while last delay will be applied to all responses exceeding the number of specified
      * delays.
+     * <p>
+     * Note: This DOES NOT affect response headers. For that, use {@link #delayHeaders(TimeUnit, long...)} instead.
      *
      * @param timeUnit time unit to use for the delay, (see {@link TimeUnit#SECONDS}, {@link TimeUnit#MILLISECONDS})
-     * @param delays comma-separated list of delays to apply to consecutive responses
+     * @param delays   comma-separated list of delays to apply to consecutive responses
      */
-    public MatchableCall delay(TimeUnit timeUnit, long... delays) {
+    public MatchableCall delayBody(TimeUnit timeUnit, long... delays) {
         for (long delay : delays) {
-            this.delays.add(timeUnit.toMillis(delay));
+            this.bodyDelays.add(timeUnit.toMillis(delay));
+        }
+        return this;
+    }
+
+    /**
+     * Sets delays for responses' headers within this {@link MatchableCall}. You can specify more than one delay, which will result in responses
+     * being delayed
+     * in order of specified delays, one by one, while last delay will be applied to all responses exceeding the number of specified
+     * delays.
+     * <p>
+     * Note: This DOES NOT affect response body. For that, use {@link #delayBody(TimeUnit, long...)} instead.
+     *
+     * @param timeUnit time unit to use for the delay, (see {@link TimeUnit#SECONDS}, {@link TimeUnit#MILLISECONDS})
+     * @param delays   comma-separated list of delays to apply to consecutive responses
+     */
+    public MatchableCall delayHeaders(TimeUnit timeUnit, long... delays) {
+        for (long delay : delays) {
+            this.headerDelays.add(timeUnit.toMillis(delay));
         }
         return this;
     }
@@ -245,15 +275,28 @@ public class MatchableCall {
     }
 
     private void setResponseDelayInternal(MockResponse response) {
-        long delay;
-        if (delays.isEmpty()) {
-            delay = 0;
-        } else if (responseIndex >= delays.size()) {
-            delay = delays.get(delays.size() - 1);
+        long bodyDelay;
+        long headerDelay;
+        if (bodyDelays.isEmpty()) {
+            bodyDelay = 0;
+        } else if (responseIndex >= bodyDelays.size()) {
+            bodyDelay = bodyDelays.get(bodyDelays.size() - 1);
         } else {
-            delay = delays.get(responseIndex);
+            bodyDelay = bodyDelays.get(responseIndex);
         }
-        response.setBodyDelay(delay, TimeUnit.MILLISECONDS);
+        if (headerDelays.isEmpty()) {
+            headerDelay = 0;
+        } else if (responseIndex >= headerDelays.size()) {
+            headerDelay = headerDelays.get(headerDelays.size() - 1);
+        } else {
+            headerDelay = headerDelays.get(responseIndex);
+        }
+        if (bodyDelay != 0) {
+            response.setBodyDelay(bodyDelay, TimeUnit.MILLISECONDS);
+        }
+        if (headerDelay != 0) {
+            response.setHeadersDelay(headerDelay, TimeUnit.MILLISECONDS);
+        }
     }
 
     int getNumberOfAnswers() {

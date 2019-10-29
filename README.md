@@ -185,15 +185,15 @@ RESTMockServer.whenGET(pathEndsWith(path))
                 .thenReturnString("a single call", "answer no 2", "answer no 3");
 ```
 
-## Response delays
-Delaying responses is accomplished with the `delay(TimeUnit timeUnit, long delay)` method. Delays can be specified in chain, just like chaining responses:
+## Response body delays
+Delaying responses is accomplished with the `delayBody(TimeUnit timeUnit, long delay)` and `delayHeaders(TimeUnit timeUnit, long delay)` method. Delays can be specified in chain, just like chaining responses:
  
 ```java
 RESTMockServer.whenGET(pathEndsWith(path))
                 .thenReturnString("a single call")
-                .delay(TimeUnit.SECONDS, 5)
-                .delay(TimeUnit.SECONDS, 10)
-                .delay(TimeUnit.SECONDS, 15);
+                .delayBody(TimeUnit.SECONDS, 5)
+                .delayBody(TimeUnit.SECONDS, 10)
+                .delayBody(TimeUnit.SECONDS, 15);
 ```
 
 or
@@ -201,10 +201,15 @@ or
 ```java
 RESTMockServer.whenGET(pathEndsWith(path))
                 .thenReturnString("a single call")
-                .delay(TimeUnit.SECONDS, 5, 10, 15);
+                .delayBody(TimeUnit.SECONDS, 5, 10, 15);
 ```
 
-Which will result in 1st response being delayed by 5 seconds, 2nd response by 10 seconds and 3rd, 4th, 5th... by 15 seconds.
+Which will result in 1st response body being delayed by 5 seconds, 2nd response by 10 seconds and 3rd, 4th, 5th... by 15 seconds.
+
+## Response header delays
+
+Mechanics of the `responseHeader(...)` method are the same as those in `responseBody(...)`. The only difference is that response headers are being delivered with a delay. This comes handy if your app is acting on response headers, which would've been delivered immediately if you used the `delayBody(...)` method.
+
 
 #### Interleaving delays with responses
 Check out this example:
@@ -219,6 +224,7 @@ RESTMockServer.whenGET(pathEndsWith(path))
                 .thenReturnString("3rd call")
                 .delay(TimeUnit.SECONDS, 20, 30, 40)
 ```
+
 this will result in `1st call` being delayed by 5 seconds, `2nd call` delayed by 10 seconds, `3rd call` delayed by 15 seconds, another one by 20 seconds, and another by 30 seconds, and then every consecutive response with 40 seconds delay
 
 ## Request verification
