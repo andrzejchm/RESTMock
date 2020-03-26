@@ -56,13 +56,14 @@ configurations.all {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "androidx.appcompat:appcompat:1.1.0"
-    implementation "com.google.android.material:material:1.0.0"
+    implementation "com.google.android.material:material:1.1.0"
+    //noinspection AnnotationProcessorOnCompilePath
     implementation "com.jakewharton:butterknife:${butterKnifeVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     implementation "com.google.dagger:dagger:${daggerVersion}"
     annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
-    implementation "com.squareup.retrofit2:retrofit:2.6.1"
-    implementation "com.squareup.retrofit2:converter-gson:2.6.1"
+    implementation "com.squareup.retrofit2:retrofit:2.7.2"
+    implementation "com.squareup.retrofit2:converter-gson:2.7.2"
     implementation "com.squareup.okhttp3:logging-interceptor:${okHttpVersion}"
     implementation "com.squareup.okhttp3:okhttp:${okHttpVersion}"
 
@@ -84,8 +85,8 @@ dependencies {
     androidTestImplementation project(":android")
 
     testImplementation "androidx.appcompat:appcompat:1.1.0"
-    testImplementation "com.google.android.material:material:1.0.0"
-    testImplementation "junit:junit:4.12"
+    testImplementation "com.google.android.material:material:1.1.0"
+    testImplementation "junit:junit:4.13"
     testImplementation "androidx.test.espresso:espresso-core:${espressoVersion}"
     testImplementation("androidx.test.espresso:espresso-contrib:${espressoVersion}")
     testImplementation project(":android")

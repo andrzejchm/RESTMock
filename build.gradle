@@ -21,22 +21,22 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.1'
+        classpath 'com.android.tools.build:gradle:3.6.1'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
 }
 
 ext {
-    libraryVersion = "0.4.1"
+    libraryVersion = "0.4.2"
     compileSdk = 29
     targetSdk = 29
-    minSdk = 14
-    buildTools = "29.0.0"
-    okHttpVersion = "4.0.1"
-    butterKnifeVersion = "10.1.0"
+    minSdk = 21
+    buildTools = "29.0.2"
+    okHttpVersion = "4.4.1"
+    butterKnifeVersion = "10.2.1"
     espressoVersion = "3.1.0"
     androidXTestVersion = "1.2.0"
-    daggerVersion = "2.20"
+    daggerVersion = "2.27"
 }
 
 allprojects {

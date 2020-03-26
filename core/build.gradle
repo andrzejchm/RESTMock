@@ -17,8 +17,6 @@
 apply plugin: "java"
 apply plugin: "maven"
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
 
 group = "com.github.andrzejchm"
 
@@ -31,6 +29,9 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = "javadoc"
     from javadoc.destinationDir
 }
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 artifacts {
     archives sourcesJar
