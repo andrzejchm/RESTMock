@@ -16,7 +16,6 @@
 
 package io.appflate.restmock;
 
-import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,12 +25,12 @@ import org.junit.runners.Parameterized;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import io.appflate.restmock.utils.TestUtils;
 import okhttp3.Response;
 import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.RecordedRequest;
 
 import static io.appflate.restmock.utils.RequestMatchers.pathEndsWith;
 import static org.junit.Assert.assertEquals;
@@ -46,9 +45,7 @@ import static org.mockito.Mockito.spy;
 public class RequestsChainTest {
 
     private static final String path = "sample";
-    private static final Matcher<RecordedRequest> INVOKED_MATCHER = pathEndsWith(path);
 
-    static RESTMockFileParser fileParser;
     private final boolean useHttps;
 
     @Parameterized.Parameters(name = "useHttps={0}")
@@ -64,7 +61,7 @@ public class RequestsChainTest {
 
     @Before
     public void setup() {
-        fileParser = mock(RESTMockFileParser.class);
+        RESTMockFileParser fileParser = mock(RESTMockFileParser.class);
         RESTMockServerStarter.startSync(fileParser, new RESTMockOptions.Builder().useHttps(useHttps).build());
         RESTMockServer.dispatcher = spy(RESTMockServer.dispatcher);
     }
@@ -87,13 +84,13 @@ public class RequestsChainTest {
                 .thenReturnString("answer no 2")
                 .thenReturnString("answer no 3");
 
-        String response = TestUtils.get(path).body().string();
+        String response = Objects.requireNonNull(TestUtils.get(path).body()).string();
         assertEquals("a single call", response);
 
-        response = TestUtils.get(path).body().string();
+        response = Objects.requireNonNull(TestUtils.get(path).body()).string();
         assertEquals("answer no 2", response);
 
-        response = TestUtils.get(path).body().string();
+        response = Objects.requireNonNull(TestUtils.get(path).body()).string();
         assertEquals("answer no 3", response);
     }
 
@@ -101,13 +98,13 @@ public class RequestsChainTest {
     public void multipleResponsesByVarargsReturnedOneByOne() throws Exception {
         RESTMockServer.whenGET(pathEndsWith(path)).thenReturnString("a single call", "answer no 2", "answer no 3");
 
-        String response = TestUtils.get(path).body().string();
+        String response = Objects.requireNonNull(TestUtils.get(path).body()).string();
         assertEquals("a single call", response);
 
-        response = TestUtils.get(path).body().string();
+        response = Objects.requireNonNull(TestUtils.get(path).body()).string();
         assertEquals("answer no 2", response);
 
-        response = TestUtils.get(path).body().string();
+        response = Objects.requireNonNull(TestUtils.get(path).body()).string();
         assertEquals("answer no 3", response);
     }
 
@@ -118,10 +115,10 @@ public class RequestsChainTest {
 
         TestUtils.get(path);
 
-        String response = TestUtils.get(path).body().string();
+        String response = Objects.requireNonNull(TestUtils.get(path).body()).string();
         assertEquals(lastResponse, response);
 
-        response = TestUtils.get(path).body().string();
+        response = Objects.requireNonNull(TestUtils.get(path).body()).string();
         assertEquals(lastResponse, response);
     }
 
@@ -136,19 +133,19 @@ public class RequestsChainTest {
                 .delayBody(TimeUnit.MILLISECONDS, 500);
 
         long a = System.currentTimeMillis();
-        String response = TestUtils.get(path).body().string();
+        String response = Objects.requireNonNull(TestUtils.get(path).body()).string();
         assertEquals("a single call", response);
         long b = System.currentTimeMillis();
         assertEquals(1000, b - a, 100);
 
         a = System.currentTimeMillis();
-        response = TestUtils.get(path).body().string();
+        response = Objects.requireNonNull(TestUtils.get(path).body()).string();
         assertEquals("answer no 2", response);
         b = System.currentTimeMillis();
         assertEquals(100, b - a, 100);
 
         a = System.currentTimeMillis();
-        response = TestUtils.get(path).body().string();
+        response = Objects.requireNonNull(TestUtils.get(path).body()).string();
         assertEquals("answer no 3", response);
         b = System.currentTimeMillis();
         assertEquals(500, b - a, 100);
@@ -163,19 +160,19 @@ public class RequestsChainTest {
                 .thenReturnString("answer no 3");
 
         long a = System.currentTimeMillis();
-        String response = TestUtils.get(path).body().string();
+        String response = Objects.requireNonNull(TestUtils.get(path).body()).string();
         assertEquals("a single call", response);
         long b = System.currentTimeMillis();
         assertEquals(300, b - a, 100);
 
         a = System.currentTimeMillis();
-        response = TestUtils.get(path).body().string();
+        response = Objects.requireNonNull(TestUtils.get(path).body()).string();
         assertEquals("answer no 2", response);
         b = System.currentTimeMillis();
         assertEquals(300, b - a, 100);
 
         a = System.currentTimeMillis();
-        response = TestUtils.get(path).body().string();
+        response = Objects.requireNonNull(TestUtils.get(path).body()).string();
         assertEquals("answer no 3", response);
         b = System.currentTimeMillis();
         assertEquals(300, b - a, 100);
@@ -193,12 +190,12 @@ public class RequestsChainTest {
         Response response = TestUtils.get(path);
         assertEquals(200, response.code());
         long b = System.currentTimeMillis();
-        assertEquals(0, b - a, 100);
+        assertEquals(0, b - a, 200);
 
-        String body = response.body().string();
+        String body = Objects.requireNonNull(response.body()).string();
         assertNotNull(body);
         long c = System.currentTimeMillis();
-        assertEquals(500, c - b, 100);
+        assertEquals(500, c - b, 200);
     }
 
     @Test
