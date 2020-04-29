@@ -16,23 +16,26 @@
 
 package io.appflate.restmock;
 
-import io.appflate.restmock.exceptions.RequestInvocationCountMismatchException;
-import io.appflate.restmock.exceptions.RequestInvocationCountNotEnoughException;
-import io.appflate.restmock.exceptions.RequestNotInvokedException;
-import io.appflate.restmock.utils.RequestMatchers;
-import io.appflate.restmock.utils.TestUtils;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-import okhttp3.mockwebserver.RecordedRequest;
 import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+
+import io.appflate.restmock.exceptions.RequestInvocationCountMismatchException;
+import io.appflate.restmock.exceptions.RequestInvocationCountNotEnoughException;
+import io.appflate.restmock.exceptions.RequestNotInvokedException;
+import io.appflate.restmock.utils.RequestMatchers;
+import io.appflate.restmock.utils.TestUtils;
+import okhttp3.mockwebserver.RecordedRequest;
 
 import static io.appflate.restmock.RequestsVerifier.verifyDELETE;
 import static io.appflate.restmock.RequestsVerifier.verifyGET;
@@ -54,14 +57,13 @@ public class RequestVerifierTest {
     private static final String path = "sample";
     private static final Matcher<RecordedRequest> INVOKED_MATCHER = pathEndsWith(path);
     private static final Matcher<RecordedRequest> NOT_INVOKED_MATCHER = pathEndsWith("else");
-    static RESTMockFileParser fileParser;
 
     private final boolean useHttps;
 
     @Parameterized.Parameters(name = "useHttps={0}")
     public static Collection<Object> data() {
-        return Arrays.asList(new Object[] {
-            true, false
+        return Arrays.asList(new Object[]{
+                true, false
         });
     }
 
@@ -71,7 +73,7 @@ public class RequestVerifierTest {
 
     @Before
     public void setup() {
-        fileParser = mock(RESTMockFileParser.class);
+        RESTMockFileParser fileParser = mock(RESTMockFileParser.class);
         RESTMockServerStarter.startSync(fileParser, new RESTMockOptions.Builder().useHttps(useHttps).build());
         RESTMockServer.dispatcher = spy(RESTMockServer.dispatcher);
     }
@@ -130,9 +132,9 @@ public class RequestVerifierTest {
 
         List<RecordedRequest> recordedRequests = RequestsVerifier.takeLast(3);
         assertEquals(3, recordedRequests.size());
-        assertEquals("POST", recordedRequests.get(0).getMethod().toUpperCase(Locale.US));
-        assertEquals("DELETE", recordedRequests.get(1).getMethod().toUpperCase(Locale.US));
-        assertEquals("HEAD", recordedRequests.get(2).getMethod().toUpperCase(Locale.US));
+        assertEquals("POST", Objects.requireNonNull(recordedRequests.get(0).getMethod()).toUpperCase(Locale.US));
+        assertEquals("DELETE", Objects.requireNonNull(recordedRequests.get(1).getMethod()).toUpperCase(Locale.US));
+        assertEquals("HEAD", Objects.requireNonNull(recordedRequests.get(2).getMethod()).toUpperCase(Locale.US));
     }
 
     @Test
@@ -145,10 +147,10 @@ public class RequestVerifierTest {
 
         List<RecordedRequest> recordedRequests = RequestsVerifier.takeLast(10);
         assertEquals(4, recordedRequests.size());
-        assertEquals("GET", recordedRequests.get(0).getMethod().toUpperCase(Locale.US));
-        assertEquals("POST", recordedRequests.get(1).getMethod().toUpperCase(Locale.US));
-        assertEquals("DELETE", recordedRequests.get(2).getMethod().toUpperCase(Locale.US));
-        assertEquals("HEAD", recordedRequests.get(3).getMethod().toUpperCase(Locale.US));
+        assertEquals("GET", Objects.requireNonNull(recordedRequests.get(0).getMethod()).toUpperCase(Locale.US));
+        assertEquals("POST", Objects.requireNonNull(recordedRequests.get(1).getMethod()).toUpperCase(Locale.US));
+        assertEquals("DELETE", Objects.requireNonNull(recordedRequests.get(2).getMethod()).toUpperCase(Locale.US));
+        assertEquals("HEAD", Objects.requireNonNull(recordedRequests.get(3).getMethod()).toUpperCase(Locale.US));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -172,9 +174,9 @@ public class RequestVerifierTest {
 
         List<RecordedRequest> recordedRequests = RequestsVerifier.takeFirst(3);
         assertEquals(3, recordedRequests.size());
-        assertEquals("GET", recordedRequests.get(0).getMethod().toUpperCase(Locale.US));
-        assertEquals("POST", recordedRequests.get(1).getMethod().toUpperCase(Locale.US));
-        assertEquals("DELETE", recordedRequests.get(2).getMethod().toUpperCase(Locale.US));
+        assertEquals("GET", Objects.requireNonNull(recordedRequests.get(0).getMethod()).toUpperCase(Locale.US));
+        assertEquals("POST", Objects.requireNonNull(recordedRequests.get(1).getMethod()).toUpperCase(Locale.US));
+        assertEquals("DELETE", Objects.requireNonNull(recordedRequests.get(2).getMethod()).toUpperCase(Locale.US));
     }
 
     @Test
@@ -187,10 +189,10 @@ public class RequestVerifierTest {
 
         List<RecordedRequest> recordedRequests = RequestsVerifier.takeFirst(10);
         assertEquals(4, recordedRequests.size());
-        assertEquals("GET", recordedRequests.get(0).getMethod().toUpperCase(Locale.US));
-        assertEquals("POST", recordedRequests.get(1).getMethod().toUpperCase(Locale.US));
-        assertEquals("DELETE", recordedRequests.get(2).getMethod().toUpperCase(Locale.US));
-        assertEquals("HEAD", recordedRequests.get(3).getMethod().toUpperCase(Locale.US));
+        assertEquals("GET", Objects.requireNonNull(recordedRequests.get(0).getMethod()).toUpperCase(Locale.US));
+        assertEquals("POST", Objects.requireNonNull(recordedRequests.get(1).getMethod()).toUpperCase(Locale.US));
+        assertEquals("DELETE", Objects.requireNonNull(recordedRequests.get(2).getMethod()).toUpperCase(Locale.US));
+        assertEquals("HEAD", Objects.requireNonNull(recordedRequests.get(3).getMethod()).toUpperCase(Locale.US));
     }
 
     @Test
@@ -203,9 +205,9 @@ public class RequestVerifierTest {
 
         List<RecordedRequest> recordedRequests = RequestsVerifier.take(1, 4);
         assertEquals(3, recordedRequests.size());
-        assertEquals("POST", recordedRequests.get(0).getMethod().toUpperCase(Locale.US));
-        assertEquals("DELETE", recordedRequests.get(1).getMethod().toUpperCase(Locale.US));
-        assertEquals("HEAD", recordedRequests.get(2).getMethod().toUpperCase(Locale.US));
+        assertEquals("POST", Objects.requireNonNull(recordedRequests.get(0).getMethod()).toUpperCase(Locale.US));
+        assertEquals("DELETE", Objects.requireNonNull(recordedRequests.get(1).getMethod()).toUpperCase(Locale.US));
+        assertEquals("HEAD", Objects.requireNonNull(recordedRequests.get(2).getMethod()).toUpperCase(Locale.US));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -230,9 +232,9 @@ public class RequestVerifierTest {
         TestUtils.get(path);
         List<RecordedRequest> recordedRequests = RequestsVerifier.takeAllMatching(RequestMatchers.isGET());
         assertEquals(3, recordedRequests.size());
-        assertEquals("GET", recordedRequests.get(0).getMethod().toUpperCase(Locale.US));
-        assertEquals("GET", recordedRequests.get(1).getMethod().toUpperCase(Locale.US));
-        assertEquals("GET", recordedRequests.get(2).getMethod().toUpperCase(Locale.US));
+        assertEquals("GET", Objects.requireNonNull(recordedRequests.get(0).getMethod()).toUpperCase(Locale.US));
+        assertEquals("GET", Objects.requireNonNull(recordedRequests.get(1).getMethod()).toUpperCase(Locale.US));
+        assertEquals("GET", Objects.requireNonNull(recordedRequests.get(2).getMethod()).toUpperCase(Locale.US));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -247,13 +249,13 @@ public class RequestVerifierTest {
     }
 
     @Test
-    public void takeSingleFirstWhenNoHistoryIsNull() throws Exception {
+    public void takeSingleFirstWhenNoHistoryIsNull() {
         RESTMockServer.whenRequested(pathEndsWith(path)).thenReturnString("a single call");
         assertNull(RequestsVerifier.takeFirst());
     }
 
     @Test
-    public void takeSingleLastWhenNoHistoryIsNull() throws Exception {
+    public void takeSingleLastWhenNoHistoryIsNull() {
         RESTMockServer.whenRequested(pathEndsWith(path)).thenReturnString("a single call");
         assertNull(RequestsVerifier.takeLast());
     }
@@ -275,7 +277,7 @@ public class RequestVerifierTest {
     }
 
     @Test(expected = RequestNotInvokedException.class)
-    public void testInvoked_NotInvokedException() throws Exception {
+    public void testInvoked_NotInvokedException() {
         verifyRequest(NOT_INVOKED_MATCHER).invoked();
     }
 
@@ -298,7 +300,7 @@ public class RequestVerifierTest {
     }
 
     @Test(expected = RequestNotInvokedException.class)
-    public void testExactly_NotInvokedException() throws Exception {
+    public void testExactly_NotInvokedException() {
         verifyRequest(NOT_INVOKED_MATCHER).exactly(3);
     }
 

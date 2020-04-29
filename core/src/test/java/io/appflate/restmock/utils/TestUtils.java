@@ -16,16 +16,18 @@
 
 package io.appflate.restmock.utils;
 
-import io.appflate.restmock.RESTMockServer;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
+
+import io.appflate.restmock.RESTMockServer;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import static okhttp3.tls.internal.TlsUtil.localhost;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -36,7 +38,10 @@ public class TestUtils {
 
     private static final RequestBody EMPTY_JSON_BODY = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), "");
     private static OkHttpClient okHttpClient =
-        new OkHttpClient.Builder().sslSocketFactory(RESTMockServer.getSSLSocketFactory(), RESTMockServer.getTrustManager()).build();
+            new OkHttpClient.Builder()
+                    .sslSocketFactory(RESTMockServer.getSSLSocketFactory(), RESTMockServer.getTrustManager())
+                    .protocols(Collections.singletonList(Protocol.HTTP_1_1))
+                    .build();
 
     public static Response get(String path) throws IOException {
         path = normalizePath(path);
