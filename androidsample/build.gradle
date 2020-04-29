@@ -32,6 +32,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "io.appflate.restmock.androidsample.CustomTestRunner"
+
+        testInstrumentationRunnerArguments = ["notPackage": "org.bouncycastle.pqc.crypto.qtesla"]
     }
     buildTypes {
         release {
@@ -49,7 +51,7 @@ android {
 configurations.all {
     resolutionStrategy {
         force "androidx.annotation:annotation:1.0.2"
-        force "com.squareup.okhttp3:okhttp:${okHttpVersion}"
+        force "com.squareup.okhttp3:okhttp:$okHttpVersion"
     }
 }
 
@@ -58,27 +60,27 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.1.0"
     implementation "com.google.android.material:material:1.1.0"
     //noinspection AnnotationProcessorOnCompilePath
-    implementation "com.jakewharton:butterknife:${butterKnifeVersion}"
-    annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
-    implementation "com.google.dagger:dagger:${daggerVersion}"
-    annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
+    implementation "com.jakewharton:butterknife:$butterKnifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
+    implementation "com.google.dagger:dagger:$daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
     implementation "com.squareup.retrofit2:retrofit:2.7.2"
     implementation "com.squareup.retrofit2:converter-gson:2.7.2"
-    implementation "com.squareup.okhttp3:logging-interceptor:${okHttpVersion}"
-    implementation "com.squareup.okhttp3:okhttp:${okHttpVersion}"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
 
     implementation "com.google.code.gson:gson:2.8.5"
     implementation "com.google.code.findbugs:annotations:2.0.3"
     compileOnly "javax.annotation:jsr250-api:1.0"
 
     //Test dependencies
-    androidTestImplementation "androidx.test:rules:${androidXTestVersion}"
-    androidTestImplementation "androidx.test:runner:${androidXTestVersion}"
+    androidTestImplementation "androidx.test:rules:$androidXTestVersion"
+    androidTestImplementation "androidx.test:runner:$androidXTestVersion"
 
-    androidTestImplementation "androidx.test.espresso:espresso-core:${espressoVersion}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
 
     //this dependency tends to break things for most users. Im adding it to check whether the app compiles correctly
-    androidTestImplementation("androidx.test.espresso:espresso-contrib:${espressoVersion}")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:$espressoVersion")
     androidTestImplementation "androidx.annotation:annotation:1.1.0"
 
     //the most important, RESTMock! :)
@@ -87,8 +89,8 @@ dependencies {
     testImplementation "androidx.appcompat:appcompat:1.1.0"
     testImplementation "com.google.android.material:material:1.1.0"
     testImplementation "junit:junit:4.13"
-    testImplementation "androidx.test.espresso:espresso-core:${espressoVersion}"
-    testImplementation("androidx.test.espresso:espresso-contrib:${espressoVersion}")
+    testImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    testImplementation("androidx.test.espresso:espresso-contrib:$espressoVersion")
     testImplementation project(":android")
     testImplementation(project(":core"))
 }

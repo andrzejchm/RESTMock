@@ -64,7 +64,7 @@ Add the dependency
 
 ```groovy  
 dependencies {
-	androidTestCompile 'com.github.andrzejchm.RESTMock:android:${LATEST_VERSION}'
+	androidTestImplementation 'com.github.andrzejchm.RESTMock:android:${LATEST_VERSION}' // see "Releases" tab for latest version
 }
 ```
 
