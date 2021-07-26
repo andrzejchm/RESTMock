@@ -27,15 +27,16 @@ buildscript {
 }
 
 ext {
-    libraryVersion = "0.4.3"
+    libraryVersion = "0.4.4"
     compileSdk = 29
     targetSdk = 29
     minSdk = 21
     buildTools = "29.0.2"
-    okHttpVersion = "4.6.0"
+    okHttpVersion = "4.9.1"
     butterKnifeVersion = "10.2.1"
-    espressoVersion = "3.1.0"
-    androidXTestVersion = "1.2.0"
+    espressoVersion = "3.4.0"
+    junitVersion = "4.13.2"
+    androidXTestVersion = "1.4.0"
     daggerVersion = "2.27"
 }
 
