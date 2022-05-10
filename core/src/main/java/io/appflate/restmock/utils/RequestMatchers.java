@@ -77,12 +77,33 @@ public final class RequestMatchers {
     }
 
     public static RequestMatcher pathEndsWithIgnoringQueryParams(final String endOfUrlPath) {
-        return new RequestMatcher("path ends with: ${endOfUrlPath}") {
+        return new RequestMatcher("path ends with: " + endOfUrlPath) {
 
             protected boolean matchesSafely(RecordedRequest item) {
                 String endOfPathSanitized = sanitizePath(endOfUrlPath);
                 String recordedPathSanitized = sanitizePath(item.getPath());
                 return recordedPathSanitized.endsWith(endOfPathSanitized);
+            }
+        };
+    }
+
+    /**
+     * Checks whether matched request's path is exactly equal to given string.
+     * path is a part of the url after the server's url. Example:
+     * {@code pathEqualsToWithIgnoringQueryParams("login")} would match {@code https://localhost:4583/login}
+     * but would not match {@code https://localhost:4583/user/login}
+     *
+     * @param fullUrlPath desired path we want to match equality with
+     * @return A new {@link RequestMatcher} object that will match {@link RecordedRequest} if it's
+     * path exactly equal to given fullUrlPath
+     */
+    public static RequestMatcher pathEqualsToWithIgnoringQueryParams(final String fullUrlPath) {
+        return new RequestMatcher("path equals to: " + fullUrlPath) {
+            @Override
+            protected boolean matchesSafely(RecordedRequest item) {
+                String fullPathSanitized = sanitizePath(fullUrlPath);
+                String recordedPathSanitized = sanitizePath(item.getPath());
+                return recordedPathSanitized.equals(fullPathSanitized);
             }
         };
     }

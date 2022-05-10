@@ -57,6 +57,18 @@ public class RequestMatchersTest {
     }
 
     @Test
+    public void pathsAreNotEqualsAndQueryParamsAreIgnored() throws IOException {
+        // given
+        RecordedRequest recordedRequest = createRecordedRequest("/foo/bar?baz=boo");
+
+        // when
+        RequestMatcher matcher = RequestMatchers.pathEqualsToWithIgnoringQueryParams("qwe/foo/bar?baz=boo");
+
+        // then
+        assertFalse(matcher.matches(recordedRequest));
+    }
+
+    @Test
     public void shouldRecognizeProperQueryParameters() throws IOException {
         // given
         RecordedRequest recordedRequest = createRecordedRequest("/foo/bar?baz=ban");
