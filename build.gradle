@@ -32,12 +32,12 @@ ext {
     targetSdk = 29
     minSdk = 21
     buildTools = "29.0.2"
-    okHttpVersion = "4.9.1"
-    butterKnifeVersion = "10.2.1"
+    okHttpVersion = "4.9.3"
+    butterKnifeVersion = "10.2.3"
     espressoVersion = "3.4.0"
     junitVersion = "4.13.2"
     androidXTestVersion = "1.4.0"
-    daggerVersion = "2.27"
+    daggerVersion = "2.40.5"
 }
 
 allprojects {
